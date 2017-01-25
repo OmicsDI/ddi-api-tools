@@ -1,0 +1,59 @@
+package uk.ac.ebi.ddi.api.readers.utils;
+
+import uk.ac.ebi.ddi.api.readers.model.IAPIDataset;
+import uk.ac.ebi.ddi.xml.validator.parser.model.Entry;
+import uk.ac.ebi.ddi.xml.validator.utils.Field;
+
+
+/**
+ * This code is licensed under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * ==Overview==
+ * <p>
+ * This class helps to transforms Readers API into an Entry to be write in the
+ * OmicsDI Files
+ * <p>
+ * Created by ypriverol (ypriverol@gmail.com) on 21/01/2017.
+ */
+public class Transformers {
+
+    public static Entry transformAPIDatasetToEntry(IAPIDataset dataset){
+
+        Entry entry = new Entry();
+
+        entry.setAcc(dataset.getIdentifier());
+        entry.setName(dataset.getName());
+        entry.setDescription(dataset.getDescription());
+
+        entry.addDate(Field.PUBLICATION.getName(), dataset.getPublicationDate());
+
+        entry.addAdditionalField(Field.REPOSITORY.getName(), dataset.getRepository());
+        entry.addAdditionalField(Field.SAMPLE.getName(), dataset.getSampleProcotol());
+        entry.addAdditionalField(Field.DATA.getName(), dataset.getDataProtocol());
+        entry.addAdditionalField(Field.LINK.getName(), dataset.getFullLink());
+
+        dataset.getOmicsType().forEach(s -> entry.addAdditionalField(Field.OMICS.getName(), s));
+        dataset.getCellTypes().forEach(s -> entry.addAdditionalField(Field.CELL_TYPE_FIELD.getName(), s));
+        dataset.getDiseases().forEach( s -> entry.addAdditionalField(Field.DISEASE_FIELD.getName(), s));
+        dataset.getSpecies().forEach(  s -> entry.addAdditionalField(Field.SPECIE_FIELD.getName(), s));
+        dataset.getCrossReferences().forEach(entry::addCrossReferenceValue);
+        dataset.getInstruments().forEach( s -> entry.addAdditionalField(Field.INSTRUMENT.getName(), s));
+        dataset.getSoftwares().forEach(s -> entry.addAdditionalField(Field.SOFTWARE_INFO.getName(), s));
+        dataset.getOtherDates().forEach(entry::addDate);
+        dataset.getCrossReferences().forEach(entry::addCrossReferenceValue);
+        dataset.getOtherAdditionals().forEach((k,s) -> s.forEach(sub -> entry.addAdditionalField(k, sub)));
+
+        dataset.getDatasetFiles().forEach( s -> entry.addAdditionalField(Field.DATASET_FILE.getName(), s));
+        dataset.getTissues().forEach(s -> entry.addAdditionalField(Field.TISSUE_FIELD.getName(), s));
+        dataset.getSubmitter().forEach(s -> entry.addAdditionalField(Field.SUBMITTER.getName(), s));
+        dataset.getSubmitterEmails().forEach(s -> entry.addAdditionalField(Field.SUBMITTER_EMAIL.getName(), s));
+        dataset.getSubmitterAffiliations().forEach(s -> entry.addAdditionalField(Field.SUBMITTER_AFFILIATION.getName(), s));
+
+        return entry;
+
+    }
+}

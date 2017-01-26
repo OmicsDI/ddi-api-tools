@@ -1,7 +1,7 @@
 package uk.ac.ebi.ddi.api.readers.massive.ws.filters;
 
+import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetSummaryMassive;
 import uk.ac.ebi.ddi.api.readers.model.IFilter;
-import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetSummary;
 
 /**
  * @author Yasset Perez-Riverol (ypriverol@gmail.com)
@@ -9,7 +9,7 @@ import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetSummary;
  */
 public class DatasetSummaryUserFilter<T> implements IFilter<T> {
 
-    String user = null;
+    private String user = null;
 
     public DatasetSummaryUserFilter(String user) {
         this.user = user;
@@ -17,7 +17,7 @@ public class DatasetSummaryUserFilter<T> implements IFilter<T> {
 
     @Override
     public boolean valid(Object object) {
-        MassiveDatasetSummary dataset = (MassiveDatasetSummary) object;
+        MassiveDatasetSummaryMassive dataset = (MassiveDatasetSummaryMassive) object;
         return (dataset.getUser() != null && dataset.getUser().toLowerCase().equalsIgnoreCase(user));
     }
 }

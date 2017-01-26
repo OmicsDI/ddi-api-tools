@@ -17,7 +17,7 @@ import java.util.Map;
 public class MetaboliteList {
 
 
-    public Map<String, Metabolite> metabolites = new HashMap<String, Metabolite>();
+    public Map<String, Metabolite> metabolites = new HashMap<>();
 
     @JsonAnyGetter
     public Map<String, Metabolite> any() {

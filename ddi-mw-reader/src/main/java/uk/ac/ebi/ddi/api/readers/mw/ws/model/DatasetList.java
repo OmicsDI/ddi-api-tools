@@ -14,7 +14,7 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DatasetList {
 
-    public Map<String, MWDataSetDetails> datasets = new HashMap<String, MWDataSetDetails>();
+    public Map<String, MWDataSetDetails> datasets = new HashMap<>();
 
     @JsonAnyGetter
     public Map<String, MWDataSetDetails> any() {

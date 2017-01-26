@@ -13,7 +13,7 @@ public enum Synonyms {
 
     private String term;
 
-    private List<String> synonyms = new ArrayList<String>();
+    private List<String> synonyms = new ArrayList<>();
 
     Synonyms(String term, String... synonym) {
 

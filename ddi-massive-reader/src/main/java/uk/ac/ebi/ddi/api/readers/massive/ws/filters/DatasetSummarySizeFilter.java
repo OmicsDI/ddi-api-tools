@@ -1,6 +1,6 @@
 package uk.ac.ebi.ddi.api.readers.massive.ws.filters;
 
-import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetSummary;
+import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetSummaryMassive;
 import uk.ac.ebi.ddi.api.readers.model.IFilter;
 
 /**
@@ -9,7 +9,7 @@ import uk.ac.ebi.ddi.api.readers.model.IFilter;
  */
 public class DatasetSummarySizeFilter<T> implements IFilter<T> {
 
-    double dataSizeMb = 0;
+    private double dataSizeMb = 0;
 //    Pattern regPattern = Pattern.compile("(-)?(([^\\d])(0)|[1-9][0-9]*)(.)([0-9]+)");
 
     public DatasetSummarySizeFilter(double dataSizeMb){
@@ -18,6 +18,6 @@ public class DatasetSummarySizeFilter<T> implements IFilter<T> {
 
     @Override
     public boolean valid(Object object) {
-        return ((MassiveDatasetSummary) object).getFileSize()/1000 > dataSizeMb;
+        return ((MassiveDatasetSummaryMassive) object).getFileSize()/1000 > dataSizeMb;
     }
 }

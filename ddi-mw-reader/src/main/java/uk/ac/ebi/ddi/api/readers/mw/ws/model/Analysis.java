@@ -13,28 +13,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Analysis {
 
     @JsonProperty("study_id")
-    String id;
+    private String id;
 
     @JsonProperty("analysis_id")
-    String analysis_id;
+    private String analysis_id;
 
     @JsonProperty("analysis_summary")
-    String summary;
+    private String summary;
 
     @JsonProperty("analysis_type")
-    String type;
+    private String type;
 
     @JsonProperty("instrument_name")
-    String instrument_name;
+    private String instrument_name;
 
     @JsonProperty("instrument_type")
-    String instrument_type;
+    private String instrument_type;
 
     @JsonProperty("ms_type")
-    String ms_type;
+    private String ms_type;
 
     @JsonProperty("ion_mode")
-    String ion_mode;
+    private String ion_mode;
 
     public String getId() {
         return id;

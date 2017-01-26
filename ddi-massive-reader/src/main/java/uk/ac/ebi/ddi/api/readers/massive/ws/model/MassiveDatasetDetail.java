@@ -21,7 +21,7 @@ import java.util.*;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MassiveDatasetDetail extends AbstractDataset implements IAPIDataset{
+public class MassiveDatasetDetail extends MassiveAbstractDataset implements IAPIDataset{
 
     private static final Logger logger = LoggerFactory.getLogger(MassiveDatasetDetail.class);
 

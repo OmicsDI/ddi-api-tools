@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class FactorList {
 
-    public Map<String, Factor> factors = new HashMap<String, Factor>();
+    public Map<String, Factor> factors = new HashMap<>();
 
     @JsonAnyGetter
     public Map<String, Factor> any() {

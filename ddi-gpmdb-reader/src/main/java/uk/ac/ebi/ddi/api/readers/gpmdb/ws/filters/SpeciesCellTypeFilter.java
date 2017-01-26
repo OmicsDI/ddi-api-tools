@@ -24,8 +24,6 @@ public class SpeciesCellTypeFilter<T> implements IFilter<T>{
     @Override
     public boolean valid(T type) {
         Model model = (Model) type;
-        if(model != null && (model.getTissues().size() > 0 || model.getCellTypes().size() > 0))
-            return true;
-        return false;
+        return model != null && (model.getTissues().size() > 0 || model.getCellTypes().size() > 0);
     }
 }

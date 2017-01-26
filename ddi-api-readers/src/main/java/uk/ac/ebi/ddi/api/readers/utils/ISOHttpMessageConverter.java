@@ -5,6 +5,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ import java.util.List;
 public class ISOHttpMessageConverter extends MappingJackson2HttpMessageConverter {
 
     public ISOHttpMessageConverter() {
-        List<MediaType> types = Arrays.asList(
+        List<MediaType> types = Collections.singletonList(
                 new MediaType("text", "html", Charset.forName("ISO-8859-1"))
         );
         super.setSupportedMediaTypes(types);

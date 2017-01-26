@@ -12,9 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class MassiveDatasetList {
 
     @JsonProperty("datasets")
-    public MassiveDatasetSummary[] datasets;
+    public MassiveDatasetSummaryMassive[] datasets;
 
-    public MassiveDatasetSummary[] getDatasets() {
+    public MassiveDatasetSummaryMassive[] getDatasets() {
         return datasets;
     }
 }

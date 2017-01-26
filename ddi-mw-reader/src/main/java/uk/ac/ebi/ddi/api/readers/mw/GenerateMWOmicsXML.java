@@ -46,8 +46,12 @@ public class GenerateMWOmicsXML {
         String outputFolder = null;
         String releaseDate  = null;
 
-        if (args != null && args.length > 1 && args[0] != null)
+        if (args != null && args.length > 1 && args[0] != null){
             outputFolder = args[0];
+            releaseDate  = args[1];
+        }
+
+
 
         else {
             System.exit(-1);

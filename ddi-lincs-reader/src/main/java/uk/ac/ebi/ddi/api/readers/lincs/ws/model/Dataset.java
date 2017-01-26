@@ -19,70 +19,69 @@ import java.util.*;
 public class Dataset implements IAPIDataset{
 
     @JsonProperty("datasetid")
-    String id;
+    private String id;
 
     @JsonProperty("datasetname")
-    String name;
+    private String name;
 
     @JsonProperty("ldplink")
-    String datasetLink;
+    private String datasetLink;
 
-    @JsonProperty("projectname")
-    String projectName;
+    @JsonProperty("projectname") String projectName;
 
     @JsonProperty("principalinvestigator")
-    String principalInvestigator;
+    private String principalInvestigator;
 
     @JsonProperty("centerfullname")
-    String affiliation;
+    private String affiliation;
 
     @JsonProperty("datereleased")
-    String publicationDate;
+    private String publicationDate;
 
     @JsonProperty("datemodified")
-    String modifiedDate;
+    private String modifiedDate;
 
     @JsonProperty("screeninglabinvestigator")
-    String screeninglabinvestigator;
+    private String screeninglabinvestigator;
 
     @JsonProperty("cellline")
     String[] cellLine;
 
     @JsonProperty("tool")
-    String[] software;
+    private String[] software;
 
     @JsonProperty("biologicalbucket")
-    String omicsType;
+    private String omicsType;
 
     @JsonProperty("assayname")
     String[] assayName;
 
     @JsonProperty("description")
-    String description;
+    private String description;
 
     @JsonProperty("assayoverview")
-    String sampleDataProtocol;
+    private String sampleDataProtocol;
 
     @JsonProperty("funding")
-    String funding;
+    private String funding;
 
     @JsonProperty("genes")
-    String[] genes;
+    private String[] genes;
 
     @JsonProperty("smallmolecules")
-    String[] smallMolecules;
+    private String[] smallMolecules;
 
     @JsonProperty("physicaldetection")
-    String physicalDetection;
+    private String physicalDetection;
 
     @JsonProperty("publication")
-    String pubmedID;
+    private String pubmedID;
 
     @JsonProperty("protein")
-    String[] proteins;
+    private String[] proteins;
 
     @JsonProperty("assaydesignmethod")
-    String[] assayMethod;
+    private String[] assayMethod;
 
 
     @Override

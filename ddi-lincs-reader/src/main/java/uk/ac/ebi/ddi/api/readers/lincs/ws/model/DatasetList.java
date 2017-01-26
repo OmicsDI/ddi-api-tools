@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class DatasetList {
 
     @JsonProperty("results")
+    private
     Results results;
 
     public Results getResults() {

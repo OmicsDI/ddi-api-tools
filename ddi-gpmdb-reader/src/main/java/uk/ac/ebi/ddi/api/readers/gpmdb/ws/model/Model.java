@@ -29,6 +29,8 @@ public class Model implements IAPIDataset{
 
     Map<String, Set<String>> proteins;
 
+    Map<String, Set<String>> additionals;
+
     @Override
     public String getIdentifier() {
         if(parameter != null && parameter.getIdentifier() != null)
@@ -202,12 +204,14 @@ public class Model implements IAPIDataset{
     public Map<String, Set<String>> getCrossReferences() {
         Map<String, Set<String>> crossReferences = new HashMap<>();
         if(proteins != null)
-            proteins.forEach((k,s) -> crossReferences.put(k,s));
+            proteins.forEach(crossReferences::put);
         return crossReferences;
     }
 
     @Override
     public Map<String, Set<String>> getOtherAdditionals() {
+        if(additionals != null && additionals.size() >0)
+            return additionals;
         return Collections.EMPTY_MAP;
     }
 
@@ -223,14 +227,20 @@ public class Model implements IAPIDataset{
         Set<String> terms = new HashSet<>();
         if(sTerm != null && !sTerm.equalsIgnoreCase(Constants.GPMDB_UKNOKNOWN_FILTER)){
             String[] termArr = sTerm.split(",");
-            Arrays.asList(termArr).forEach(s ->{
-                int index = s.indexOf(" ");
-                if(index != -1){
-                    terms.add(s.substring(0, index -1));
-                    terms.add(s.substring(index +1, s.length()));
-                }else
-                    terms.add(s);
-            });
+            if(termArr != null ){
+                Arrays.asList(termArr).forEach(s ->{
+                    if(s != null && s.length() > 0){
+                        int index = s.indexOf(" ");
+                        if(index != -1){
+                            terms.add(s.substring(0, index -1));
+                            terms.add(s.substring(index +1, s.length()));
+                        }else
+                            terms.add(s);
+                    }
+
+                });
+            }
+
         }
         return terms;
     }
@@ -258,6 +268,14 @@ public class Model implements IAPIDataset{
                 values.addAll(s);
                 this.proteins.put(k,values);
             });
+        }
+    }
+
+    public void addOtherAdditionals(Map<String, Set<String>> proteinNames) {
+        if(proteinNames != null && proteinNames.size() > 0){
+            if(additionals == null)
+                additionals = new HashMap<>();
+            proteinNames.forEach((k, s) -> additionals.put(k, s));
         }
     }
 }

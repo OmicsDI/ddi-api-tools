@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class AnalysisList {
 
-    public Map<String, Analysis> analysisMap = new HashMap<String, Analysis>();
+    public Map<String, Analysis> analysisMap = new HashMap<>();
 
     @JsonAnyGetter
     public Map<String, Analysis> any() {

@@ -39,7 +39,7 @@ public class GPMDBFTPClient {
         IFilter[] filters = new IFilter[2];
         filters[0] =  new PrefixFilter(Constants.GPMDB_PREFIX_MODEL);
         filters[1] = new PostFixFilter(FileExtensions.FTP_GPMDB_MODEL_EXTENSION.getExtension());
-        final Iterable<String> findings = new FTPFileSearch( Constants.GPMDB_FTP_ROOT_DIRECOTRY, filters, true,  new MockCallback<Iterable<String>>()).ftpCall(gpmdbProd.getClient());
+        final Iterable<String> findings = new FTPFileSearch( Constants.GPMDB_FTP_ROOT_DIRECOTRY, filters, true, new MockCallback<>()).ftpCall(gpmdbProd.getClient());
         findings.forEach(s -> listFiles.add(new StringJoiner(Constants.PATH_DELIMITED).add(gpmdbProd.getHost()).add(s).toString()));
         return listFiles;
     }
@@ -52,9 +52,7 @@ public class GPMDBFTPClient {
     public List<String> listAllGPMDBModels() throws IOException {
         List<String> listModelFiles = listAllGPMDBModelPaths();
         List<String> models = new ArrayList<>(listModelFiles.size());
-        listModelFiles.forEach(file -> {
-            models.add(getModel(file));
-        });
+        listModelFiles.forEach(file -> models.add(getModel(file)));
         return models;
     }
 

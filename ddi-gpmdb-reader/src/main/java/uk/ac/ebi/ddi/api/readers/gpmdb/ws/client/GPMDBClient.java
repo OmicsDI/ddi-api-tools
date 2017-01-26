@@ -10,9 +10,7 @@ import uk.ac.ebi.ddi.api.readers.ws.AbstractWsConfig;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -67,7 +65,7 @@ public class GPMDBClient extends AbstractClient{
                 String responseModel = parseFromString(url);
                 responseModel = responseModel.replace("\\","");
                 ObjectMapper mapper = new ObjectMapper();
-                model = (Model) mapper.readValue(responseModel, Model.class);
+                model = mapper.readValue(responseModel, Model.class);
             } catch (Exception e1) {
                 logger.debug(e1.getMessage());
             }

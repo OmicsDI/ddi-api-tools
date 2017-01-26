@@ -90,13 +90,14 @@ public class MWDataSetDetails implements IAPIDataset{
     @Override
     public String getPublicationDate() {
         DateFormat formatter = new SimpleDateFormat("yy-MM-dd");
-        Date date = null;
+        Date date;
         try {
             date = formatter.parse(submit_date);
+            return date.toString();
         } catch (ParseException e) {
             logger.debug(e.getLocalizedMessage());
         }
-        return date.toString();
+       return Constants.EMPTY_STRING;
     }
 
     @Override
@@ -134,7 +135,7 @@ public class MWDataSetDetails implements IAPIDataset{
 
     @Override
     public Set<String> getInstruments() {
-        Set<String> instruments = new HashSet<String>();
+        Set<String> instruments = new HashSet<>();
         if(analysis != null && analysis.analysisMap != null && analysis.analysisMap.size() > 0){
            analysis.analysisMap.values().forEach( analysisValue ->{
                if(analysisValue != null && (analysisValue.getInstrument_name() != null || analysisValue.getInstrument_type() != null)){

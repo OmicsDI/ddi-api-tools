@@ -61,7 +61,7 @@ public class DatasetWsClient extends AbstractClient{
             try{
                 Analysis analysisSingle = this.restTemplate.getForObject(url, Analysis.class);
                 analysisList = new AnalysisList();
-                analysisList.analysisMap = new HashMap<String, Analysis>();
+                analysisList.analysisMap = new HashMap<>();
                 analysisList.analysisMap.put("1", analysisSingle);
             }catch(Exception ex){
                 logger.debug(ex.getMessage());
@@ -85,7 +85,7 @@ public class DatasetWsClient extends AbstractClient{
         return metaboliteList;
     }
 
-    public ChebiID getChebiId(String pubchemId){
+    private ChebiID getChebiId(String pubchemId){
 
         String url = String.format("%s://%s/rest/compound/pubchem_cid/%s/chebi_id/",
                 config.getProtocol(), config.getHostName(), pubchemId);

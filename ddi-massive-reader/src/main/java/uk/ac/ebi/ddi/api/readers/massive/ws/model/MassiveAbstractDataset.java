@@ -3,34 +3,36 @@ package uk.ac.ebi.ddi.api.readers.massive.ws.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Arrays;
+
 /**
  * @author Yasset Perez-Riverol (ypriverol@gmail.com)
  * @date 06/11/15
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AbstractDataset {
+public class MassiveAbstractDataset {
 
     @JsonProperty("title")
-    String title;
+    private String title;
 
     @JsonProperty("pi")
     PrincipalInvestigator[] principalInvestigator;
 
     @JsonProperty("instrument")
-    String instrument;
+    private String instrument;
 
     @JsonProperty("complete")
-    String complete;
+    private String complete;
 
     @JsonProperty("private")
-    String privateStatus;
+    private String privateStatus;
 
     @JsonProperty("user")
-    String user;
+    private String user;
 
     @JsonProperty("species")
-    String species;
+    private String species;
 
 
     @JsonProperty("created")
@@ -39,7 +41,7 @@ public class AbstractDataset {
     @JsonProperty("task")
     String task;
 
-    String url;
+    private String url;
 
     public String getTitle() {
         return title;
@@ -53,7 +55,7 @@ public class AbstractDataset {
         return user;
     }
 
-    public String getStringSpecies() {
+    String getStringSpecies() {
         return species;
     }
 
@@ -72,9 +74,9 @@ public class AbstractDataset {
 
     @Override
     public String toString() {
-        return "AbstractDataset{" +
+        return "MassiveAbstractDataset{" +
                 "title='" + title + '\'' +
-                ", principalInvestigator='" + principalInvestigator + '\'' +
+                ", principalInvestigator='" + Arrays.toString(principalInvestigator) + '\'' +
                 ", instrument='" + instrument + '\'' +
                 ", complete='" + complete + '\'' +
                 ", privateStatus='" + privateStatus + '\'' +

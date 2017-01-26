@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import uk.ac.ebi.ddi.api.readers.ftp.*;
 import uk.ac.ebi.ddi.api.readers.model.IFilter;
 import uk.ac.ebi.ddi.api.readers.utils.Constants;
-import uk.ac.ebi.ddi.api.readers.utils.FileExtensions;
 import uk.ac.ebi.ddi.api.readers.ws.AbstractWsConfig;
 import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetDetail;
 import uk.ac.ebi.ddi.api.readers.utils.CustomHttpMessageConverter;
@@ -15,7 +14,6 @@ import uk.ac.ebi.ddi.api.readers.ws.AbstractClient;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.StringJoiner;
 
 
@@ -59,7 +57,7 @@ public class DatasetWsClient extends AbstractClient {
         List<String> listFiles = new ArrayList<>();
         ftpConfig.onConnect();
         IFilter[] filters = new IFilter[0];
-        final Iterable<String> findings = new FTPFileSearch( massiveID, filters, true,  new MockCallback<Iterable<String>>()).ftpCall(ftpConfig.getClient());
+        final Iterable<String> findings = new FTPFileSearch( massiveID, filters, true, new MockCallback<>()).ftpCall(ftpConfig.getClient());
         findings.forEach(s -> listFiles.add(new StringJoiner(Constants.PATH_DELIMITED).add(Constants.FTP_PROTOCOL + ftpConfig.getHost()).add(s).toString()));
         return listFiles;
     }

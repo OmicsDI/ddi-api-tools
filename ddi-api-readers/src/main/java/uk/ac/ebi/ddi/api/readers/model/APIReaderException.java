@@ -20,8 +20,7 @@ public class APIReaderException extends Exception implements IAPIReaderException
         super(e);
     }
 
-    @Override
     public String getMessage() {
-        return this.getMessage();
+        return super.getMessage();
     }
 }

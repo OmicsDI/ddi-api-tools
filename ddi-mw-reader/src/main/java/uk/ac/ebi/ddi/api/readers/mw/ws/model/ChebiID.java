@@ -13,10 +13,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ChebiID {
 
     @JsonProperty("pubchem_cid")
-    String pubchemId;
+    private String pubchemId;
 
     @JsonProperty("chebi_id")
-    String chebi_id;
+    private String chebi_id;
 
     public String getPubchemId() {
         return pubchemId;

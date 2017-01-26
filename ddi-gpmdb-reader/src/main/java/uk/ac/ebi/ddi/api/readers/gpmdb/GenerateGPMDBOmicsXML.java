@@ -17,6 +17,7 @@ import uk.ac.ebi.ddi.xml.validator.parser.model.Database;
 import uk.ac.ebi.ddi.xml.validator.parser.model.Entries;
 import uk.ac.ebi.ddi.xml.validator.parser.model.Entry;
 import uk.ac.ebi.ddi.xml.validator.utils.BiologicalDatabases;
+import uk.ac.ebi.ddi.xml.validator.utils.Field;
 import uk.ac.ebi.pride.tools.protein_details_fetcher.ProteinDetailFetcher;
 
 import java.io.FileWriter;
@@ -66,14 +67,14 @@ public class GenerateGPMDBOmicsXML {
     public static void generateMWXMLFiles(AbstractWsConfig configProd, String outputFolder, String releaseDate) throws Exception{
 
         GPMDBFTPClient modelFTPClient = new GPMDBFTPClient();
-        GPMDBClient modelWSClient     = new GPMDBClient(new GPMDBWsConfigProd());
+        GPMDBClient modelWSClient     = new GPMDBClient(configProd);
         List<String> datasetList = modelFTPClient.listAllGPMDBModelPaths();
         ProteinDetailFetcher detailFetcher = new ProteinDetailFetcher();
 
 
         if (datasetList != null && datasetList.size() > 0) {
             Entries gpmdbEntries = new Entries();
-            datasetList.stream().forEach( datasetFTP -> {
+            datasetList.parallelStream().forEach( datasetFTP -> {
                 String modelID    = modelFTPClient.getModel(datasetFTP);
                 Model model       = modelWSClient.getModelInformation(modelID);
                 if(model != null && model.getIdentifier() != null && new SpeciesCellTypeFilter().valid(model)){
@@ -108,6 +109,14 @@ public class GenerateGPMDBOmicsXML {
                             proteinMap.put(BiologicalDatabases.GPMDB.getName(), otherIdentifiers);
                             model.addProteins(proteinMap);
                         }
+
+                        if(proteins != null && proteins.length > 0){
+                            Set<String> proteinSet = new HashSet<>(Arrays.asList(proteins));
+                            Map<String, Set<String>> proteinNames = new HashMap<>();
+                            proteinNames.put(Field.PROTEIN_NAME.getName(), proteinSet);
+                            model.addOtherAdditionals(proteinNames);
+                        }
+
                         Entry entry = Transformers.transformAPIDatasetToEntry(model);
                         gpmdbEntries.addEntry(entry);
                     }

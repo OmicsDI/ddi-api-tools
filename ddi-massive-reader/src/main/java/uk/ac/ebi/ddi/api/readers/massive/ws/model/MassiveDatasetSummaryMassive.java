@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MassiveDatasetSummary extends AbstractDataset{
+public class MassiveDatasetSummaryMassive extends MassiveAbstractDataset {
 
     @JsonProperty("dataset")
     String id;
@@ -136,7 +136,7 @@ public class MassiveDatasetSummary extends AbstractDataset{
 
     @Override
     public String toString() {
-        return "MassiveDatasetSummary{" +
+        return "MassiveDatasetSummaryMassive{" +
                 "id='" + id + '\'' +
                 ", datasetNum='" + datasetNum + '\'' +
                 ", site='" + site + '\'' +

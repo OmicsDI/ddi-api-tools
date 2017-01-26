@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class DiseaseList {
 
-    public Map<String, Disease> diseases = new HashMap<String, Disease>();
+    public Map<String, Disease> diseases = new HashMap<>();
 
     @JsonAnyGetter
     public Map<String, Disease> any() {
@@ -31,7 +31,7 @@ public class DiseaseList {
     }
 
     public Set<String> getDiseasesByDataset(String id) {
-        Set<String> tissuesResult = new HashSet<String>();
+        Set<String> tissuesResult = new HashSet<>();
         if(diseases != null && !diseases.isEmpty())
             for(Disease disease: diseases.values())
                 if(disease.getStudyId().equalsIgnoreCase(id))

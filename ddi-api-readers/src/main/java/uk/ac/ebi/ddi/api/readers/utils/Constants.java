@@ -48,5 +48,5 @@ public class Constants {
     public static final String GPMDB_UKNOKNOWN_FILTER      = "none";
     public static final String FTP_PROTOCOL                = "ftp://";
     public static final String HTTP_PROTOCOL               = "http://";
-    public static final String HTTPS_PROTOCOL               = "https://";
+    public static final String HTTPS_PROTOCOL              = "https://";
 }

@@ -14,28 +14,28 @@ public interface IAPIDataset {
      *
      * @return
      */
-    public String getIdentifier();
+    String getIdentifier();
 
     /**
      * Get Dataset title or name for the dataset.
      *
      * @return Name or Title for the dataset.
      */
-    public String getName();
+    String getName();
 
     /**
      * Get the description or abstract of a dataset
      *
      * @return Description or abstract for a dataset
      */
-    public String getDescription();
+    String getDescription();
 
     /**
      * Get the Data Protocol information for each dataset
      *
      * @return Data Protocol for Dataset
      */
-    public String getDataProtocol();
+    String getDataProtocol();
 
 
     /**
@@ -43,7 +43,7 @@ public interface IAPIDataset {
      *
      * @return Publication date should be provided
      */
-    public String getPublicationDate();
+    String getPublicationDate();
 
     /**
      * Get all the Dates additionals for dates.
@@ -51,7 +51,7 @@ public interface IAPIDataset {
      *
      * @return Map of the corresponding dates
      */
-    public Map<String, String> getOtherDates();
+    Map<String, String> getOtherDates();
 
     /**
      * Sample Protocol should be provided for must of the datasets
@@ -59,14 +59,14 @@ public interface IAPIDataset {
      *
      * @return Sample Protocol
      */
-    public String getSampleProcotol();
+    String getSampleProcotol();
 
     /**
      * Get the list of omicsType for one dataset. It can be one or more.
      *
      * @return List of Omics Type
      */
-    public Set<String> getOmicsType();
+    Set<String> getOmicsType();
 
     /**
      * Get the repository name. One provider can contains data from more than one
@@ -74,14 +74,14 @@ public interface IAPIDataset {
      *
      * @return Repository that contains the data set.
      */
-    public String getRepository();
+    String getRepository();
 
     /**
      * Get the full Link of the dataset
      *
      * @return Full Link of the dataset
      */
-    public String getFullLink();
+    String getFullLink();
 
     /**
      * Get the List of the Instruments that has been use to measure
@@ -89,108 +89,108 @@ public interface IAPIDataset {
      *
      * @return Instruments
      */
-    public Set<String> getInstruments();
+    Set<String> getInstruments();
 
     /**
      * Get the Free Text Species for the Dataset.
      *
      * @return Ge the Species of one dataset.
      */
-    public Set<String> getSpecies();
+    Set<String> getSpecies();
 
     /**
      * Get the Free Text of CellTypes for a Dataset.
      *
      * @return Cell Type
      */
-    public Set<String> getCellTypes();
+    Set<String> getCellTypes();
 
     /**
      * Get the Free Text of Diseases
      *
      * @return List of Diseases
      */
-    public Set<String> getDiseases();
+    Set<String> getDiseases();
 
     /**
      * Get the corresponding tissues for a dataset
      *
      * @return List of Tissues
      */
-    public Set<String> getTissues();
+    Set<String> getTissues();
 
     /**
      * Get the corresponding software List for a dataset
      *
      * @return List of Software
      */
-    public Set<String> getSoftwares();
+    Set<String> getSoftwares();
 
     /**
      * Get the Submitters names
      *
      * @return Submitter names
      */
-    public Set<String> getSubmitter();
+    Set<String> getSubmitter();
 
     /**
      * Get Submitter emails
      *
      * @return submitter emails
      */
-    public Set<String> getSubmitterEmails();
+    Set<String> getSubmitterEmails();
 
     /**
      * Get Submitters Affiliation
      *
      * @return submitter affiliation list
      */
-    public Set<String> getSubmitterAffiliations();
+    Set<String> getSubmitterAffiliations();
 
     /**
      * Get the Submitter Keywords of a Dataset
      *
      * @return Submitter Keywords.
      */
-    public Set<String> getSubmitterKeywords();
+    Set<String> getSubmitterKeywords();
 
     /**
      * Get the Lab Head of a dataset.
      *
      * @return lab head
      */
-    public Set<String> getLabHead();
+    Set<String> getLabHead();
 
     /**
      * Get Dataset Lab Head email
      *
      * @return email
      */
-    public Set<String> getLabHeadMail();
+    Set<String> getLabHeadMail();
 
     /**
      * Get Dataset Lab Head Affiliation
      *
      * @return Lab Head or PI
      */
-    public Set<String> getLabHeadAffiliation();
+    Set<String> getLabHeadAffiliation();
 
     /**
      * Get Dataset Files.
      * @return  List of Files
      */
-    public Set<String> getDatasetFiles();
+    Set<String> getDatasetFiles();
 
     /**
      * Get Cross References for each Dataset
      * @return Cross References
      */
-    public Map<String, Set<String>> getCrossReferences();
+    Map<String, Set<String>> getCrossReferences();
 
     /**
      * Get all the other additional fields
      * @return Additional fields
      */
-    public Map<String, Set<String>> getOtherAdditionals();
+    Map<String, Set<String>> getOtherAdditionals();
 
 }

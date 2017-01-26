@@ -62,29 +62,23 @@ public final class FTPFileSearchTest {
     public void setUp() throws IOException {
         Mockito.when(this.client.listFiles(Matchers.matches(DIR_OUT)))
                 .thenAnswer(
-                        new Answer<FTPFile[]>() {
-                            @Override
-                            public FTPFile[] answer(final InvocationOnMock inv) {
-                                final FTPFile dir = new FTPFile();
-                                dir.setName("dir1");
-                                dir.setType(FTPFile.DIRECTORY_TYPE);
-                                return new FTPFile[]{dir};
-                            }
+                        inv -> {
+                            final FTPFile dir = new FTPFile();
+                            dir.setName("dir1");
+                            dir.setType(FTPFile.DIRECTORY_TYPE);
+                            return new FTPFile[]{dir};
                         }
                 );
         Mockito.when(this.client.listFiles(Matchers.matches(DIR_IN)))
                 .thenAnswer(
-                        new Answer<FTPFile[]>() {
-                            @Override
-                            public FTPFile[] answer(final InvocationOnMock inv) {
-                                final FTPFile filep = new FTPFile();
-                                filep.setName("pre-test-dir1");
-                                filep.setType(FTPFile.FILE_TYPE);
-                                final FTPFile file = new FTPFile();
-                                file.setName("ppp-test-dir1");
-                                file.setType(FTPFile.FILE_TYPE);
-                                return new FTPFile[]{filep, file};
-                            }
+                        inv -> {
+                            final FTPFile filep = new FTPFile();
+                            filep.setName("pre-test-dir1");
+                            filep.setType(FTPFile.FILE_TYPE);
+                            final FTPFile file = new FTPFile();
+                            file.setName("ppp-test-dir1");
+                            file.setType(FTPFile.FILE_TYPE);
+                            return new FTPFile[]{filep, file};
                         }
                 );
     }
@@ -100,7 +94,7 @@ public final class FTPFileSearchTest {
                 DIR_OUT,
                 filters,
                 true,
-                new MockCallback<Iterable<String>>()
+                new MockCallback<>()
         ).ftpCall(this.client);
 
         findings.forEach(s -> Assert.assertTrue("found outside", s.equalsIgnoreCase(FOUND_LOC)));
@@ -117,7 +111,7 @@ public final class FTPFileSearchTest {
                 DIR_IN,
                 filters,
                 false,
-                new MockCallback<Iterable<String>>()
+                new MockCallback<>()
         ).ftpCall(this.client);
        findings.forEach(s -> Assert.assertTrue("not found inside",s.equalsIgnoreCase(FOUND_LOC)));
     }
@@ -133,7 +127,7 @@ public final class FTPFileSearchTest {
                 DIR_OUT,
                 filters,
                 false,
-                new MockCallback<Iterable<String>>()
+                new MockCallback<>()
         ).ftpCall(this.client);
         findings.forEach(s -> Assert.assertTrue("found something", s.length() > 0));
     }

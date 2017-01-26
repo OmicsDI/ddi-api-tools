@@ -8,14 +8,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import uk.ac.ebi.ddi.api.readers.massive.ws.client.DatasetWsClient;
 
 import uk.ac.ebi.ddi.api.readers.massive.ws.client.ISODetasetsWsClient;
+import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetDetail;
+import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetSummaryMassive;
 import uk.ac.ebi.ddi.api.readers.ws.AbstractWsConfig;
 import uk.ac.ebi.ddi.api.readers.massive.ws.client.MassiveWsConfigProd;
 import uk.ac.ebi.ddi.api.readers.massive.ws.filters.DatasetSummarySizeFilter;
 import uk.ac.ebi.ddi.api.readers.massive.ws.filters.DatasetSummaryTrancheFilter;
 import uk.ac.ebi.ddi.api.readers.massive.ws.filters.DatasetSummaryUserFilter;
-import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetDetail;
 import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetList;
-import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetSummary;
 
 
 import uk.ac.ebi.ddi.api.readers.utils.Constants;
@@ -78,7 +78,7 @@ public class GenerateMassiveOmicsXML{
 
         if (datasetList != null && datasetList.datasets != null) {
 
-            List<MassiveDatasetSummary> dataSetSummaries = new ArrayList<>(Arrays.asList(datasetList.datasets));
+            List<MassiveDatasetSummaryMassive> dataSetSummaries = new ArrayList<>(Arrays.asList(datasetList.datasets));
             Entries massiveEntries = new Entries();
             Entries gnpsEntries    = new Entries();
             dataSetSummaries.parallelStream().forEach( dataset -> {

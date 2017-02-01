@@ -42,8 +42,12 @@ public class GPMDBClient extends AbstractClient{
                 config.getProtocol(), config.getHostName(), model);
         //Todo: Needs to be removed in the future, this is for debugging
         logger.debug(url);
-
-        return this.restTemplate.getForObject(url, String[].class);
+        try {
+            return this.restTemplate.getForObject(url, String[].class);
+        }catch (Exception e){
+            logger.debug(e.getMessage());
+        }
+        return null;
     }
 
     /**

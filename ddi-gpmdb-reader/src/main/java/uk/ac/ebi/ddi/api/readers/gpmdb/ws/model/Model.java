@@ -229,10 +229,11 @@ public class Model implements IAPIDataset{
             String[] termArr = sTerm.split(",");
             if(termArr != null ){
                 Arrays.asList(termArr).forEach(s ->{
+                    s = s.trim();
                     if(s != null && s.length() > 0){
                         int index = s.indexOf(" ");
                         if(index != -1){
-                            terms.add(s.substring(0, index -1));
+                            terms.add(s.substring(0, index - 1));
                             terms.add(s.substring(index +1, s.length()));
                         }else
                             terms.add(s);

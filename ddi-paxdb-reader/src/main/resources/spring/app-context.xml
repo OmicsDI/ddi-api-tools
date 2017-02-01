@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="paxdbClient" class="uk.ac.ebi.ddi.api.readers.paxdb.ws.client.PaxDBClient">
+        <constructor-arg index="0" value="http://pax-db.org/downloads/latest/datasets/paxdb-abundance-files-v4.0.zip"/>
+        <constructor-arg index="1" value="http://pax-db.org/downloads/latest/omicsdb_export.tsv"/>
+        <constructor-arg index="2" value="http://pax-db.org/downloads/latest/UniProt_mappings/paxdb-uniprot-links-v4_0.zip"/>
+    </bean>
+
+</beans>
+

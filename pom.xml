@@ -39,6 +39,7 @@
         <module>ddi-mw-reader</module>
         <module>ddi-gpmdb-reader</module>
         <module>ddi-lincs-reader</module>
+        <module>ddi-paxdb-reader</module>
     </modules>
 
     <distributionManagement>

@@ -1,10 +1,10 @@
 package uk.ac.ebi.ddi.api.readers.massive.ws.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import uk.ac.ebi.ddi.api.readers.ws.AbstractWsConfig;
 import uk.ac.ebi.ddi.api.readers.utils.HttpDownload;
-import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetList;
 import uk.ac.ebi.ddi.api.readers.ws.AbstractClient;
+import uk.ac.ebi.ddi.api.readers.ws.AbstractWsConfig;
+import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetList;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;

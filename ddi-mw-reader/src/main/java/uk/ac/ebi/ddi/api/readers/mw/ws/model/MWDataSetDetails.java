@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.ac.ebi.ddi.api.readers.mw.ws.utils.Synonyms;
 import uk.ac.ebi.ddi.api.readers.model.IAPIDataset;
 import uk.ac.ebi.ddi.api.readers.utils.Constants;
-import uk.ac.ebi.ddi.api.readers.mw.ws.utils.Synonyms;
 import uk.ac.ebi.ddi.xml.validator.utils.Field;
 import uk.ac.ebi.ddi.xml.validator.utils.OmicsType;
 
@@ -257,9 +257,7 @@ public class MWDataSetDetails implements IAPIDataset{
         Map<String, Set<String>> additionals = new HashMap<>();
         if(factors != null && factors.factors != null){
             Set<String> factorStrings = new HashSet<>();
-            factors.factors.values().forEach(s -> {
-                factorStrings.add(s.getFactors().trim());
-            });
+            factors.factors.values().forEach(s -> factorStrings.add(s.getFactors().trim()));
             additionals.put(Field.STUDY_FACTORS.getName(), factorStrings);
         }
         if(analysis != null && analysis.analysisMap != null && analysis.analysisMap.size() > 0){

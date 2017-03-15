@@ -5,15 +5,17 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import uk.ac.ebi.ddi.api.readers.model.IGenerator;
 import uk.ac.ebi.ddi.api.readers.mw.ws.client.DatasetWsClient;
-import uk.ac.ebi.ddi.api.readers.mw.ws.model.DatasetList;
 import uk.ac.ebi.ddi.api.readers.mw.ws.model.DiseaseList;
+import uk.ac.ebi.ddi.api.readers.mw.ws.model.DatasetList;
 import uk.ac.ebi.ddi.api.readers.mw.ws.model.SpecieList;
 import uk.ac.ebi.ddi.api.readers.mw.ws.model.TissueList;
+import uk.ac.ebi.ddi.api.readers.mw.ws.client.MWWsConfigProd;
 import uk.ac.ebi.ddi.api.readers.utils.Constants;
 import uk.ac.ebi.ddi.api.readers.utils.Transformers;
 
-import uk.ac.ebi.ddi.api.readers.mw.ws.client.MWWsConfigProd;
+import uk.ac.ebi.ddi.api.readers.ws.AbstractWsConfig;
 import uk.ac.ebi.ddi.xml.validator.parser.marshaller.OmicsDataMarshaller;
 import uk.ac.ebi.ddi.xml.validator.parser.model.Database;
 import uk.ac.ebi.ddi.xml.validator.parser.model.Entry;
@@ -30,46 +32,25 @@ import java.util.List;
  * @author Yasset Perez-Riverol
  */
 
-public class GenerateMWOmicsXML {
+public class GenerateMWOmicsXML implements IGenerator{
 
     private static final Logger logger = LoggerFactory.getLogger(GenerateMWOmicsXML.class);
 
-  /**
-     * This program take an output folder as a parameter an create different EBE eyes files for
-     * all the project in MetabolomicsWorkbench. It loop all the project in MetabolomeWorkbench and
-     * print them to the give output
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
+    AbstractWsConfig config;
 
-        String outputFolder = null;
-        String releaseDate  = null;
+    String outputFolder;
 
-        if (args != null && args.length > 1 && args[0] != null){
-            outputFolder = args[0];
-            releaseDate  = args[1];
-        }
+    String releaseDate;
 
-
-
-        else {
-            System.exit(-1);
-        }
-
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("spring/app-context.xml");
-        MWWsConfigProd mwWsConfigProd = (MWWsConfigProd) ctx.getBean("mwWsConfig");
-
-        try {
-            GenerateMWOmicsXML.generateMWXMLfiles(mwWsConfigProd, outputFolder, releaseDate);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public  GenerateMWOmicsXML(AbstractWsConfig config, String outputFolder, String releaseDate){
+        this.config = config;
+        this.outputFolder = outputFolder;
+        this.releaseDate = releaseDate;
     }
 
-    public static void generateMWXMLfiles( MWWsConfigProd configProd, String outputFolder, String releaseDate) throws Exception {
-
-        DatasetWsClient datasetWsClient = new DatasetWsClient(configProd);
+    @Override
+    public void generate( ) throws Exception {
+        DatasetWsClient datasetWsClient = new DatasetWsClient(config);
         DatasetList datasets = datasetWsClient.getAllDatasets();
         TissueList tissueList   = datasetWsClient.getTissues();
         SpecieList specieList   = datasetWsClient.getSpecies();
@@ -103,5 +84,37 @@ public class GenerateMWOmicsXML {
         database.setEntries(entries);
         database.setEntryCount(entries.size());
         mm.marshall(database, mwFile);
+    }
+
+    /**
+     * This program take an output folder as a parameter an create different EBE eyes files for
+     * all the project in MetabolomicsWorkbench. It loop all the project in MetabolomeWorkbench and
+     * print them to the give output
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+
+        String outputFolder = null;
+        String releaseDate  = null;
+
+        if (args != null && args.length > 1 && args[0] != null){
+            outputFolder = args[0];
+            releaseDate  = args[1];
+        }
+
+        else {
+            System.exit(-1);
+        }
+
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("spring/app-context.xml");
+        MWWsConfigProd mwWsConfigProd = (MWWsConfigProd) ctx.getBean("mwWsConfig");
+
+        try {
+            GenerateMWOmicsXML generator = new GenerateMWOmicsXML(mwWsConfigProd, outputFolder,releaseDate);
+            generator.generate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

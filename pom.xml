@@ -40,6 +40,8 @@
         <module>ddi-gpmdb-reader</module>
         <module>ddi-lincs-reader</module>
         <module>ddi-paxdb-reader</module>
+        <module>ddi-geo-datasets-reader</module>
+        <module>ddi-px-reader</module>
     </modules>
 
     <distributionManagement>

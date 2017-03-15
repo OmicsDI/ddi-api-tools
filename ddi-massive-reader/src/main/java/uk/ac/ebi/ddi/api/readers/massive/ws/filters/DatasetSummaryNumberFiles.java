@@ -9,10 +9,9 @@ import uk.ac.ebi.ddi.api.readers.model.IFilter;
  */
 public class DatasetSummaryNumberFiles<T> implements IFilter<T> {
 
-    private int numberFile = 0;
-
     @Override
     public boolean valid(Object object) {
+        int numberFile = 0;
         return ((MassiveDatasetSummaryMassive) object).getFileCount() > numberFile;
     }
 }

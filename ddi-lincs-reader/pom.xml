@@ -10,7 +10,7 @@
         <version>1.0</version>
     </parent>
     
-    <groupId>uk.ac.ebi.ddi</groupId>
+    <groupId>uk.ac.ebi.ddi.api.readers</groupId>
     <artifactId>ddi-lincs-reader</artifactId>
     <version>1.0-SNAPSHOT</version>
 

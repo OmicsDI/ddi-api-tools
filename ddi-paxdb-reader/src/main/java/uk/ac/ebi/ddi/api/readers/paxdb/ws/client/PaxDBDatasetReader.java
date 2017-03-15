@@ -136,7 +136,7 @@ public class PaxDBDatasetReader {
             if(!line.startsWith("#")){
                 Map.Entry<String, String> property = readFileIdentifierMap(line);
                 if(property != null)
-                    identifierMap.put(property.getKey().toString(), property.getValue().toString());
+                    identifierMap.put(property.getKey(), property.getValue());
             }
         }
         return identifierMap;

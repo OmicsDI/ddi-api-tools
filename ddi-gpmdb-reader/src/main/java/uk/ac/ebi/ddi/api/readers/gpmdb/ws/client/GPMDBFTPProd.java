@@ -15,7 +15,7 @@ import uk.ac.ebi.ddi.api.readers.ftp.AbstractFTPConfig;
  * <p>
  * Created by ypriverol (ypriverol@gmail.com) on 24/01/2017.
  */
-public class GPMDBFTPProd extends AbstractFTPConfig{
+public class GPMDBFTPProd extends AbstractFTPConfig {
 
     /**
      * Class constructor.

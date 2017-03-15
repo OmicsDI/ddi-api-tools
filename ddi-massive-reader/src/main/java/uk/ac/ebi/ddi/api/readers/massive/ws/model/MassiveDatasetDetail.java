@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.ac.ebi.ddi.api.readers.massive.ws.utils.Utilities;
 import uk.ac.ebi.ddi.api.readers.model.IAPIDataset;
+import uk.ac.ebi.ddi.api.readers.massive.ws.utils.Utilities;
 import uk.ac.ebi.ddi.api.readers.utils.Constants;
 import uk.ac.ebi.ddi.xml.validator.utils.Field;
 import uk.ac.ebi.ddi.xml.validator.utils.OmicsType;
@@ -21,7 +21,7 @@ import java.util.*;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MassiveDatasetDetail extends MassiveAbstractDataset implements IAPIDataset{
+public class MassiveDatasetDetail extends MassiveAbstractDataset implements IAPIDataset {
 
     private static final Logger logger = LoggerFactory.getLogger(MassiveDatasetDetail.class);
 

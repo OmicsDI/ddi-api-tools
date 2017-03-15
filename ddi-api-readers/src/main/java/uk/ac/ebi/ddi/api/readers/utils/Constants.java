@@ -1,8 +1,5 @@
 package uk.ac.ebi.ddi.api.readers.utils;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * This code is licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
@@ -42,6 +39,8 @@ public class Constants {
     public static final String GPMDB_CONTACT_TEAM          = "Ronald C. Beavis";
     public static final String GPMDB_AFILLIATION           = "The Global Proteome Machine Organization";
     public static final String LINCS = "LINCS";
+    public static final String LINCS_DESCRIPTION = "The BD2K-LINCS Data Coordination and Integration Center is part of the Big Data to Knowledge (BD2K) NIH initiative, and it is the data coordination center for the NIH Common Fund's Library of Integrated Network-based Cellular Signatures (LINCS) program, which aims to characterize how a " +
+            "variety of human cells, tissues and the entire organism respond to perturbations by drugs and other molecular factors.";
     public static final String PAXDB_DESCRIPTION           = "PaxDB is a comprehensive absolute protein abundance database, which contains whole genome protein abundance information across organisms and tissues. In PaxDb, the publicly available experimental data are imported and mapped onto a common namespace and," +
             " in the case of tandem mass spectrometry data, re-processed using our in-house standardized spectral counting pipeline. ";
 
@@ -71,6 +70,7 @@ public class Constants {
             "Z-score distance to the random distribution ofmedians—this\n" +
             "distance is termed the interaction consistency score.";
 
+
     public static String[] GPMDB_TAGS                      = {"ReAnalysis","Validation"};
     public static final String GPMDB_DESCRIPTION           = "The Global Proteome Machine Database was constructed to utilize the information obtained by GPM servers to aid in the difficult process of validating peptide MS/MS spectra as well as protein coverage patterns.";
     public static final String GPMDB_UKNOKNOWN_FILTER      = "none";
@@ -85,6 +85,14 @@ public class Constants {
     public static final String PAXDB_CONTACT_TEAM          = "Christian von Mering";
     public static final String PAXDB_AFILLIATION           = "University of Zurich";
 
+    public static final String GEO_DATABASE_DATASETS       = "GEO Datasets";
+    public static final String GEO_POSFIX_DATABASE                = ".soft.gz";
+    public static final String GEO_DATASETS_FTP_ROOT_DIRECOTRY    = "/geo/datasets/";
+    public static final String GEO_DATASET_LINK                   = "https://www.ncbi.nlm.nih.gov/sites/GDSbrowser?acc=";
+    public static final String GEO_DESCRIPTION                    = "This database stores curated gene expression DataSets, as well as original Series and Platform records in the Gene Expression Omnibus (GEO) repository." +
+            " Enter search terms to locate experiments of interest. DataSet records contain additional resources including cluster tools and differential expression queries.";
 
-
+    public static final String PX_DESCRIPTION = "The ProteomeXchange Consortium has been set up to provide a globally coordinated submission of mass spectrometry proteomics" +
+            " data to the main existing proteomics repositories, and to encourage optimal data dissemination.";
+    public static final String PX_DATABASE  = "ProteomeXChange";
 }

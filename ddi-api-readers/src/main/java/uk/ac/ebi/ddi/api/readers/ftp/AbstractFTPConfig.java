@@ -92,7 +92,7 @@ public class AbstractFTPConfig {
             for (final IFTPCommand command : commands) {
                 command.execute(this.client);
             }
-        }catch(IOException e){
+        }catch(IOException ignored){
 
         }
     }

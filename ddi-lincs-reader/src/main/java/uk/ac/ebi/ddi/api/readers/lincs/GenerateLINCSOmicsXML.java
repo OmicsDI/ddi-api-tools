@@ -7,6 +7,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import uk.ac.ebi.ddi.api.readers.lincs.ws.client.LINCSClient;
 import uk.ac.ebi.ddi.api.readers.lincs.ws.client.LINCSConfigProd;
 import uk.ac.ebi.ddi.api.readers.lincs.ws.model.DatasetList;
+import uk.ac.ebi.ddi.api.readers.model.IGenerator;
 import uk.ac.ebi.ddi.api.readers.utils.Constants;
 import uk.ac.ebi.ddi.api.readers.utils.Transformers;
 import uk.ac.ebi.ddi.api.readers.ws.AbstractWsConfig;
@@ -27,9 +28,49 @@ import java.util.*;
  * @author Yasset Perez-Riverol
  */
 
-public class GenerateLINCSOmicsXML {
+public class GenerateLINCSOmicsXML implements IGenerator {
 
     private static final Logger logger = LoggerFactory.getLogger(GenerateLINCSOmicsXML.class);
+
+    public AbstractWsConfig config;
+
+    String outputFolder;
+
+    String releaseDate;
+
+
+    public GenerateLINCSOmicsXML(AbstractWsConfig config, String folder, String releaseDate){
+        this.config = config;
+        this.outputFolder = folder;
+        this.releaseDate = releaseDate;
+    }
+
+    public void generate() throws Exception{
+
+        LINCSClient datasetWsClient = new LINCSClient(config);
+        DatasetList datasetList     = datasetWsClient.getAllDatasets();
+
+        if (datasetList != null && datasetList.getDatasets() != null && datasetList.getDatasets().length > 0) {
+            Entries lincsEntries = new Entries();
+            Arrays.asList(datasetList.getDatasets()).parallelStream().forEach( dataset -> {
+                Entry entry = Transformers.transformAPIDatasetToEntry(dataset);
+                lincsEntries.addEntry(entry);
+                logger.info(dataset.getIdentifier());
+            });
+
+            FileWriter lincsFile = new FileWriter(outputFolder + "/lincs_data.xml");
+            OmicsDataMarshaller mm = new OmicsDataMarshaller();
+
+            Database database = new Database();
+            database.setDescription(Constants.LINCS_DESCRIPTION);
+            database.setName(Constants.LINCS);
+            database.setRelease(releaseDate);
+            database.setEntries(lincsEntries);
+            database.setEntryCount(lincsEntries.getEntry().size());
+            mm.marshall(database, lincsFile);
+
+        }
+    }
 
     /**
      * This program generate the massive files in two different type of files MASSIVE and GNPS Files. The MASSIVE
@@ -53,38 +94,13 @@ public class GenerateLINCSOmicsXML {
         LINCSConfigProd lincsConfigProd = (LINCSConfigProd) ctx.getBean("lincsProd");
 
         try {
-           GenerateLINCSOmicsXML.generateMWXMLFiles(lincsConfigProd, outputFolder, releaseDate);
+            GenerateLINCSOmicsXML lincsGenerator = new GenerateLINCSOmicsXML(lincsConfigProd, outputFolder, releaseDate);
+            lincsGenerator.generate();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void generateMWXMLFiles(AbstractWsConfig configProd, String outputFolder, String releaseDate) throws Exception{
-
-        LINCSClient datasetWsClient = new LINCSClient(configProd);
-        DatasetList datasetList     = datasetWsClient.getAllDatasets();
-
-        if (datasetList != null && datasetList.getDatasets() != null && datasetList.getDatasets().length > 0) {
-            Entries lincsEntries = new Entries();
-            Arrays.asList(datasetList.getDatasets()).parallelStream().forEach( dataset -> {
-                Entry entry = Transformers.transformAPIDatasetToEntry(dataset);
-                lincsEntries.addEntry(entry);
-                logger.info(dataset.getIdentifier());
-            });
-
-            FileWriter lincsFile = new FileWriter(outputFolder + "/lincs_data.xml");
-            OmicsDataMarshaller mm = new OmicsDataMarshaller();
-
-            Database database = new Database();
-            database.setDescription(Constants.GNPS_DESCRIPTION);
-            database.setName(Constants.GNPS);
-            database.setRelease(releaseDate);
-            database.setEntries(lincsEntries);
-            database.setEntryCount(lincsEntries.getEntry().size());
-            mm.marshall(database, lincsFile);
-
-        }
-    }
 
 
 }

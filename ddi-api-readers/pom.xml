@@ -14,7 +14,6 @@
     <artifactId>ddi-api-readers</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-
     <name>ddi-api-readers</name>
     <description>General API Readers Classes to Be use By each Reader </description>
 
@@ -40,7 +39,7 @@
     </organization>
 
     <properties>
-        <commons-net.version>3.3</commons-net.version>
+        <commons-net.version>3.5</commons-net.version>
     </properties>
 
     <dependencies>
@@ -98,6 +97,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
+            <version>${mockito.version}</version>
         </dependency>
 
         <dependency>

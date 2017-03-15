@@ -4,12 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import uk.ac.ebi.ddi.api.readers.lincs.ws.model.Dataset;
 import uk.ac.ebi.ddi.api.readers.lincs.ws.model.DatasetList;
-import uk.ac.ebi.ddi.api.readers.utils.CustomHttpMessageConverter;
-import uk.ac.ebi.ddi.api.readers.utils.HttpDownload;
 import uk.ac.ebi.ddi.api.readers.utils.ISOHttpMessageConverter;
 import uk.ac.ebi.ddi.api.readers.ws.AbstractClient;
+import uk.ac.ebi.ddi.api.readers.utils.HttpDownload;
 import uk.ac.ebi.ddi.api.readers.ws.AbstractWsConfig;
 
 import java.io.InputStream;

@@ -3,9 +3,9 @@ package uk.ac.ebi.ddi.api.readers.mw.ws.client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import uk.ac.ebi.ddi.api.readers.mw.ws.model.*;
 import uk.ac.ebi.ddi.api.readers.ws.AbstractClient;
 import uk.ac.ebi.ddi.api.readers.ws.AbstractWsConfig;
-import uk.ac.ebi.ddi.api.readers.mw.ws.model.*;
 
 
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * @author Yasset Perez-Riverol ypriverol
  */
-public class DatasetWsClient extends AbstractClient{
+public class DatasetWsClient extends AbstractClient {
 
     private static final Logger logger = LoggerFactory.getLogger(DatasetWsClient.class);
 

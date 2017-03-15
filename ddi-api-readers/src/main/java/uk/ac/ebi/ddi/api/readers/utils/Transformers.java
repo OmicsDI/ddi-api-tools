@@ -25,7 +25,7 @@ public class Transformers {
 
         Entry entry = new Entry();
 
-        entry.setAcc(dataset.getIdentifier());
+        entry.setId(dataset.getIdentifier());
         entry.setName(dataset.getName());
         entry.setDescription(dataset.getDescription());
 

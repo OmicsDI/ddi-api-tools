@@ -3,11 +3,13 @@ package uk.ac.ebi.ddi.api.readers.massive.ws.client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import uk.ac.ebi.ddi.api.readers.ftp.*;
+import uk.ac.ebi.ddi.api.readers.ftp.AbstractFTPConfig;
+import uk.ac.ebi.ddi.api.readers.ftp.FTPFileSearch;
+import uk.ac.ebi.ddi.api.readers.ftp.MockCallback;
+import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetDetail;
 import uk.ac.ebi.ddi.api.readers.model.IFilter;
 import uk.ac.ebi.ddi.api.readers.utils.Constants;
 import uk.ac.ebi.ddi.api.readers.ws.AbstractWsConfig;
-import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetDetail;
 import uk.ac.ebi.ddi.api.readers.utils.CustomHttpMessageConverter;
 import uk.ac.ebi.ddi.api.readers.ws.AbstractClient;
 

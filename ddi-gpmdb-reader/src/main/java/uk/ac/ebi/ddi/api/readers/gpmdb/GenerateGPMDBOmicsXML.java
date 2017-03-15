@@ -110,7 +110,7 @@ public class GenerateGPMDBOmicsXML {
                             model.addProteins(proteinMap);
                         }
 
-                        if(proteins != null && proteins.length > 0){
+                        if(proteins.length > 0){
                             Set<String> proteinSet = new HashSet<>(Arrays.asList(proteins));
                             Map<String, Set<String>> proteinNames = new HashMap<>();
                             proteinNames.put(Field.PROTEIN_NAME.getName(), proteinSet);

@@ -63,7 +63,7 @@ public class FTPFileSearch extends AbstractFTPCommand<Iterable<String>>{
 
     @Override
     public Iterable<String> ftpCall(final FTPClient client) throws IOException {
-            return this.search(new ArrayList<>(0), this.dir, client);
+            return this.search(Collections.synchronizedList(new ArrayList<>()), this.dir, client);
     }
 
     /**
@@ -79,7 +79,7 @@ public class FTPFileSearch extends AbstractFTPCommand<Iterable<String>>{
                                       final FTPClient client) throws IOException {
         String delimiter = Constants.PATH_DELIMITED;
         final FTPFile[] ftpFiles = client.listFiles(directory);
-        for (final FTPFile ftpFile : ftpFiles) {
+        Arrays.asList(ftpFiles).stream().forEach(ftpFile -> {
                 if (ftpFile.isFile()) {
                     boolean valid = true;
                     for(IFilter filter: this.fltr){
@@ -89,10 +89,13 @@ public class FTPFileSearch extends AbstractFTPCommand<Iterable<String>>{
                     if(valid)
                         result.add(new StringJoiner(delimiter).add(directory).add(ftpFile.getName()).toString());
                 }else if (ftpFile.isDirectory() && this.recurs) {
+                    try {
                         search(result, new StringJoiner(delimiter).add(directory).add(ftpFile.getName()).toString(), client);
-
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-        }
+        });
         return result;
     }
 

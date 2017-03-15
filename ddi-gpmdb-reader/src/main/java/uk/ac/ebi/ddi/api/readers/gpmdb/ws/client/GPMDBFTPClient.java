@@ -1,9 +1,12 @@
 package uk.ac.ebi.ddi.api.readers.gpmdb.ws.client;
 
-import uk.ac.ebi.ddi.api.readers.ftp.*;
+import uk.ac.ebi.ddi.api.readers.ftp.FTPFileSearch;
+import uk.ac.ebi.ddi.api.readers.ftp.MockCallback;
+import uk.ac.ebi.ddi.api.readers.ftp.PostFixFilter;
 import uk.ac.ebi.ddi.api.readers.model.IFilter;
-import uk.ac.ebi.ddi.api.readers.utils.Constants;
+import uk.ac.ebi.ddi.api.readers.ftp.PrefixFilter;
 import uk.ac.ebi.ddi.api.readers.utils.FileExtensions;
+import uk.ac.ebi.ddi.api.readers.utils.Constants;
 
 import java.io.IOException;
 import java.util.ArrayList;

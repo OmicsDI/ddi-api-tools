@@ -159,7 +159,7 @@ public class PaxDBDataset implements IAPIDataset{
     public Set<String> getSpecies() {
         Set<String> species = new HashSet<>();
         if(name != null && name.length() > 0){
-            if(name.split("-") != null && name.split("-").length > 1){
+            if(name.split("-").length > 1){
                 species.add(name.split("-")[0].trim());
             }
         }

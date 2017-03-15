@@ -5,16 +5,17 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import uk.ac.ebi.ddi.api.readers.massive.ws.client.ISODetasetsWsClient;
+import uk.ac.ebi.ddi.api.readers.massive.ws.filters.DatasetSummarySizeFilter;
+import uk.ac.ebi.ddi.api.readers.massive.ws.filters.DatasetSummaryUserFilter;
+import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetSummaryMassive;
+import uk.ac.ebi.ddi.api.readers.model.IGenerator;
 import uk.ac.ebi.ddi.api.readers.massive.ws.client.DatasetWsClient;
 
-import uk.ac.ebi.ddi.api.readers.massive.ws.client.ISODetasetsWsClient;
 import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetDetail;
-import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetSummaryMassive;
 import uk.ac.ebi.ddi.api.readers.ws.AbstractWsConfig;
 import uk.ac.ebi.ddi.api.readers.massive.ws.client.MassiveWsConfigProd;
-import uk.ac.ebi.ddi.api.readers.massive.ws.filters.DatasetSummarySizeFilter;
 import uk.ac.ebi.ddi.api.readers.massive.ws.filters.DatasetSummaryTrancheFilter;
-import uk.ac.ebi.ddi.api.readers.massive.ws.filters.DatasetSummaryUserFilter;
 import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetList;
 
 
@@ -38,42 +39,26 @@ import java.util.List;
  * @author Yasset Perez-Riverol
  */
 
-public class GenerateMassiveOmicsXML{
+public class GenerateMassiveOmicsXML implements IGenerator {
 
     private static final Logger logger = LoggerFactory.getLogger(GenerateMassiveOmicsXML.class);
 
-    /**
-   * This program generate the massive files in two different type of files MASSIVE and GNPS Files. The MASSIVE
-   * files correspond to proteomics datasets and the GNPS correspond to metabolomics datasets.
-   *
-   * @param args
-   */
-    public static void main(String[] args) {
+    public AbstractWsConfig config;
 
-        String outputFolder = null;
-        String releaseDate  = null;
+    public String outputFolder;
 
-        if (args != null && args.length > 1 && args[0] != null){
-            outputFolder = args[0];
-            releaseDate  = args[1];
-        } else
-            System.exit(-1);
+    public String releaseDate;
 
-
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("spring/app-context.xml");
-        MassiveWsConfigProd mwWsConfigProd = (MassiveWsConfigProd) ctx.getBean("mwWsConfig");
-
-        try {
-            GenerateMassiveOmicsXML.generateMWXMLFiles(mwWsConfigProd, outputFolder, releaseDate);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public GenerateMassiveOmicsXML(AbstractWsConfig config, String outputFolder, String releaseDate) {
+        this.config = config;
+        this.outputFolder = outputFolder;
+        this.releaseDate  = releaseDate;
     }
 
-    public static void generateMWXMLFiles(AbstractWsConfig configProd, String outputFolder, String releaseDate) throws Exception{
+    public void generate() throws Exception{
 
-        DatasetWsClient datasetWsClient = new DatasetWsClient(configProd);
-        ISODetasetsWsClient isoDetasetsWsClient = new ISODetasetsWsClient(configProd);
+        DatasetWsClient datasetWsClient = new DatasetWsClient(this.config);
+        ISODetasetsWsClient isoDetasetsWsClient = new ISODetasetsWsClient(this.config);
         MassiveDatasetList datasetList = isoDetasetsWsClient.getAllDatasets();
 
         if (datasetList != null && datasetList.datasets != null) {
@@ -136,6 +121,36 @@ public class GenerateMassiveOmicsXML{
             database.setEntries(massiveEntries);
             database.setEntryCount(massiveEntries.getEntry().size());
             mm.marshall(database, massiveFile);
+        }
+    }
+
+
+    /**
+     * This program generate the massive files in two different type of files MASSIVE and GNPS Files. The MASSIVE
+     * files correspond to proteomics datasets and the GNPS correspond to metabolomics datasets.
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+
+        String outputFolder = null;
+        String releaseDate  = null;
+
+        if (args != null && args.length > 1 && args[0] != null){
+            outputFolder = args[0];
+            releaseDate  = args[1];
+        } else
+            System.exit(-1);
+
+
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("spring/app-context.xml");
+        AbstractWsConfig config = (MassiveWsConfigProd) ctx.getBean("mwWsConfig");
+
+        try {
+            GenerateMassiveOmicsXML generator = new GenerateMassiveOmicsXML(config, outputFolder, releaseDate);
+            generator.generate();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

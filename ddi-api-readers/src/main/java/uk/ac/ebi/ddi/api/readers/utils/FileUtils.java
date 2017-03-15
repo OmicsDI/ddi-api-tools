@@ -1,18 +1,13 @@
 package uk.ac.ebi.ddi.api.readers.utils;
 
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -40,8 +35,7 @@ public class FileUtils {
     private static InputStream connectToURL(String url) throws IOException {
         URLConnection urlConnection = new URL(url).openConnection();
         urlConnection.setReadTimeout(60000);
-        InputStream inputStream = urlConnection.getInputStream();
-        return inputStream;
+        return urlConnection.getInputStream();
     }
 
     /**
@@ -70,6 +64,28 @@ public class FileUtils {
             }
         }
         return entryBufMap;
+    }
+
+
+    /**
+     * Retrieve a Map of File Name and OutputStream from
+     * @param url URL to retrieve a Map of String and {@link ByteArrayOutputStream}
+     * @return Map with file name and {@link ByteArrayOutputStream}
+     * @throws IOException
+     */
+    public static ByteArrayOutputStream doGZipInputStream(String url) throws IOException {
+
+        GZIPInputStream zipInputStream = new GZIPInputStream(connectToURL(url));
+
+        final byte[] tempBuffer = new byte[8192 * 2];
+        Map<String, ByteArrayOutputStream> entryBufMap = new HashMap<>();
+
+        int bytesRead = -1;
+        final ByteArrayOutputStream streamBuilder = new ByteArrayOutputStream();
+        while ((bytesRead = zipInputStream.read(tempBuffer)) != -1) {
+            streamBuilder.write(tempBuffer, 0, bytesRead);
+        }
+        return streamBuilder;
     }
 
     /**

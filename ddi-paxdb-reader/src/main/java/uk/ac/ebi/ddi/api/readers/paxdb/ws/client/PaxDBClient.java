@@ -73,9 +73,7 @@ public class PaxDBClient {
                 }
             }
         });
-        paxDBDatasets.forEach( (key, dataset) -> {
-            dataset.updateIds(proteins);
-        });
+        paxDBDatasets.forEach( (key, dataset) -> dataset.updateIds(proteins));
 
         return paxDBDatasets.values();
     }

@@ -18,7 +18,7 @@ import java.net.URLConnection;
 /**
  * @author Yasset Perez-Riverol ypriverol
  */
-public class GPMDBClient extends AbstractClient{
+public class GPMDBClient extends AbstractClient {
 
     private static final Logger logger = LoggerFactory.getLogger(GPMDBClient.class);
 

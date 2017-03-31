@@ -106,7 +106,8 @@ public class PxReader implements IAPIDataset {
             for (FullDatasetLinkType datasetLink : dataset.getValue().getFullDatasetLinkList().getFullDatasetLink())
                 if (datasetLink.getCvParam().getAccession().equalsIgnoreCase(Constants.MASSIVEURL_ACCESSION) ||
                         datasetLink.getCvParam().getAccession().equalsIgnoreCase(Constants.PRIDE_LINK) ||
-                        datasetLink.getCvParam().getAccession().equalsIgnoreCase(Constants.PASSELURL_ACCESSION))
+                        datasetLink.getCvParam().getAccession().equalsIgnoreCase(Constants.PASSELURL_ACCESSION) ||
+                        datasetLink.getCvParam().getAccession().equalsIgnoreCase(Constants.JPOSTURL_ACCESSION))
                     return datasetLink.getCvParam().getValue();
         }
         return uk.ac.ebi.ddi.api.readers.utils.Constants.EMPTY_STRING;
@@ -272,7 +273,7 @@ public class PxReader implements IAPIDataset {
             Set<String> publicationIds = new HashSet<>();
             for (PublicationType s : dataset.getValue().getPublicationList().getPublication()) {
                 for (CvParamType cv : s.getCvParam())
-                    if (!cv.getAccession().equalsIgnoreCase(Constants.PUBMED_ACCESSION))
+                    if (cv.getAccession().equalsIgnoreCase(Constants.PUBMED_ACCESSION))
                         publicationIds.add(cv.getValue());
             }
             crossReferences.put(Field.PUBMED.getName(), publicationIds);

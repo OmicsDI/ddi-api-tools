@@ -33,7 +33,7 @@ public class PaxDBClient {
         this.proteinIdentifiersURL = proteinIdURL;
     }
 
-    public Collection<PaxDBDataset> getAllDatasets() throws URISyntaxException, IOException {
+    public Collection<PaxDBDataset> getAllDatasets() throws IOException {
 
         Map<String, PaxDBDataset> paxDBDatasets = new HashMap<>();
 

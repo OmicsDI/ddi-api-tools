@@ -36,35 +36,4 @@ public abstract class AbstractClient {
         return factory;
     }
 
-    /**
-     * Return the ResTemplate need to connect Http
-     * @return
-     */
-    public RestTemplate getRestTemplate() {
-        return restTemplate;
-    }
-
-    /**
-     * Set a new ResTemplate
-     * @param restTemplate
-     */
-    public void setRestTemplate(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
-
-    /**
-     * Return the AbstractWsConfig
-     * @return AbstractWsConfig
-     */
-    public AbstractWsConfig getConfig() {
-        return config;
-    }
-
-    /**
-     * Set a new Config
-     * @param config
-     */
-    public void setConfig(AbstractWsConfig config) {
-        this.config = config;
-    }
 }

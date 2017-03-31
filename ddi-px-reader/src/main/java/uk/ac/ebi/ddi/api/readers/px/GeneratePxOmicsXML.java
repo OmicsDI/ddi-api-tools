@@ -115,7 +115,7 @@ public class GeneratePxOmicsXML implements IGenerator {
      * @return The page as a String
      * @throws Exception Thrown on any problem.
      */
-    public static String getPage(String urlString) throws Exception {
+    public static String getPage(String urlString) {
         // check if the page is cached
 
         try{

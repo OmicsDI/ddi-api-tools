@@ -29,37 +29,37 @@ public class MWDataSetDetails implements IAPIDataset{
     private static final Logger logger = LoggerFactory.getLogger(MWDataSetDetails.class);
 
     @JsonProperty("study_id")
-    String id;
+    private String id;
 
     @JsonProperty("study_title")
-    String title;
+    private String title;
 
     @JsonProperty("study_type")
-    String type;
+    private String type;
 
     @JsonProperty("institute")
-    String institute;
+    private String institute;
 
     @JsonProperty("department")
-    String department;
+    private String department;
 
     @JsonProperty("last_name")
-    String last_name;
+    private String last_name;
 
     @JsonProperty("first_name")
-    String firstname;
+    private String firstname;
 
     @JsonProperty("email")
-    String email;
+    private String email;
 
     @JsonProperty("submit_date")
-    String submit_date;
+    private String submit_date;
 
     @JsonProperty("study_summary")
-    String description;
+    private String description;
 
     @JsonProperty("subject_species")
-    String subject_species;
+    private String subject_species;
 
     private AnalysisList analysis;
     private Set<String> diseases;
@@ -109,9 +109,9 @@ public class MWDataSetDetails implements IAPIDataset{
     public String getSampleProcotol() {
         String experimentTypes = "";
         if(analysis != null && analysis.analysisMap != null && analysis.analysisMap.size() > 0){
-            for(Analysis analysis: analysis.analysisMap.values()){
-                experimentTypes += analysis.getSummary().trim() + ". ";
-            }
+            for(Analysis analysis: analysis.analysisMap.values())
+                if(analysis != null && analysis.getSummary() != null)
+                    experimentTypes += analysis.getSummary().trim() + ". ";
         }
         return experimentTypes.trim();
     }

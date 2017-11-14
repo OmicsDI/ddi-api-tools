@@ -79,7 +79,7 @@ public class Constants {
     public static final String HTTPS_PROTOCOL              = "https://";
 
     public static final String PAXDB_URL                   = "http://pax-db.org/dataset/";
-    public static final String PAXDB_DATASET_FILE          = "http://pax-db.org/downloads/latest/datasets/paxdb-abundance-files-v4.0.zip";
+    public static final String PAXDB_DATASET_FILE          = "http://pax-db.org/downloads/latest/datasets/bioprojects-abundance-files-v4.0.zip";
     public static final String PAXDB_PUBMED                = "22535208";
     public static final String PAXDB_CONTACT               = "mering@imls.uzh.ch";
     public static final String PAXDB_CONTACT_TEAM          = "Christian von Mering";
@@ -95,4 +95,6 @@ public class Constants {
     public static final String PX_DESCRIPTION = "The ProteomeXchange Consortium has been set up to provide a globally coordinated submission of mass spectrometry proteomics" +
             " data to the main existing proteomics repositories, and to encourage optimal data dissemination.";
     public static final String PX_DATABASE  = "ProteomeXChange";
+
+    public static final String GEO = "GEO";
 }

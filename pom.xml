@@ -42,6 +42,7 @@
         <module>ddi-paxdb-reader</module>
         <module>ddi-geo-datasets-reader</module>
         <module>ddi-px-reader</module>
+        <module>ddi-bioproject-reader</module>
     </modules>
 
     <distributionManagement>

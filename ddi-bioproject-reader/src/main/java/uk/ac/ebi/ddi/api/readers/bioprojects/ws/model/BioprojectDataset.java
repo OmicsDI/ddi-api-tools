@@ -6,6 +6,8 @@ import uk.ac.ebi.ddi.xml.validator.utils.BiologicalDatabases;
 import uk.ac.ebi.ddi.xml.validator.utils.Field;
 import uk.ac.ebi.ddi.xml.validator.utils.OmicsType;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,6 +19,8 @@ import java.util.Set;
 public class BioprojectDataset implements IAPIDataset{
 
     private String identifier = null;
+
+    private String repository = null;
 
     private String name;
 
@@ -38,6 +42,11 @@ public class BioprojectDataset implements IAPIDataset{
         this.name = name;
     }
 
+    public void setRepository(String repository) {
+        this.repository = repository;
+    }
+
+
     public String getDescription() {
         return description;
     }
@@ -54,7 +63,7 @@ public class BioprojectDataset implements IAPIDataset{
 
     @Override
     public Map<String, String> getOtherDates() {
-        return null;
+        return new HashMap<String, String>();
     }
 
     @Override
@@ -64,12 +73,12 @@ public class BioprojectDataset implements IAPIDataset{
 
     @Override
     public Set<String> getOmicsType() {
-        return null;
+        return new HashSet<String>();
     }
 
     @Override
     public String getRepository() {
-        return null;
+        return repository;
     }
 
     @Override
@@ -79,82 +88,83 @@ public class BioprojectDataset implements IAPIDataset{
 
     @Override
     public Set<String> getInstruments() {
-        return null;
+        return new HashSet<String>();
     }
 
     @Override
     public Set<String> getSpecies() {
-        return null;
+        return new HashSet<String>();
+
     }
 
     @Override
     public Set<String> getCellTypes() {
-        return null;
+        return new HashSet<String>();
     }
 
     @Override
     public Set<String> getDiseases() {
-        return null;
+        return new HashSet<String>();
     }
 
     @Override
     public Set<String> getTissues() {
-        return null;
+        return new HashSet<String>();
     }
 
     @Override
     public Set<String> getSoftwares() {
-        return null;
+        return new HashSet<String>();
     }
 
     @Override
     public Set<String> getSubmitter() {
-        return null;
+        return new HashSet<String>();
     }
 
     @Override
     public Set<String> getSubmitterEmails() {
-        return null;
+        return new HashSet<String>();
     }
 
     @Override
     public Set<String> getSubmitterAffiliations() {
-        return null;
+        return new HashSet<String>();
     }
 
     @Override
     public Set<String> getSubmitterKeywords() {
-        return null;
+        return new HashSet<String>();
     }
 
     @Override
     public Set<String> getLabHead() {
-        return null;
+        return new HashSet<String>();
     }
 
     @Override
     public Set<String> getLabHeadMail() {
-        return null;
+        return new HashSet<String>();
     }
 
     @Override
     public Set<String> getLabHeadAffiliation() {
-        return null;
+        return new HashSet<String>();
     }
 
     @Override
     public Set<String> getDatasetFiles() {
-        return null;
+        return new HashSet<String>();
     }
 
     @Override
     public Map<String, Set<String>> getCrossReferences() {
-        return null;
+        return new HashMap<String, Set<String>>();
     }
 
     @Override
     public Map<String, Set<String>> getOtherAdditionals() {
-        return null;
+        return new HashMap<String, Set<String>>();
     }
 
     public void setDescription(String description) {

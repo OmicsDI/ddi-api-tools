@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import uk.ac.ebi.ddi.api.readers.bioprojects.ws.XMLUtils;
 import uk.ac.ebi.ddi.api.readers.bioprojects.ws.model.BioprojectDataset;
 import uk.ac.ebi.ddi.api.readers.utils.FileUtils;
 
@@ -45,20 +46,34 @@ public class BioprojectsClient {
         FileFilter fileFilter = new WildcardFileFilter("PRJNA*.xml");
 
         for (File f : dir.listFiles(fileFilter)){
+            try {
 
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(f);
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                Document doc = dBuilder.parse(f);
 
-            XPath xPath = XPathFactory.newInstance().newXPath();
-            NodeList nodes = (NodeList)xPath.evaluate("//dbXREF", doc.getDocumentElement(), XPathConstants.NODESET);
-            for (int i = 0; i < nodes.getLength(); ++i) {
-                Element e = (Element) nodes.item(i);
-                String db = e.getAttribute("db");
+                BioprojectDataset dataset = new BioprojectDataset();
 
-                System.out.print(db);
+                String database = XMLUtils.readFirstAttribute(doc, "dbXREF", "db");
+                if (null == database)
+                    continue;
+
+                if (!"GEO".equals(database))
+                    continue;
+
+                String id = XMLUtils.readFirstElement(doc, "dbXREF/ID");
+                String title = XMLUtils.readFirstElement(doc, "ProjectDescr/Title");
+                String description = XMLUtils.readFirstElement(doc, "ProjectDescr/Description");
+
+                dataset.setRepository(database);
+                dataset.setIdentifier(id);
+                dataset.setName(title);
+                dataset.setDescription(description);
+
+                paxDBDatasets.put(id, dataset);
+            } catch(Exception ex){
+                logger.error("Error processing " + f.getName() + " : " + ex.getMessage());
             }
-
         }
 
         return paxDBDatasets.values();

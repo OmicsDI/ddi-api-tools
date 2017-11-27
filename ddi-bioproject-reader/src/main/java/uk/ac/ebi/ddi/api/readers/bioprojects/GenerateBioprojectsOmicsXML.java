@@ -35,10 +35,13 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
 
     BioprojectsClient bioprojectsClient;
 
-    public GenerateBioprojectsOmicsXML(BioprojectsClient bioprojectsClient, String outputFolder, String releaseDate) {
+    String databases;
+
+    public GenerateBioprojectsOmicsXML(BioprojectsClient bioprojectsClient, String outputFolder, String releaseDate, String databases) {
         this.bioprojectsClient = bioprojectsClient;
         this.outputFolder = outputFolder;
         this.releaseDate = releaseDate;
+        this.databases = databases;
     }
 
     /**
@@ -62,7 +65,7 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
         BioprojectsClient bioprojectsClient = (BioprojectsClient) ctx.getBean("bioprojectsClient");
 
         try {
-            new GenerateBioprojectsOmicsXML(bioprojectsClient,outputFolder,releaseDate).generate();
+            new GenerateBioprojectsOmicsXML(bioprojectsClient,outputFolder,releaseDate, "GEO,dbGaP").generate();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,33 +73,48 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
 
     @Override
     public void generate() throws Exception {
-        /*copypasted from PaxDB */
-        List<Entry> entries     = new ArrayList<>();
-        if(bioprojectsClient != null){
-            Collection<BioprojectDataset> datasets = bioprojectsClient.getAllDatasets().stream().filter(x -> x != null).collect(Collectors.toList());
-            if (datasets != null && datasets.size() > 0) {
-                datasets.forEach( dataset -> {
-                    if(dataset != null && dataset.getIdentifier() != null){
-                        entries.add(Transformers.transformAPIDatasetToEntry(dataset)); //
-                        logger.info(dataset.getIdentifier());
-                    }
-                });
-            }
 
+        System.out.print("calling GenerateBioprojectsOmicsXML generate\n");
+
+        if(bioprojectsClient == null)
+            throw new Exception("bioprojectsClient is null");
+
+        Collection<BioprojectDataset> datasets = bioprojectsClient.getAllDatasets().stream().filter(x -> x != null).collect(Collectors.toList());
+
+        if (datasets == null || datasets.size() == 0) {
+            System.out.print(String.format("bioprojectsClient.getAllDatasets() returned zero datasets\n"));
+            return;
         }
 
-        FileWriter paxdbFile = new FileWriter(outputFolder + "/bioprojects_data.xml");
+        System.out.print(String.format("returned %d datasets\n",datasets.size()));
 
-        OmicsDataMarshaller mm = new OmicsDataMarshaller();
+        for (String database_name : this.databases.split(",")) {
+            List<Entry> entries = new ArrayList<>();
 
-        Database database = new Database();
-        database.setDescription(Constants.GEO_DESCRIPTION);
-        database.setName("GEO"); //Constants.GEO
-        database.setRelease(releaseDate);
-        database.setEntries(entries);
-        database.setEntryCount(entries.size());
-        mm.marshall(database, paxdbFile);
+            System.out.print(String.format("processing database: %s \n",database_name));
 
+            datasets.forEach( dataset -> {
+                if(dataset != null && dataset.getIdentifier() != null && dataset.getRepository().equals(database_name)){
+                    entries.add(Transformers.transformAPIDatasetToEntry(dataset)); //
+                }
+            });
+
+            System.out.print(String.format("found datasets: %d \n",entries.size()));
+
+            String filepath = outputFolder + "/" + database_name + "_data.xml";
+            FileWriter paxdbFile = new FileWriter(filepath);
+
+            OmicsDataMarshaller mm = new OmicsDataMarshaller();
+
+            Database database = new Database();
+            //database.setDescription(Constants.GEO_DESCRIPTION);
+            database.setName(database_name); //Constants.GEO
+            database.setRelease(releaseDate);
+            database.setEntries(entries);
+            database.setEntryCount(entries.size());
+            mm.marshall(database, paxdbFile);
+
+            System.out.print(String.format("exported %s %d to %s\n",database_name,entries.size(),filepath));
+        }
     }
-
 }

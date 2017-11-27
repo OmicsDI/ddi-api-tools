@@ -26,6 +26,8 @@ public class BioprojectDataset implements IAPIDataset{
 
     private String description;
 
+    private String publicationDate;
+
     public String getIdentifier() {
         return identifier;
     }
@@ -56,9 +58,13 @@ public class BioprojectDataset implements IAPIDataset{
         return null;
     }
 
+    public void setPublicationDate(String publicationDate){
+        this.publicationDate = publicationDate;
+    }
+
     @Override
     public String getPublicationDate() {
-        return null;
+        return publicationDate;
     }
 
     @Override
@@ -71,9 +77,18 @@ public class BioprojectDataset implements IAPIDataset{
         return null;
     }
 
+    HashSet<String> omicsType = new HashSet<String>();
+
+    public void addOmicsType(String omicsType){
+        this.omicsType.add(omicsType);
+    }
+
     @Override
     public Set<String> getOmicsType() {
-        return new HashSet<String>();
+        if(omicsType.size()<1) {
+            omicsType.add("Unknown");
+        }
+        return omicsType;
     }
 
     @Override
@@ -91,10 +106,15 @@ public class BioprojectDataset implements IAPIDataset{
         return new HashSet<String>();
     }
 
+    HashSet<String> species = new HashSet<String>();
+
+    public void addSpecies(String specimen){
+        this.species.add(specimen);
+    }
+
     @Override
     public Set<String> getSpecies() {
-        return new HashSet<String>();
-
+        return species;
     }
 
     @Override

@@ -29,12 +29,10 @@ import java.util.*;
 public class BioprojectsClient {
 
     private String filePath;
-    private String dbXref;
 
     private static final Logger logger = LoggerFactory.getLogger(BioprojectsClient.class);
 
-    public BioprojectsClient(String filePath, String dbXref){
-        this.dbXref = dbXref;
+    public BioprojectsClient(String filePath){
         this.filePath = filePath;
     }
 
@@ -45,8 +43,12 @@ public class BioprojectsClient {
         File dir = new File(filePath);
         FileFilter fileFilter = new WildcardFileFilter("PRJNA*.xml");
 
+        System.out.print(String.format("reading %s file mask %s \n",filePath , fileFilter));
+
         for (File f : dir.listFiles(fileFilter)){
             try {
+
+                System.out.print(String.format("reading file %s\n",f.getName()));
 
                 DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -58,23 +60,46 @@ public class BioprojectsClient {
                 if (null == database)
                     continue;
 
-                if (!"GEO".equals(database))
-                    continue;
-
                 String id = XMLUtils.readFirstElement(doc, "dbXREF/ID");
                 String title = XMLUtils.readFirstElement(doc, "ProjectDescr/Title");
                 String description = XMLUtils.readFirstElement(doc, "ProjectDescr/Description");
+                String publicationDate = XMLUtils.readFirstElement(doc, "ProjectDescr/ProjectReleaseDate");
 
-                dataset.setRepository(database);
-                dataset.setIdentifier(id);
-                dataset.setName(title);
-                dataset.setDescription(description);
+                String omicsType = XMLUtils.readFirstElement(doc, "ProjectType/ProjectTypeSubmission/ProjectDataTypeSet/DataType");
+                if((null!=omicsType) && omicsType.contains("Transcriptome"))
+                    dataset.addOmicsType("Transcriptomics");
+
+                String organismName = XMLUtils.readFirstElement(doc,"ProjectType/ProjectTypeSubmission/Target/Organism/OrganismName");
+                if(null!=organismName)
+                    dataset.addSpecies(organismName);
+
+                if(null!=database)
+                    dataset.setRepository(database);
+
+                if(null!=id)
+                    dataset.setIdentifier(id);
+
+                if(null!=title)
+                    dataset.setName(title);
+
+                if(null!=description)
+                    dataset.setDescription(description);
+
+                if(null!=publicationDate)
+                    dataset.setPublicationDate(publicationDate);
+
+                if(database=="GEO"){
+
+
+                }
 
                 paxDBDatasets.put(id, dataset);
             } catch(Exception ex){
-                logger.error("Error processing " + f.getName() + " : " + ex.getMessage());
+                logger.error("Error processing " + f.getName() + " : " + ex);
             }
         }
+
+        System.out.print(String.format("found %d datasets\n",paxDBDatasets.size()));
 
         return paxDBDatasets.values();
     }

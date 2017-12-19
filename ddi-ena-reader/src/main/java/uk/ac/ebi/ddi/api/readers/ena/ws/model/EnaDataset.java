@@ -1,4 +1,4 @@
-package uk.ac.ebi.ddi.api.readers.bioprojects.ws.model;
+package uk.ac.ebi.ddi.api.readers.ena.ws.model;
 
 import uk.ac.ebi.ddi.api.readers.model.IAPIDataset;
 import uk.ac.ebi.ddi.api.readers.utils.Constants;
@@ -16,7 +16,7 @@ import java.util.Set;
  * @date 14/11/2017
  */
 
-public class BioprojectDataset implements IAPIDataset {
+public class EnaDataset implements IAPIDataset {
 
     private HashSet<String> omicsType = new HashSet<String>();
     private String fullLink;

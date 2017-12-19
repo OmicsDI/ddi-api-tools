@@ -43,6 +43,7 @@
         <module>ddi-geo-datasets-reader</module>
         <module>ddi-px-reader</module>
         <module>ddi-bioproject-reader</module>
+        <module>ddi-ena-reader</module>
     </modules>
 
     <distributionManagement>

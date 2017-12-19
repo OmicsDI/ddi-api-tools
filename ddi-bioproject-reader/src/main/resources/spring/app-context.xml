@@ -6,7 +6,14 @@
 
     <bean id="bioprojectsClient" class="uk.ac.ebi.ddi.api.readers.bioprojects.ws.client.BioprojectsClient">
         <constructor-arg index="0" value="/Users/azorin/IdeaProjects/Hacka/BioProjects"/>
+        <constructor-arg index="1" ref="geoClient"/>
+    </bean>
+
+    <bean id="geoClient" class="uk.ac.ebi.ddi.api.readers.bioprojects.ws.client.GeoClient">
+        <constructor-arg index="0" value="/Users/azorin/IdeaProjects/Hacka/BioProjectsGeo"/>
     </bean>
 
 </beans>
+
+
 

@@ -1,4 +1,4 @@
-package uk.ac.ebi.ddi.api.readers.bioprojects.ws;
+package uk.ac.ebi.ddi.api.readers.utils;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

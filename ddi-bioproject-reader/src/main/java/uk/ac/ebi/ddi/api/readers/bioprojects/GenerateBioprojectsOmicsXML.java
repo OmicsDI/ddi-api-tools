@@ -5,10 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import uk.ac.ebi.ddi.api.readers.bioprojects.ws.client.BioprojectsClient;
+import uk.ac.ebi.ddi.api.readers.bioprojects.ws.client.GeoClient;
 import uk.ac.ebi.ddi.api.readers.bioprojects.ws.model.BioprojectDataset;
 import uk.ac.ebi.ddi.api.readers.model.IGenerator;
 import uk.ac.ebi.ddi.api.readers.utils.Constants;
 import uk.ac.ebi.ddi.api.readers.utils.Transformers;
+import uk.ac.ebi.ddi.service.db.model.dataset.Dataset;
+import uk.ac.ebi.ddi.service.db.service.dataset.DatasetService;
 import uk.ac.ebi.ddi.xml.validator.parser.marshaller.OmicsDataMarshaller;
 import uk.ac.ebi.ddi.xml.validator.parser.model.Database;
 import uk.ac.ebi.ddi.xml.validator.parser.model.Entry;
@@ -35,10 +38,17 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
 
     BioprojectsClient bioprojectsClient;
 
+    DatasetService datasetService;
+
     String databases;
 
-    public GenerateBioprojectsOmicsXML(BioprojectsClient bioprojectsClient, String outputFolder, String releaseDate, String databases) {
+    public GenerateBioprojectsOmicsXML(BioprojectsClient bioprojectsClient
+            , DatasetService datasetService
+            , String outputFolder
+            , String releaseDate
+            , String databases) {
         this.bioprojectsClient = bioprojectsClient;
+        this.datasetService = datasetService;
         this.outputFolder = outputFolder;
         this.releaseDate = releaseDate;
         this.databases = databases;
@@ -63,9 +73,10 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
 
         ApplicationContext ctx = new ClassPathXmlApplicationContext("spring/app-context.xml");
         BioprojectsClient bioprojectsClient = (BioprojectsClient) ctx.getBean("bioprojectsClient");
+        DatasetService  datasetService = (DatasetService) ctx.getBean("DatasetService");
 
         try {
-            new GenerateBioprojectsOmicsXML(bioprojectsClient,outputFolder,releaseDate, "GEO,dbGaP").generate();
+            new GenerateBioprojectsOmicsXML(bioprojectsClient,datasetService,outputFolder,releaseDate, "GEO,dbGaP").generate();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -95,7 +106,16 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
 
             datasets.forEach( dataset -> {
                 if(dataset != null && dataset.getIdentifier() != null && dataset.getRepository().equals(database_name)){
-                    entries.add(Transformers.transformAPIDatasetToEntry(dataset)); //
+
+                   String accession = dataset.getIdentifier();
+                   List<Dataset> existingDatasets = this.datasetService.getBySecondaryAccession(accession);
+                   if(null!=existingDatasets && existingDatasets.size() > 0){
+                        //dataset already exists in OmicsDI, TODO: add some data
+                        //this.datasetService.setDatasetNote();
+                   }
+                   else{
+                       entries.add(Transformers.transformAPIDatasetToEntry(dataset)); //
+                   }
                 }
             });
 

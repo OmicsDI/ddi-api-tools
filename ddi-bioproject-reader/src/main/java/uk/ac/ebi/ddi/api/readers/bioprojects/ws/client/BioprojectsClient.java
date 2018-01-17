@@ -15,6 +15,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author Andrey Zorin (azorin@ebi.ac.uk)
@@ -27,10 +29,27 @@ public class BioprojectsClient {
     private GeoClient geoClient;
 
     private static final Logger logger = LoggerFactory.getLogger(BioprojectsClient.class);
+    private static final Integer NUMBER_OF_THREADS = 100;
 
     public BioprojectsClient(String filePath, GeoClient geoClient){
         this.filePath = filePath;
         this.geoClient = geoClient;
+    }
+
+    public<T> List<List<T>> SplitArray(T[] array,Integer number){
+        List<List<T>> result = new ArrayList<List<T>>();
+        for(int j =0; j!= number; j++){
+            result.add(new ArrayList<T>());
+        }
+        int j = 0;
+        for(int i =0; i!= array.length; i++){
+            result.get(j).add(array[i]);
+            if(j==number-1) //last one
+                j=0;
+            else
+                j++;
+        }
+        return result;
     }
 
     public Collection<BioprojectDataset> getAllDatasets() throws Exception {
@@ -42,130 +61,37 @@ public class BioprojectsClient {
 
         System.out.print(String.format("reading %s file mask %s \n",filePath , fileFilter));
 
-        for (File f : dir.listFiles(fileFilter)){
-            try {
+        File[] allFiles = dir.listFiles(fileFilter);
+        List<List<File>> allFilesForThreads = SplitArray(allFiles,NUMBER_OF_THREADS);
 
-                System.out.print(String.format("reading file %s\n",f.getName()));
+        ExecutorService executor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-                ///if(!(f.getName().equals("PRJNA100001.xml")))
-                ///    continue;
+        List<BioprojectsFileReader> readers = new ArrayList<BioprojectsFileReader>();
 
-                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-                Document doc = dBuilder.parse(f);
+        for (int i = 0; i < NUMBER_OF_THREADS; i++) {
 
-                BioprojectDataset dataset = new BioprojectDataset();
+            System.out.print(String.format("starting reader %d with %d files \n", i , allFilesForThreads.get(i).size()));
 
-                String database = XMLUtils.readFirstAttribute(doc, "dbXREF", "db");
-                if (null == database)
-                    continue;
+            BioprojectsFileReader worker = new BioprojectsFileReader(allFilesForThreads.get(i),geoClient);
+            readers.add(worker);
+            executor.execute(worker);
+        }
+        executor.shutdown();
+        // Wait until all threads are finish
+        while (!executor.isTerminated()) {
 
-                String id = XMLUtils.readFirstElement(doc, "dbXREF/ID");
-                String title = XMLUtils.readFirstElement(doc, "ProjectDescr/Title");
-                String description = XMLUtils.readFirstElement(doc, "ProjectDescr/Description");
-                String publicationDate = XMLUtils.readFirstElement(doc, "ProjectDescr/ProjectReleaseDate");
+        }
 
-                String omicsType = XMLUtils.readFirstElement(doc, "ProjectType/ProjectTypeSubmission/ProjectDataTypeSet/DataType");
-                if((null!=omicsType) && omicsType.contains("Transcriptome"))
-                    dataset.addOmicsType("Transcriptomics");
-
-                String organismName = XMLUtils.readFirstElement(doc,"ProjectType/ProjectTypeSubmission/Target/Organism/OrganismName");
-                if(null!=organismName)
-                    dataset.addSpecies(organismName);
-
-                dataset.setRepository(database);
-
-                if(null!=id)
-                    dataset.setIdentifier(id);
-
-                if(null!=title)
-                    dataset.setName(title);
-
-                if(null!=description)
-                    dataset.setDescription(description);
-
-                if(null!=publicationDate) {
-
-                    String[] datePart = publicationDate.split("T");
-                    if(datePart.length>0) {
-                        publicationDate = datePart[0];
-                    }
-                    if(null!=publicationDate) {
-                        dataset.setPublicationDate(publicationDate);
-                    }
-                }
-
-                if(database.equals("GEO")){
-                    SeriesFile series = geoClient.getSeries(id);
-                    if(null!=series.getSeriesSuplimentraryFile()) {
-                        for (String file : series.getSeriesSuplimentraryFile()) {
-                            dataset.addDatasetFile(file);
-                        }
-                    }
-
-                    if(null!=series.getSeriesContactName()) {
-                        for (String v : series.getSeriesContactName()) {
-                            //remove commas
-                            dataset.addSubmitter(v.replace(","," ").replace("  "," "));
-                        }
-                    }
-
-                    if(null!=series.getSeriesContactEmail()) {
-                        for (String v : series.getSeriesContactEmail()) {
-                            //split by commas
-                            for(String v1 : v.split(",")) {
-                                if(!v1.isEmpty())
-                                    dataset.addSubmitterEmail(v1);
-                            }
-                        }
-                    }
-
-                    if(null!=series.getSeriesContactInstitute()) {
-                        for (String v : series.getSeriesContactInstitute()) {
-                            dataset.addSubmitterAffiliations(v);
-                        }
-                    }
-
-                    String platformId = series.getPlatformId();
-
-                    PlatformFile platformFile = geoClient.getPlatform(platformId);
-
-                    String instrument = platformFile.get_Title();
-
-                    dataset.addInstrument(instrument);
-
-                    dataset.setFullLink("https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc="+id);
-
-
-                    if(null!=series.getSampleIds()) {
-                        if(series.getSampleIds().size()>0) {
-                            String celltype = "";
-
-                            String sampleId = series.getSampleIds().get(0);
-
-                            SampleFile sample = geoClient.getSample(sampleId);
-
-                            celltype = sample.getCellType();
-
-                            dataset.addCellType(celltype);
-
-                            dataset.setDataProtocol(sample.getDataProtocol());
-
-                            dataset.setSampleProtocol(sample.getSampleProtocol());
-
-                            System.out.print(String.format("download 1 of %d sampleIds celltype: %s \n", series.getSampleIds().size(), celltype));
-                        }
-                    }
-                }
-                paxDBDatasets.put(id, dataset);
-            } catch(Exception ex){
-                logger.error("Error processing " + f.getName() + " : " + ex);
+        for(BioprojectsFileReader reader : readers){
+            for(BioprojectDataset dataset : reader.results){
+                paxDBDatasets.put(dataset.getIdentifier(), dataset);
             }
         }
 
-        System.out.print(String.format("found %d datasets\n",paxDBDatasets.size()));
+        System.out.print(String.format("all readers finished with %d results \n", paxDBDatasets.size()));
 
         return paxDBDatasets.values();
+
+        }
     }
 
-}

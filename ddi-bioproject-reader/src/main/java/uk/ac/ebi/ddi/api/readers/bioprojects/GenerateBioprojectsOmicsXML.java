@@ -108,10 +108,11 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
                 if(dataset != null && dataset.getIdentifier() != null && dataset.getRepository().equals(database_name)){
 
                    String accession = dataset.getIdentifier();
-                   List<Dataset> existingDatasets = this.datasetService.getBySecondaryAccession(accession);
-                   if(null!=existingDatasets && existingDatasets.size() > 0){
+                   //List<Dataset> existingDatasets = this.datasetService.getBySecondaryAccession(accession);
+                   if(this.datasetService.existsBySecondaryAccession(accession)){
                         //dataset already exists in OmicsDI, TODO: add some data
                         //this.datasetService.setDatasetNote();
+                       System.out.print("accession "+ accession + " exists as secondary accession\n");
                    }
                    else{
                        entries.add(Transformers.transformAPIDatasetToEntry(dataset)); //

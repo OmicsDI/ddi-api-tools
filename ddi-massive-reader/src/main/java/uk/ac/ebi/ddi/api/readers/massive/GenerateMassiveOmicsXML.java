@@ -91,9 +91,9 @@ public class GenerateMassiveOmicsXML implements IGenerator {
                             datasetDetail.setCreated(dataset.getCreated());
                         if (datasetDetail.getSpecies() != null){
                             Entry entry = Transformers.transformAPIDatasetToEntry(datasetDetail);
-                            if(entry.getDatabase().equalsIgnoreCase(Constants.GNPS))
+                            if(entry.getRepository().equalsIgnoreCase(Constants.GNPS))
                                 gnpsEntries.addEntry(entry);
-                            else if(entry.getDatabase().equalsIgnoreCase(Constants.MASSIVE))
+                            else if(entry.getRepository().equalsIgnoreCase(Constants.MASSIVE))
                                 massiveEntries.addEntry(entry);
                         }
                     }

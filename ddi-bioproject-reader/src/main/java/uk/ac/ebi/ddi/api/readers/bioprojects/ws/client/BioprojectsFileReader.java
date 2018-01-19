@@ -10,6 +10,11 @@ import uk.ac.ebi.ddi.api.readers.utils.XMLUtils;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,19 +22,31 @@ import java.util.List;
  * Created by azorin on 12/01/2018.
  */
 public class BioprojectsFileReader implements Runnable{
-    private final List<File> files; //files to process
+    private final String filePath;
+    private final List<String> files; //files to process
     private final GeoClient geoClient;
     public List<BioprojectDataset> results = new ArrayList<BioprojectDataset>();
 
-    BioprojectsFileReader(List<File> files, GeoClient geoClient){
+    BioprojectsFileReader(String filePath, List<String> files, GeoClient geoClient){
+        this.filePath = filePath;
         this.files = files;
         this.geoClient = geoClient;
     }
 
     @Override
     public void run(){
-        for (File f : files) {
+        for (String ID : files) {
             try {
+                File f = new File(filePath + "/" + ID + ".xml");
+                if (!Files.exists(f.toPath())) {
+                    URL website = new URL("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=bioproject&id=" + ID);
+                    try (InputStream in = website.openStream()) {
+                        Path targetPath = f.toPath();
+                        Files.copy(in, targetPath, StandardCopyOption.REPLACE_EXISTING);
+
+                        System.out.print(String.format("Downloaded NCBI file %s \n",ID));
+                    }
+                }
 
                 System.out.print(String.format("reading file %s\n", f.getName()));
 
@@ -149,7 +166,7 @@ public class BioprojectsFileReader implements Runnable{
 
                 results.add(dataset);
             } catch (Exception ex) {
-                System.out.print("Error processing " + f.getName() + " : " + ex);
+                System.out.print("Error processing " + ID + " : " + ex);
             }
         }
     }

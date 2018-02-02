@@ -29,7 +29,9 @@ public class Transformers {
         entry.setName(dataset.getName());
         entry.setDescription(dataset.getDescription());
 
-        entry.addDate(Field.PUBLICATION.getName(), dataset.getPublicationDate());
+        if(null!=dataset.getPublicationDate()) {
+            entry.addDate(Field.PUBLICATION.getName(), dataset.getPublicationDate());
+        }
 
         entry.addAdditionalField(Field.REPOSITORY.getName(), dataset.getRepository());
         entry.addAdditionalField(Field.SAMPLE.getName(), dataset.getSampleProcotol());

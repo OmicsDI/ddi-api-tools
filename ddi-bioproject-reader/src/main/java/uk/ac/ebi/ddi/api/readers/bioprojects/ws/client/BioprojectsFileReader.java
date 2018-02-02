@@ -15,7 +15,10 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -129,6 +132,46 @@ public class BioprojectsFileReader implements Runnable{
                         }
                     }
 
+
+                    if (null != series.getPubmedId() ){
+                        dataset.addCrossReference("pubmed",series.getPubmedId());
+                    }
+
+
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat parser = new SimpleDateFormat("MMM d yyyy");
+
+                    String status = series.getStatus();
+                    if(null!=status){
+                        try {
+
+                            String input = status.replace("Public on ", ""); //"Aug 11 2009";
+
+                            Date date = parser.parse(input);
+
+                            String formattedDate = formatter.format(date);
+
+                            dataset.addDate("publication", formattedDate);
+                        }
+                        catch(ParseException exception){
+                            System.out.print("cannot parse date:"+exception.getMessage());
+                        }
+                    }
+
+                    String submissionDate = series.getSubmissionDate();
+                    if(null != submissionDate){
+                        try {
+                            Date date = parser.parse(submissionDate);
+
+                            String formattedDate = formatter.format(date);
+
+                            dataset.addDate("submission", formattedDate);
+                        }
+                        catch(ParseException exception){
+                            System.out.print("cannot parse date:"+exception.getMessage());
+                        }
+                    }
+
                     String platformId = series.getPlatformId();
 
                     PlatformFile platformFile = geoClient.getPlatform(platformId);
@@ -166,7 +209,7 @@ public class BioprojectsFileReader implements Runnable{
 
                 results.add(dataset);
             } catch (Exception ex) {
-                System.out.print("Error processing " + ID + " : " + ex);
+                System.out.print("Error processing " + ID + " : " + ex.getMessage() + " " + ex.getStackTrace());
             }
         }
     }

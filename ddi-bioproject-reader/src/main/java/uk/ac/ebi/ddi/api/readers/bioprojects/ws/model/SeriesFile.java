@@ -46,4 +46,16 @@ public class SeriesFile extends SoftFile {
     public String getPlatformId(){
         return this.Attributes.get(SeriesAttribute.Series_platform_id.getName()).get(0);
     }
+
+    public String getPubmedId() {
+        return this.Attributes.get(SeriesAttribute.Series_pubmed_id.getName()).get(0);
+    }
+
+    public String getStatus(){
+        return this.Attributes.get(SeriesAttribute.Series_status.getName()).get(0);
+    }
+
+    public String getSubmissionDate(){
+        return this.Attributes.get(SeriesAttribute.Series_submission_date.getName()).get(0);
+    }
 }

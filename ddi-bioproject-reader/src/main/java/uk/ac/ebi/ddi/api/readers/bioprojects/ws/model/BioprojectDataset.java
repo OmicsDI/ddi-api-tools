@@ -84,9 +84,15 @@ public class BioprojectDataset implements IAPIDataset {
         this.publicationDate = publicationDate;
     }
 
+    Map<String,String> otherDates = new HashMap<String,String>();
+
+    public void addDate(String name, String value){
+        this.otherDates.put(name,value);
+    }
+
     @Override
     public Map<String, String> getOtherDates() {
-        return new HashMap<String, String>();
+        return otherDates;
     }
 
     String sampleProtocol;
@@ -256,9 +262,17 @@ public class BioprojectDataset implements IAPIDataset {
         return datasetFiles;
     }
 
+    Map<String, Set<String>> crossReferences = new HashMap<String, Set<String>>();
+
+    public void addCrossReference(String name, String value){
+        Set<String> values = new HashSet<String>();
+        values.add(value);
+        this.crossReferences.put(name,values);
+    }
+
     @Override
     public Map<String, Set<String>> getCrossReferences() {
-        return new HashMap<String, Set<String>>();
+        return crossReferences;
     }
 
     @Override

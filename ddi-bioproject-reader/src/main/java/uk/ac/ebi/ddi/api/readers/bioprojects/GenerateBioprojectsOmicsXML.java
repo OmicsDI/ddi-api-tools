@@ -106,7 +106,7 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
 
             datasets.forEach( dataset -> {
                 if(dataset != null && dataset.getIdentifier() != null && dataset.getRepository().equals(database_name)){
-
+                    dataset.addOmicsType(Constants.GENOMICS_TYPE);
                    String accession = dataset.getIdentifier();
                    //List<Dataset> existingDatasets = this.datasetService.getBySecondaryAccession(accession);
                    if(this.datasetService.existsBySecondaryAccession(accession)){

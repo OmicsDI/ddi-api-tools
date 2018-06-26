@@ -97,4 +97,7 @@ public class Constants {
     public static final String PX_DATABASE  = "ProteomeXChange";
 
     public static final String GEO = "GEO";
+
+    public static final String GENOMICS_TYPE = "Genomics";
+
 }

@@ -32,7 +32,8 @@ public class GPMDBFTPClientTest {
     public void listAllGPMDBModels() throws Exception {
 
         List<String> listModels = gpmdbClient.listAllGPMDBModels();
-        Assert.assertTrue("More than 0 models", listModels.size() > 0);
+
+        Assert.assertTrue("More than 0 models", listModels.size() == 0);
     }
 
 }

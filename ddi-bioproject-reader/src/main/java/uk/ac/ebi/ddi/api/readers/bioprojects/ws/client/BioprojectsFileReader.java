@@ -1,5 +1,7 @@
 package uk.ac.ebi.ddi.api.readers.bioprojects.ws.client;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import uk.ac.ebi.ddi.api.readers.bioprojects.ws.model.BioprojectDataset;
 import uk.ac.ebi.ddi.api.readers.bioprojects.ws.model.PlatformFile;
@@ -29,6 +31,7 @@ public class BioprojectsFileReader implements Runnable{
     private final List<String> files; //files to process
     private final GeoClient geoClient;
     public List<BioprojectDataset> results = new ArrayList<BioprojectDataset>();
+    private static final Logger logger = LoggerFactory.getLogger(BioprojectsClient.class);
 
     BioprojectsFileReader(String filePath, List<String> files, GeoClient geoClient){
         this.filePath = filePath;
@@ -36,22 +39,25 @@ public class BioprojectsFileReader implements Runnable{
         this.geoClient = geoClient;
     }
 
-    @Override
-    public void run(){
+    public void readIds(){
+
+        logger.info("file size is " + files.size());
+        int fileCount = 0;
         for (String ID : files) {
             try {
                 File f = new File(filePath + "/" + ID + ".xml");
+                logger.info("file number is " + fileCount + "and count is "+ID);
                 if (!Files.exists(f.toPath())) {
                     URL website = new URL("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=bioproject&id=" + ID);
                     try (InputStream in = website.openStream()) {
                         Path targetPath = f.toPath();
                         Files.copy(in, targetPath, StandardCopyOption.REPLACE_EXISTING);
-
-                        System.out.print(String.format("Downloaded NCBI file %s \n",ID));
+                        Thread.sleep(400);
+                        logger.info(String.format("Downloaded NCBI file %s \n",ID));
                     }
                 }
-
-                System.out.print(String.format("reading file %s\n", f.getName()));
+                fileCount++;
+                logger.info(String.format("reading file %s\n", f.getName()));
 
                 ///if(!(f.getName().equals("PRJNA100001.xml")))
                 ///    continue;
@@ -102,40 +108,41 @@ public class BioprojectsFileReader implements Runnable{
                 }
 
                 if (database.equals("GEO")) {
-                    SeriesFile series = geoClient.getSeries(id);
-                    if (null != series.getSeriesSuplimentraryFile()) {
-                        for (String file : series.getSeriesSuplimentraryFile()) {
-                            dataset.addDatasetFile(file);
-                        }
-                    }
-
-                    if (null != series.getSeriesContactName()) {
-                        for (String v : series.getSeriesContactName()) {
-                            //remove commas
-                            dataset.addSubmitter(v.replace(",", " ").replace("  ", " "));
-                        }
-                    }
-
-                    if (null != series.getSeriesContactEmail()) {
-                        for (String v : series.getSeriesContactEmail()) {
-                            //split by commas
-                            for (String v1 : v.split(",")) {
-                                if (!v1.isEmpty())
-                                    dataset.addSubmitterEmail(v1);
+                    try {
+                        SeriesFile series = geoClient.getSeries(id);
+                        if (null != series.getSeriesSuplimentraryFile()) {
+                            for (String file : series.getSeriesSuplimentraryFile()) {
+                                dataset.addDatasetFile(file);
                             }
                         }
-                    }
 
-                    if (null != series.getSeriesContactInstitute()) {
-                        for (String v : series.getSeriesContactInstitute()) {
-                            dataset.addSubmitterAffiliations(v);
+                        if (null != series.getSeriesContactName()) {
+                            for (String v : series.getSeriesContactName()) {
+                                //remove commas
+                                dataset.addSubmitter(v.replace(",", " ").replace("  ", " "));
+                            }
                         }
-                    }
+
+                        if (null != series.getSeriesContactEmail()) {
+                            for (String v : series.getSeriesContactEmail()) {
+                                //split by commas
+                                for (String v1 : v.split(",")) {
+                                    if (!v1.isEmpty())
+                                        dataset.addSubmitterEmail(v1);
+                                }
+                            }
+                        }
+
+                        if (null != series.getSeriesContactInstitute()) {
+                            for (String v : series.getSeriesContactInstitute()) {
+                                dataset.addSubmitterAffiliations(v);
+                            }
+                        }
 
 
-                    if (null != series.getPubmedId() ){
-                        dataset.addCrossReference("pubmed",series.getPubmedId());
-                    }
+                        if (null != series.getPubmedId()) {
+                            dataset.addCrossReference("pubmed", series.getPubmedId());
+                        }
 
 
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -168,7 +175,7 @@ public class BioprojectsFileReader implements Runnable{
                             dataset.addDate("submission", formattedDate);
                         }
                         catch(ParseException exception){
-                            System.out.print("cannot parse date:"+exception.getMessage());
+                            logger.error("cannot parse date:"+exception.getMessage());
                         }
                     }
 
@@ -199,19 +206,30 @@ public class BioprojectsFileReader implements Runnable{
 
                             dataset.setSampleProtocol(sample.getSampleProtocol());
 
-                            System.out.print(String.format("download 1 of %d sampleIds celltype: %s \n", series.getSampleIds().size(), celltype));
+                            logger.info(String.format("download 1 of %d sampleIds celltype: %s \n", series.getSampleIds().size(), celltype));
                         }
+                    }
+                    }
+                    catch(Exception ex){
+                        logger.error("error in sries " + ex.getMessage());
                     }
                 } else if (database.equals("dbGaP")){
                     dataset.setFullLink("https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=" + id);
                 }
 
-
+                //Thread.sleep(1000);
                 results.add(dataset);
+
             } catch (Exception ex) {
-                System.out.print("Error processing " + ID + " : " + ex.getMessage() + " " + ex.getStackTrace());
+                logger.error("Error processing " + ID + " : " + ex.getMessage() + " " + ex.getStackTrace());
             }
         }
+    }
+
+
+    @Override
+    public void run(){
+        readIds();
     }
 }
 

@@ -76,33 +76,38 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
         DatasetService  datasetService = (DatasetService) ctx.getBean("DatasetService");
 
         try {
+            logger.info("output folder is " + outputFolder);
             new GenerateBioprojectsOmicsXML(bioprojectsClient,datasetService,outputFolder,releaseDate, "GEO,dbGaP").generate();
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 
     @Override
     public void generate() throws Exception {
 
-        System.out.print("calling GenerateBioprojectsOmicsXML generate\n");
+        logger.info("calling GenerateBioprojectsOmicsXML generate\n");
 
         if(bioprojectsClient == null)
             throw new Exception("bioprojectsClient is null");
 
         Collection<BioprojectDataset> datasets = bioprojectsClient.getAllDatasets().stream().filter(x -> x != null).collect(Collectors.toList());
 
+        logger.info("all datasets count is " + datasets.size());
+
         if (datasets == null || datasets.size() == 0) {
-            System.out.print(String.format("bioprojectsClient.getAllDatasets() returned zero datasets\n"));
+           logger.info(String.format("bioprojectsClient.getAllDatasets() returned zero datasets\n"));
             return;
         }
 
-        System.out.print(String.format("returned %d datasets\n",datasets.size()));
+        logger.info(String.format("returned %d datasets\n",datasets.size()));
 
+        logger.info("insertion of datasets started ");
         for (String database_name : this.databases.split(",")) {
             List<Entry> entries = new ArrayList<>();
 
-            System.out.print(String.format("processing database: %s \n",database_name));
+            logger.info(String.format("processing database: %s \n",database_name));
 
             datasets.forEach( dataset -> {
                 if(dataset != null && dataset.getIdentifier() != null && dataset.getRepository().equals(database_name)){
@@ -112,7 +117,7 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
                    if(this.datasetService.existsBySecondaryAccession(accession)){
                         //dataset already exists in OmicsDI, TODO: add some data
                         //this.datasetService.setDatasetNote();
-                       System.out.print("accession "+ accession + " exists as secondary accession\n");
+                       logger.info("accession "+ accession + " exists as secondary accession\n");
                    }
                    else{
                        entries.add(Transformers.transformAPIDatasetToEntry(dataset)); //
@@ -120,9 +125,11 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
                 }
             });
 
-            System.out.print(String.format("found datasets: %d \n",entries.size()));
+            logger.info(String.format("found datasets entries : %d \n",entries.size()));
 
             String filepath = outputFolder + "/" + database_name + "_data.xml";
+
+            logger.info("filepath is " + filepath);
             FileWriter paxdbFile = new FileWriter(filepath);
 
             OmicsDataMarshaller mm = new OmicsDataMarshaller();
@@ -134,8 +141,9 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
             database.setEntries(entries);
             database.setEntryCount(entries.size());
             mm.marshall(database, paxdbFile);
-
+            logger.info("writing bioproject file at location " + filepath);
             System.out.print(String.format("exported %s %d to %s\n",database_name,entries.size(),filepath));
+            logger.info(String.format("exported %s %d to %s\n",database_name,entries.size(),filepath));
         }
     }
 }

@@ -37,7 +37,7 @@ public class BioprojectsClient {
     private GeoClient geoClient;
 
     private static final Logger logger = LoggerFactory.getLogger(BioprojectsClient.class);
-    private static final Integer NUMBER_OF_THREADS = 100;
+    private static final Integer NUMBER_OF_THREADS = 1;
 
     public BioprojectsClient(String filePath, GeoClient geoClient){
         this.filePath = filePath;
@@ -93,7 +93,7 @@ public class BioprojectsClient {
             }
         }
         catch(Exception ex){
-            System.out.print(String.format("ERROR in getIDs %s \n",ex.getMessage()));
+            logger.error(String.format("ERROR in getIDs %s \n",ex.getMessage()));
         }
 
         return result;
@@ -106,11 +106,11 @@ public class BioprojectsClient {
         File dir = new File(filePath);
         FileFilter fileFilter = new WildcardFileFilter("PRJNA*.xml");
 
-        System.out.print("getting new IDs from NCBI \n");
+        logger.info("getting new IDs from NCBI \n");
 
         List<String> allFiles = getNewIDs();
 
-        System.out.print(String.format("getting new IDs from NCBI: %d received \n", allFiles.size()));
+        logger.info(String.format("getting new IDs from NCBI: %d received \n", allFiles.size()));
 
         List<List<String>> allFilesForThreads = SplitArray(allFiles,NUMBER_OF_THREADS);
 
@@ -125,11 +125,12 @@ public class BioprojectsClient {
             if((null==files)||(files.size()<1))
                 continue;
 
-            System.out.print(String.format("starting reader %d with %d files \n", i , files.size()));
+            logger.info(String.format("starting reader %d with %d files \n", i , files.size()));
 
             BioprojectsFileReader worker = new BioprojectsFileReader(filePath, files,geoClient);
-            readers.add(worker);
-            executor.execute(worker);
+            worker.readIds();
+            //readers.add(worker);
+            //executor.execute(worker);
         }
         executor.shutdown();
         // Wait until all threads are finish
@@ -146,7 +147,7 @@ public class BioprojectsClient {
             }
         }
 
-        System.out.print(String.format("all readers finished with %d results \n", paxDBDatasets.size()));
+        logger.info(String.format("all readers finished with %d results \n", paxDBDatasets.size()));
 
         return paxDBDatasets.values();
 

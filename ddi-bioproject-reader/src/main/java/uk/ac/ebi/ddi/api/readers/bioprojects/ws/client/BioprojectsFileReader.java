@@ -147,9 +147,12 @@ public class BioprojectsFileReader {
                 LOGGER.error("cannot parse date:"+exception.getMessage());
             }
         }
-        PlatformFile platformFile = geoClient.getPlatform(series.getPlatformId());
-        String instrument = platformFile.get_Title();
-        dataset.addInstrument(instrument);
+        String platformId = series.getPlatformId();
+        if (null != platformId) {
+            PlatformFile platformFile = geoClient.getPlatform(platformId);
+            String instrument = platformFile.get_Title();
+            dataset.addInstrument(instrument);
+        }
         dataset.setFullLink("https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=" + dataset.getIdentifier());
         if (null != series.getSampleIds() && series.getSampleIds().size() > 0) {
             String sampleId = series.getSampleIds().get(0);
@@ -242,7 +245,7 @@ public class BioprojectsFileReader {
                 results.add(parseDataset(datasetNode, xPath));
             }
         } catch (Exception e) {
-            LOGGER.error("Error occurred when processing dataset {}, {}", accession, e);
+            LOGGER.error("Error occurred when processing dataset {}", accession, e);
         }
     }
 

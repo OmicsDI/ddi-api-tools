@@ -77,7 +77,7 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
                     bioprojectsClient, datasetService, outputFolder, releaseDate, "GEO,dbGaP");
             omicsXML.generate();
         } catch (Exception e) {
-            logger.error("Exception occurred during initializing the application, {}", e);
+            logger.error("Exception occurred during initializing the application", e);
         }
     }
 
@@ -114,7 +114,7 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
                     dataset.addOmicsType(Constants.GENOMICS_TYPE);
                     String accession = dataset.getIdentifier();
                     //List<Dataset> existingDatasets = this.datasetService.getBySecondaryAccession(accession);
-                    if (this.datasetService.existsBySecondaryAccession(accession)) {
+                    if (datasetService.existsBySecondaryAccession(accession)) {
                         //dataset already exists in OmicsDI, TODO: add some data
                         //this.datasetService.setDatasetNote();
                         logger.info("Accession " + accession + " exists as secondary accession");

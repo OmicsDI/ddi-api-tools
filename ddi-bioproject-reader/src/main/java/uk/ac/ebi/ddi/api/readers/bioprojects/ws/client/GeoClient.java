@@ -1,18 +1,16 @@
 package uk.ac.ebi.ddi.api.readers.bioprojects.ws.client;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import uk.ac.ebi.ddi.api.readers.bioprojects.ws.model.PlatformFile;
 import uk.ac.ebi.ddi.api.readers.bioprojects.ws.model.SampleFile;
 import uk.ac.ebi.ddi.api.readers.bioprojects.ws.model.SeriesFile;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.PrintWriter;
 import java.util.Collections;
 
 /**
@@ -21,7 +19,6 @@ import java.util.Collections;
 public class GeoClient {
     private String filePath;
     private static final int RETRIES = 5;
-    private RestTemplate restTemplate = new RestTemplate();
     private RetryTemplate template = new RetryTemplate();
     private static final String NCBI_ENDPOINT = "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi";
 
@@ -40,25 +37,25 @@ public class GeoClient {
         return new GeoDataset
     } **/
 
-    private String downloadSoftFile(String id) {
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(NCBI_ENDPOINT)
-                .queryParam("acc", id)
-                .queryParam("targ", "self")
-                .queryParam("form", "text")
-                .queryParam("view", "full");
-        return template.execute(context -> {
-            ResponseEntity<String> response = restTemplate.getForEntity(builder.build().toString(), String.class);
-            return response.getBody();
-        });
-    }
-
-    private File getSoftFile(String id) throws Exception{
+    private File getSoftFile(String id) throws Exception {
         File f = new File(filePath + "/" + id + ".soft");
         if(!f.exists()){
-            String softFile = downloadSoftFile(id);
-            try (PrintWriter out = new PrintWriter(new FileOutputStream(f, false))) {
-                out.print(softFile);
-            }
+            template.execute(context -> {
+                UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(NCBI_ENDPOINT)
+                        .queryParam("acc", id)
+                        .queryParam("targ", "self")
+                        .queryParam("form", "text")
+                        .queryParam("view", "full");
+                try (BufferedInputStream inputStream = new BufferedInputStream(builder.build().toUri().toURL().openStream());
+                     FileOutputStream fileOS = new FileOutputStream(f)) {
+                    byte[] data = new byte[1024];
+                    int byteContent;
+                    while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
+                        fileOS.write(data, 0, byteContent);
+                    }
+                }
+                return f;
+            });
         }
         return f;
     }

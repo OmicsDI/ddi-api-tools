@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ForkJoinPool;
 import java.util.stream.IntStream;
 
 /**
@@ -49,6 +50,7 @@ public class BioprojectsFileReader {
     private RestTemplate restTemplate = new RestTemplate();
     private static final String NCBI_ENDPOINT = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi";
     private static final int RETRIES = 5;
+    private static final int PARALLEL = Math.min(9, Runtime.getRuntime().availableProcessors());
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
     private DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 
@@ -258,9 +260,11 @@ public class BioprojectsFileReader {
             XPath xPath = XPATH_FACTORY.get().newXPath();
             NodeList datasetsXml = XMLUtils.findElements(doc, "/RecordSet/DocumentSummary/Project", xPath);
             int totalResults = datasetsXml.getLength();
-            IntStream.rangeClosed(0, totalResults - 1).parallel().forEach(i -> {
+
+            ForkJoinPool customThreadPool = new ForkJoinPool(PARALLEL);
+            customThreadPool.submit(() -> IntStream.rangeClosed(0, totalResults - 1).parallel().forEach(i -> {
                 processNode((Element) datasetsXml.item(i), filePath, results);
-            });
+            })).get();
         } catch (Exception e) {
             LOGGER.error("Error processing : {}", e);
         }

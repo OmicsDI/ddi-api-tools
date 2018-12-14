@@ -5,12 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import uk.ac.ebi.ddi.api.readers.bioprojects.ws.client.BioprojectsClient;
-import uk.ac.ebi.ddi.api.readers.bioprojects.ws.client.GeoClient;
 import uk.ac.ebi.ddi.api.readers.bioprojects.ws.model.BioprojectDataset;
 import uk.ac.ebi.ddi.api.readers.model.IGenerator;
 import uk.ac.ebi.ddi.api.readers.utils.Constants;
 import uk.ac.ebi.ddi.api.readers.utils.Transformers;
-import uk.ac.ebi.ddi.service.db.model.dataset.Dataset;
 import uk.ac.ebi.ddi.service.db.service.dataset.DatasetService;
 import uk.ac.ebi.ddi.xml.validator.parser.marshaller.OmicsDataMarshaller;
 import uk.ac.ebi.ddi.xml.validator.parser.model.Database;
@@ -18,8 +16,8 @@ import uk.ac.ebi.ddi.xml.validator.parser.model.Entry;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -32,15 +30,17 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
 
     private static final Logger logger = LoggerFactory.getLogger(GenerateBioprojectsOmicsXML.class);
 
-    String outputFolder;
+    private String outputFolder;
 
-    String releaseDate;
+    private String releaseDate;
 
-    BioprojectsClient bioprojectsClient;
+    private BioprojectsClient bioprojectsClient;
 
-    DatasetService datasetService;
+    private DatasetService datasetService;
 
-    String databases;
+    private String databases;
+
+    private OmicsDataMarshaller mm = new OmicsDataMarshaller();
 
     public GenerateBioprojectsOmicsXML(BioprojectsClient bioprojectsClient
             , DatasetService datasetService
@@ -60,90 +60,86 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
      */
     public static void main(String[] args) {
 
-        String outputFolder = null;
-        String releaseDate  = null;
-
-        if (args != null && args.length > 1 && args[0] != null){
-            outputFolder = args[0];
-            releaseDate  = args[1];
-        }
-        else {
+        if (args == null || args.length < 2 || args[0] == null){
             System.exit(-1);
         }
 
+        String outputFolder = args[0];
+        String releaseDate  = args[1];
+
         ApplicationContext ctx = new ClassPathXmlApplicationContext("spring/app-context.xml");
         BioprojectsClient bioprojectsClient = (BioprojectsClient) ctx.getBean("bioprojectsClient");
-        DatasetService  datasetService = (DatasetService) ctx.getBean("DatasetService");
+        DatasetService datasetService = (DatasetService) ctx.getBean("DatasetService");
 
         try {
-            logger.info("output folder is " + outputFolder);
-            new GenerateBioprojectsOmicsXML(bioprojectsClient,datasetService,outputFolder,releaseDate, "GEO,dbGaP").generate();
+            logger.info("Output folder is {}", outputFolder);
+            GenerateBioprojectsOmicsXML omicsXML = new GenerateBioprojectsOmicsXML(
+                    bioprojectsClient, datasetService, outputFolder, releaseDate, "GEO,dbGaP");
+            omicsXML.generate();
         } catch (Exception e) {
-            e.printStackTrace();
-            logger.error(e.getMessage());
+            logger.error("Exception occurred during initializing the application, {}", e);
         }
     }
 
     @Override
     public void generate() throws Exception {
 
-        logger.info("calling GenerateBioprojectsOmicsXML generate\n");
+        logger.info("Calling GenerateBioprojectsOmicsXML generate");
 
-        if(bioprojectsClient == null)
+        if (bioprojectsClient == null) {
             throw new Exception("bioprojectsClient is null");
+        }
 
-        Collection<BioprojectDataset> datasets = bioprojectsClient.getAllDatasets().stream().filter(x -> x != null).collect(Collectors.toList());
+        List<BioprojectDataset> datasets = bioprojectsClient.getAllDatasets()
+                .stream().filter(Objects::nonNull).collect(Collectors.toList());
 
-        logger.info("all datasets count is " + datasets.size());
+        logger.info("All datasets count is " + datasets.size());
 
-        if (datasets == null || datasets.size() == 0) {
-           logger.info(String.format("bioprojectsClient.getAllDatasets() returned zero datasets\n"));
+        if (datasets.size() == 0) {
+            logger.info("bioprojectsClient.getAllDatasets() returned zero datasets");
             return;
         }
 
-        logger.info(String.format("returned %d datasets\n",datasets.size()));
+        logger.info("Returned {} datasets", datasets.size());
 
-        logger.info("insertion of datasets started ");
-        for (String database_name : this.databases.split(",")) {
+        logger.info("Starting to insert datasets...");
+
+        for (String databaseName : databases.split(",")) {
             List<Entry> entries = new ArrayList<>();
 
-            logger.info(String.format("processing database: %s \n",database_name));
+            logger.info("Processing database: {} ", databaseName);
 
             datasets.forEach( dataset -> {
-                if(dataset != null && dataset.getIdentifier() != null && dataset.getRepository().equals(database_name)){
+                if (dataset.getIdentifier() != null && dataset.getRepository().equals(databaseName)) {
                     dataset.addOmicsType(Constants.GENOMICS_TYPE);
-                   String accession = dataset.getIdentifier();
-                   //List<Dataset> existingDatasets = this.datasetService.getBySecondaryAccession(accession);
-                   if(this.datasetService.existsBySecondaryAccession(accession)){
+                    String accession = dataset.getIdentifier();
+                    //List<Dataset> existingDatasets = this.datasetService.getBySecondaryAccession(accession);
+                    if (this.datasetService.existsBySecondaryAccession(accession)) {
                         //dataset already exists in OmicsDI, TODO: add some data
                         //this.datasetService.setDatasetNote();
-                       logger.info("accession "+ accession + " exists as secondary accession\n");
-                   }
-                   else{
-                       entries.add(Transformers.transformAPIDatasetToEntry(dataset)); //
-                   }
+                        logger.info("Accession " + accession + " exists as secondary accession");
+                    } else {
+                        entries.add(Transformers.transformAPIDatasetToEntry(dataset)); //
+                    }
                 }
             });
 
-            logger.info(String.format("found datasets entries : %d \n",entries.size()));
+            logger.info("Found datasets entries : {}", entries.size());
 
-            String filepath = outputFolder + "/" + database_name + "_data.xml";
+            String filepath = outputFolder + "/" + databaseName + "_data.xml";
 
-            logger.info("filepath is " + filepath);
+            logger.info("Filepath is " + filepath);
             FileWriter paxdbFile = new FileWriter(filepath);
-
-            OmicsDataMarshaller mm = new OmicsDataMarshaller();
 
             Database database = new Database();
             //database.setDescription(Constants.GEO_DESCRIPTION);
-            database.setName(database_name); //Constants.GEO
+            database.setName(databaseName); //Constants.GEO
             database.setRelease(releaseDate);
             database.setEntries(entries);
             database.setEntryCount(entries.size());
+            logger.info("Writing bioproject file at location " + filepath);
             mm.marshall(database, paxdbFile);
-            logger.info("writing bioproject file at location " + filepath);
-            System.out.print(String.format("exported %s %d to %s\n",database_name,entries.size(),filepath));
-            logger.info(String.format("exported %s %d to %s\n",database_name,entries.size(),filepath));
+            logger.info(String.format("Exported %s %d to %s",databaseName,entries.size(),filepath));
         }
     }
 }

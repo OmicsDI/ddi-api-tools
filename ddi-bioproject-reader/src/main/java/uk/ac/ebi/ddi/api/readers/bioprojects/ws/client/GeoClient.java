@@ -1,5 +1,8 @@
 package uk.ac.ebi.ddi.api.readers.bioprojects.ws.client;
 
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
@@ -8,9 +11,8 @@ import uk.ac.ebi.ddi.api.readers.bioprojects.ws.model.PlatformFile;
 import uk.ac.ebi.ddi.api.readers.bioprojects.ws.model.SampleFile;
 import uk.ac.ebi.ddi.api.readers.bioprojects.ws.model.SeriesFile;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.net.URL;
 import java.util.Collections;
 
 /**
@@ -18,8 +20,9 @@ import java.util.Collections;
  */
 public class GeoClient {
     private String filePath;
-    private static final int RETRIES = 5;
+    private static final int RETRIES = 10;
     private RetryTemplate template = new RetryTemplate();
+    private static final Logger LOGGER = LoggerFactory.getLogger(GeoClient.class);
     private static final String NCBI_ENDPOINT = "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi";
 
     public GeoClient(String filePath){
@@ -46,13 +49,13 @@ public class GeoClient {
                         .queryParam("targ", "self")
                         .queryParam("form", "text")
                         .queryParam("view", "full");
-                try (BufferedInputStream inputStream = new BufferedInputStream(builder.build().toUri().toURL().openStream());
-                     FileOutputStream fileOS = new FileOutputStream(f)) {
-                    byte[] data = new byte[1024];
-                    int byteContent;
-                    while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
-                        fileOS.write(data, 0, byteContent);
-                    }
+                try {
+                    URL url = builder.build().toUri().toURL();
+                    FileUtils.copyURLToFile(url, f);
+                } catch (Exception e) {
+                    String retryTimes = context.getRetryCount() + 1 + "/" + RETRIES;
+                    LOGGER.info("Exception occurred when reading softfile {}, retrying {}", id, retryTimes);
+                    throw new Exception(e);
                 }
                 return f;
             });

@@ -32,6 +32,7 @@ public class BioprojectsClient {
 
     private static final Logger logger = LoggerFactory.getLogger(BioprojectsClient.class);
     private static final Integer BATCH_SIZE = 250;
+    private static final String ONLY_NEWS = System.getenv("ONLY_NEWS");
 
     // Due to rate limit from eutils.ncbi.nlm.nih.gov
     private static final int PARALLEL = 3;
@@ -59,7 +60,7 @@ public class BioprojectsClient {
 
                     if (accession.startsWith("PRJNA")) {
                         File f1 = new File(filePath + "/" + accession + ".xml");
-                        if (!f1.exists()) {
+                        if (!f1.exists() || (ONLY_NEWS != null && ONLY_NEWS.equals("true"))) {
                             result.add(accession);
                         }
                     }

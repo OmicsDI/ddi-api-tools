@@ -3,11 +3,13 @@ package uk.ac.ebi.ddi.api.readers.mw.ws.client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.web.util.UriComponentsBuilder;
 import uk.ac.ebi.ddi.api.readers.mw.ws.model.*;
 import uk.ac.ebi.ddi.api.readers.ws.AbstractClient;
 import uk.ac.ebi.ddi.api.readers.ws.AbstractWsConfig;
 
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +19,7 @@ import java.util.Map;
  */
 public class DatasetWsClient extends AbstractClient {
 
-    private static final Logger logger = LoggerFactory.getLogger(DatasetWsClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatasetWsClient.class);
 
     /**
      * Default constructor for Ws clients
@@ -33,14 +35,15 @@ public class DatasetWsClient extends AbstractClient {
      * Returns the Datasets from MtabolomeWorbench
      * @return A list of entries and the facets included
      */
-    public DatasetList getAllDatasets(){
+    public DatasetList getAllDatasets() {
 
-        String url = String.format("%s://%s/rest/study/study_id/ST/summary",
-                config.getProtocol(), config.getHostName());
-        //Todo: Needs to be removed in the future, this is for debugging
-        logger.debug(url);
+        UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
+                .scheme(config.getProtocol())
+                .host(config.getHostName())
+                .path("/rest/study/study_id/ST/summary");
 
-        return this.restTemplate.getForObject(url, DatasetList.class);
+        URI uri = builder.build().encode().toUri();
+        return getRetryTemplate().execute(ctx -> restTemplate.getForObject(uri, DatasetList.class));
     }
 
     /**
@@ -48,23 +51,21 @@ public class DatasetWsClient extends AbstractClient {
      * @param id
      * @return
      */
-    public AnalysisList getAnalysisInformantion(String id){
+    public AnalysisList getAnalysisInformantion(String id) {
 
         String url = String.format("%s://%s/rest/study/study_id/%s/analysis",
                 config.getProtocol(), config.getHostName(), id);
-        //Todo: Needs to be removed in the future, this is for debugging
-        logger.debug(url);
         AnalysisList analysisList = null;
-        try{
+        try {
             analysisList = this.restTemplate.getForObject(url, AnalysisList.class);
-        }catch(Exception e){
-            try{
+        } catch(Exception e) {
+            try {
                 Analysis analysisSingle = this.restTemplate.getForObject(url, Analysis.class);
                 analysisList = new AnalysisList();
                 analysisList.analysisMap = new HashMap<>();
                 analysisList.analysisMap.put("1", analysisSingle);
-            }catch(Exception ex){
-                logger.debug(ex.getMessage());
+            } catch (Exception ex) {
+                LOGGER.error("Exception occurred, id: {}, ", id, ex);
             }
         }
         return analysisList;
@@ -74,29 +75,25 @@ public class DatasetWsClient extends AbstractClient {
 
         String url = String.format("%s://%s/rest/study/study_id/%s/metabolites",
                 config.getProtocol(), config.getHostName(), id);
-        //Todo: Needs to be removed in the future, this is for debugging
-        logger.debug(url);
+
         MetaboliteList metaboliteList = null;
-        try{
+        try {
             metaboliteList = this.restTemplate.getForObject(url, MetaboliteList.class);
-        }catch(Exception e){
-            logger.debug(e.getLocalizedMessage());
+        } catch(Exception e) {
+            LOGGER.error("Exception occurred, id: {}, ", id, e);
         }
         return metaboliteList;
     }
 
-    private ChebiID getChebiId(String pubchemId){
+    private ChebiID getChebiId(String pubchemId) {
 
         String url = String.format("%s://%s/rest/compound/pubchem_cid/%s/chebi_id/",
                 config.getProtocol(), config.getHostName(), pubchemId);
-        //Todo: Needs to be removed in the future, this is for debugging
-
-        logger.debug(url);
         ChebiID id = null;
-        try{
+        try {
             id =this.restTemplate.getForObject(url, ChebiID.class);
-        }catch(Exception e){
-            logger.debug(e.getLocalizedMessage());
+        } catch (Exception e) {
+            LOGGER.error("Exception occurred, id: {}, ", pubchemId, e);
         }
 
         return id;
@@ -107,7 +104,7 @@ public class DatasetWsClient extends AbstractClient {
      * @param metabolites
      * @return
      */
-    public MetaboliteList updateChebiId(MetaboliteList metabolites){
+    public MetaboliteList updateChebiId(MetaboliteList metabolites) {
         if(metabolites != null && metabolites.metabolites != null && metabolites.metabolites.size() > 0){
             System.out.println(metabolites.metabolites.size());
             for(Map.Entry entry: metabolites.metabolites.entrySet()){
@@ -135,10 +132,10 @@ public class DatasetWsClient extends AbstractClient {
                 config.getProtocol(), config.getHostName(), id);
 
         FactorList factorList = null;
-        try{
+        try {
             factorList = this.restTemplate.getForObject(url, FactorList.class);
-        }catch(Exception e){
-            logger.debug(e.getLocalizedMessage());
+        } catch(Exception e) {
+            LOGGER.error("Exception occurred, id: {}, ", id, e);
         }
         return factorList;
     }
@@ -151,20 +148,14 @@ public class DatasetWsClient extends AbstractClient {
 
         String url = String.format("%s://%s/rest/study/study_id/ST/species",
                 config.getProtocol(), config.getHostName());
-        //Todo: Needs to be removed in the future, this is for debugging
-        logger.debug(url);
-
-        return this.restTemplate.getForObject(url, SpecieList.class);
+        return getRetryTemplate().execute(ctx -> restTemplate.getForObject(url, SpecieList.class));
     }
 
     public TissueList getTissues(){
 
         String url = String.format("%s://%s/rest/study/study_id/ST/source",
                 config.getProtocol(), config.getHostName());
-        //Todo: Needs to be removed in the future, this is for debugging
-        logger.debug(url);
-
-        return this.restTemplate.getForObject(url, TissueList.class);
+        return getRetryTemplate().execute(ctx -> restTemplate.getForObject(url, TissueList.class));
 
     }
 
@@ -172,10 +163,7 @@ public class DatasetWsClient extends AbstractClient {
 
         String url = String.format("%s://%s/rest/study/study_id/ST/disease",
                 config.getProtocol(), config.getHostName());
-        //Todo: Needs to be removed in the future, this is for debugging
-        logger.debug(url);
-
-        return this.restTemplate.getForObject(url, DiseaseList.class);
+        return getRetryTemplate().execute(ctx -> this.restTemplate.getForObject(url, DiseaseList.class));
     }
 
 }

@@ -3,13 +3,14 @@ package uk.ac.ebi.ddi.api.readers.ws;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
+import uk.ac.ebi.ddi.api.readers.utils.RetryClient;
 
 /**
  * Abstract client to query the EBI search.
  *
  * @author ypriverol
  */
-public abstract class AbstractClient {
+public abstract class AbstractClient extends RetryClient {
 
     protected RestTemplate restTemplate;
 
@@ -30,7 +31,7 @@ public abstract class AbstractClient {
      */
     private ClientHttpRequestFactory clientHttpRequestFactory() {
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-        int timeOut = 20000;
+        int timeOut = 200000;
         factory.setReadTimeout(timeOut);
         factory.setConnectTimeout(timeOut);
         return factory;

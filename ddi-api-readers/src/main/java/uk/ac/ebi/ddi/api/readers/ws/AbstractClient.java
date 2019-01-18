@@ -1,5 +1,6 @@
 package uk.ac.ebi.ddi.api.readers.ws;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
@@ -16,13 +17,16 @@ public abstract class AbstractClient extends RetryClient {
 
     protected AbstractWsConfig config;
 
+    protected ObjectMapper objectMapper;
+
     /**
      * Default constructor for All clients
      * @param config
      */
     public AbstractClient(AbstractWsConfig config){
         this.config = config;
-        this.restTemplate = new RestTemplate(clientHttpRequestFactory());
+        restTemplate = new RestTemplate(clientHttpRequestFactory());
+        objectMapper = new ObjectMapper();
     }
 
     /**

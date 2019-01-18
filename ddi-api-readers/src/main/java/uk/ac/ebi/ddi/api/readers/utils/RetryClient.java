@@ -1,6 +1,6 @@
 package uk.ac.ebi.ddi.api.readers.utils;
 
-import org.springframework.retry.backoff.ExponentialBackOffPolicy;
+import org.springframework.retry.backoff.ExponentialRandomBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
@@ -15,9 +15,9 @@ public class RetryClient {
         SimpleRetryPolicy policy =
                 new SimpleRetryPolicy(RETRIES, Collections.singletonMap(Exception.class, true));
         retryTemplate.setRetryPolicy(policy);
-        ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
+        ExponentialRandomBackOffPolicy backOffPolicy = new ExponentialRandomBackOffPolicy();
         backOffPolicy.setInitialInterval(2000);
-        backOffPolicy.setMultiplier(1.6);
+        backOffPolicy.setMultiplier(2.0);
         retryTemplate.setBackOffPolicy(backOffPolicy);
     }
 

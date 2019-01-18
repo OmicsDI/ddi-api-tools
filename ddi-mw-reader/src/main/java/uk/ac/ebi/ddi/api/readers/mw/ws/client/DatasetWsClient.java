@@ -1,16 +1,14 @@
 package uk.ac.ebi.ddi.api.readers.mw.ws.client;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.web.util.UriComponentsBuilder;
 import uk.ac.ebi.ddi.api.readers.mw.ws.model.*;
 import uk.ac.ebi.ddi.api.readers.ws.AbstractClient;
 import uk.ac.ebi.ddi.api.readers.ws.AbstractWsConfig;
 
-
 import java.net.URI;
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -51,38 +49,46 @@ public class DatasetWsClient extends AbstractClient {
      * @param id
      * @return
      */
-    public AnalysisList getAnalysisInformantion(String id) {
+    public AnalysisList getAnalysisInformantion(String id) throws Exception {
 
-        String url = String.format("%s://%s/rest/study/study_id/%s/analysis",
-                config.getProtocol(), config.getHostName(), id);
-        AnalysisList analysisList = null;
-        try {
-            analysisList = this.restTemplate.getForObject(url, AnalysisList.class);
-        } catch(Exception e) {
-            try {
-                Analysis analysisSingle = this.restTemplate.getForObject(url, Analysis.class);
-                analysisList = new AnalysisList();
-                analysisList.analysisMap = new HashMap<>();
-                analysisList.analysisMap.put("1", analysisSingle);
-            } catch (Exception ex) {
-                LOGGER.error("Exception occurred, id: {}, ", id, ex);
-            }
+        UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
+                .scheme(config.getProtocol())
+                .host(config.getHostName())
+                .path("/rest/study/study_id")
+                .path("/" + id)
+                .path("/analysis");
+        URI uri = builder.build().encode().toUri();
+        JsonNode node = getRetryTemplate().execute(ctx -> restTemplate.getForObject(uri, JsonNode.class));
+        if (node.has("1")) {
+            return objectMapper.treeToValue(node, AnalysisList.class);
+        } else if (node.has("study_id")) {
+            Analysis analysisSingle = objectMapper.treeToValue(node, Analysis.class);
+            AnalysisList analysisList = new AnalysisList();
+            analysisList.set("1", analysisSingle);
+            return analysisList;
         }
-        return analysisList;
+        return null;
     }
 
-    public MetaboliteList getMataboliteList(String id){
+    public MetaboliteList getMataboliteList(String id) throws Exception {
 
-        String url = String.format("%s://%s/rest/study/study_id/%s/metabolites",
-                config.getProtocol(), config.getHostName(), id);
-
-        MetaboliteList metaboliteList = null;
-        try {
-            metaboliteList = this.restTemplate.getForObject(url, MetaboliteList.class);
-        } catch(Exception e) {
-            LOGGER.error("Exception occurred, id: {}, ", id, e);
+        UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
+                .scheme(config.getProtocol())
+                .host(config.getHostName())
+                .path("/rest/study/study_id")
+                .path("/" + id)
+                .path("/metabolites");
+        URI uri = builder.build().encode().toUri();
+        JsonNode node = getRetryTemplate().execute(ctx -> restTemplate.getForObject(uri, JsonNode.class));
+        if (node.has("1")) {
+            return objectMapper.treeToValue(node, MetaboliteList.class);
+        } else if (node.has("study_id")) {
+            MetaboliteList metaboliteList = new MetaboliteList();
+            Metabolite metabolite = objectMapper.treeToValue(node, Metabolite.class);
+            metaboliteList.set("1", metabolite);
+            return metaboliteList;
         }
-        return metaboliteList;
+        return null;
     }
 
     private ChebiID getChebiId(String pubchemId) {
@@ -126,18 +132,24 @@ public class DatasetWsClient extends AbstractClient {
      * @param id
      * @return List of Experiment Factors
      */
-    public FactorList getFactorList(String id){
-
-        String url = String.format("%s://%s/rest/study/study_id/%s/factors",
-                config.getProtocol(), config.getHostName(), id);
-
-        FactorList factorList = null;
-        try {
-            factorList = this.restTemplate.getForObject(url, FactorList.class);
-        } catch(Exception e) {
-            LOGGER.error("Exception occurred, id: {}, ", id, e);
+    public FactorList getFactorList(String id) throws Exception {
+        UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
+                .scheme(config.getProtocol())
+                .host(config.getHostName())
+                .path("/rest/study/study_id")
+                .path("/" + id)
+                .path("/factors");
+        URI uri = builder.build().encode().toUri();
+        JsonNode node = getRetryTemplate().execute(ctx -> restTemplate.getForObject(uri, JsonNode.class));
+        if (node.has("study_id")) {
+            Factor factor = objectMapper.treeToValue(node, Factor.class);
+            FactorList factorList = new FactorList();
+            factorList.set("1", factor);
+            return factorList;
+        } else if (node.has("1")) {
+            return objectMapper.treeToValue(node, FactorList.class);
         }
-        return factorList;
+        return null;
     }
 
     /**

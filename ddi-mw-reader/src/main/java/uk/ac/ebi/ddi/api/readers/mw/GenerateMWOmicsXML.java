@@ -2,24 +2,18 @@ package uk.ac.ebi.ddi.api.readers.mw;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import uk.ac.ebi.ddi.api.readers.model.IGenerator;
 import uk.ac.ebi.ddi.api.readers.mw.ws.client.DatasetWsClient;
-import uk.ac.ebi.ddi.api.readers.mw.ws.model.DiseaseList;
-import uk.ac.ebi.ddi.api.readers.mw.ws.model.DatasetList;
-import uk.ac.ebi.ddi.api.readers.mw.ws.model.SpecieList;
-import uk.ac.ebi.ddi.api.readers.mw.ws.model.TissueList;
 import uk.ac.ebi.ddi.api.readers.mw.ws.client.MWWsConfigProd;
+import uk.ac.ebi.ddi.api.readers.mw.ws.model.*;
 import uk.ac.ebi.ddi.api.readers.utils.Constants;
 import uk.ac.ebi.ddi.api.readers.utils.Transformers;
-
 import uk.ac.ebi.ddi.api.readers.ws.AbstractWsConfig;
 import uk.ac.ebi.ddi.xml.validator.parser.marshaller.OmicsDataMarshaller;
 import uk.ac.ebi.ddi.xml.validator.parser.model.Database;
 import uk.ac.ebi.ddi.xml.validator.parser.model.Entry;
-
 
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -32,9 +26,9 @@ import java.util.List;
  * @author Yasset Perez-Riverol
  */
 
-public class GenerateMWOmicsXML implements IGenerator{
+public class GenerateMWOmicsXML implements IGenerator {
 
-    private static final Logger logger = LoggerFactory.getLogger(GenerateMWOmicsXML.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenerateMWOmicsXML.class);
 
     AbstractWsConfig config;
 
@@ -49,7 +43,7 @@ public class GenerateMWOmicsXML implements IGenerator{
     }
 
     @Override
-    public void generate( ) throws Exception {
+    public void generate() throws Exception {
         DatasetWsClient datasetWsClient = new DatasetWsClient(config);
         DatasetList datasets = datasetWsClient.getAllDatasets();
         TissueList tissueList   = datasetWsClient.getTissues();
@@ -58,19 +52,22 @@ public class GenerateMWOmicsXML implements IGenerator{
         List<Entry> entries     = new ArrayList<>();
 
         if (datasets != null && datasets.datasets != null) {
-
-            datasets.datasets.values().forEach( dataset -> {
-                if(dataset != null && dataset.getIdentifier() != null){
-                    dataset.setMetabolites(datasetWsClient.getMataboliteList(dataset.getIdentifier()));
-                    dataset.setFactors(datasetWsClient.getFactorList(dataset.getIdentifier()));
-                    dataset.setTissues(tissueList.getTissuesByDataset(dataset.getIdentifier()));
-                    dataset.setSpecies(specieList.getSpeciesByDataset(dataset.getIdentifier()));
-                    dataset.setDiseases(diseaseList.getDiseasesByDataset(dataset.getIdentifier()));
-                    dataset.setAnalysis(datasetWsClient.getAnalysisInformantion(dataset.getIdentifier()));
-                    entries.add(Transformers.transformAPIDatasetToEntry(dataset));
-                    logger.info(dataset.getIdentifier());
+            for (MWDataSetDetails dataset : datasets.datasets.values()) {
+                try {
+                    if(dataset != null && dataset.getIdentifier() != null) {
+                        dataset.setMetabolites(datasetWsClient.getMataboliteList(dataset.getIdentifier()));
+                        dataset.setFactors(datasetWsClient.getFactorList(dataset.getIdentifier()));
+                        dataset.setTissues(tissueList.getTissuesByDataset(dataset.getIdentifier()));
+                        dataset.setSpecies(specieList.getSpeciesByDataset(dataset.getIdentifier()));
+                        dataset.setDiseases(diseaseList.getDiseasesByDataset(dataset.getIdentifier()));
+                        dataset.setAnalysis(datasetWsClient.getAnalysisInformantion(dataset.getIdentifier()));
+                        entries.add(Transformers.transformAPIDatasetToEntry(dataset));
+                        LOGGER.info("Dataset {} processed", dataset.getIdentifier());
+                    }
+                } catch (Exception e) {
+                    LOGGER.info("Exception occurred when processing dataset {}, ", dataset.getIdentifier(), e);
                 }
-            });
+            }
         }
 
         FileWriter mwFile = new FileWriter(outputFolder + "/metabolomics_workbench_data.xml");

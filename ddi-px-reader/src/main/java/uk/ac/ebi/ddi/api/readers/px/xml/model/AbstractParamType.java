@@ -1,22 +1,18 @@
 
 package uk.ac.ebi.ddi.api.readers.px.xml.model;
 
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.XmlType;
 
 
 /**
  * Abstract entity allowing either cvParam or userParam to be referenced in other schemas.
- *       
- * 
+ *
+ *
  * <p>Java class for AbstractParamType complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="AbstractParamType">
  *   &lt;complexContent>
@@ -30,20 +26,17 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "AbstractParamType")
 @XmlSeeAlso({
-    UserParamType.class,
-    CvParamType.class
+        UserParamType.class,
+        CvParamType.class
 })
 public abstract class AbstractParamType
-    implements Serializable, PXObject
-{
+        implements Serializable, PXObject {
 
-    private final static long serialVersionUID = 100L;
+    private static final long serialVersionUID = 100L;
     @XmlAttribute(required = true)
     protected String name;
     @XmlAttribute
@@ -57,11 +50,9 @@ public abstract class AbstractParamType
 
     /**
      * Gets the value of the name property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getName() {
         return name;
@@ -69,11 +60,9 @@ public abstract class AbstractParamType
 
     /**
      * Sets the value of the name property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setName(String value) {
         this.name = value;
@@ -81,11 +70,9 @@ public abstract class AbstractParamType
 
     /**
      * Gets the value of the value property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getValue() {
         return value;
@@ -93,11 +80,9 @@ public abstract class AbstractParamType
 
     /**
      * Sets the value of the value property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setValue(String value) {
         this.value = value;
@@ -105,11 +90,9 @@ public abstract class AbstractParamType
 
     /**
      * Gets the value of the unitAccession property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getUnitAccession() {
         return unitAccession;
@@ -117,11 +100,9 @@ public abstract class AbstractParamType
 
     /**
      * Sets the value of the unitAccession property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setUnitAccession(String value) {
         this.unitAccession = value;
@@ -129,11 +110,9 @@ public abstract class AbstractParamType
 
     /**
      * Gets the value of the unitName property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getUnitName() {
         return unitName;
@@ -141,11 +120,9 @@ public abstract class AbstractParamType
 
     /**
      * Sets the value of the unitName property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setUnitName(String value) {
         this.unitName = value;
@@ -153,11 +130,9 @@ public abstract class AbstractParamType
 
     /**
      * Gets the value of the unitCvRef property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getUnitCvRef() {
         return unitCvRef;
@@ -165,11 +140,9 @@ public abstract class AbstractParamType
 
     /**
      * Sets the value of the unitCvRef property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setUnitCvRef(String value) {
         this.unitCvRef = value;

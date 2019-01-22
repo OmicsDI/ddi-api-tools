@@ -7,11 +7,11 @@ import uk.ac.ebi.ddi.api.readers.utils.FileUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- *
  * PaxDB returns a zip file with corresponding subfolders each subfolder contains
  * a set of file that can be parse.
  *
@@ -25,9 +25,9 @@ public class PaxDBClient {
     private String proteinIdentifiersURL;
 
 
-    private static final Logger logger = LoggerFactory.getLogger(PaxDBClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PaxDBClient.class);
 
-    public PaxDBClient(String dataSetURL, String mappingIdentifiers, String proteinIdURL){
+    public PaxDBClient(String dataSetURL, String mappingIdentifiers, String proteinIdURL) {
         this.dataSetURL = dataSetURL;
         this.urlMappingIdentifiers = mappingIdentifiers;
         this.proteinIdentifiersURL = proteinIdURL;
@@ -39,10 +39,10 @@ public class PaxDBClient {
 
         Map<String, ByteArrayOutputStream> zipInputStreamFiles = FileUtils.doZipInputStream(this.dataSetURL);
 
-        logger.debug("Number of Datasets:" + zipInputStreamFiles.size());
+        LOGGER.debug("Number of Datasets:" + zipInputStreamFiles.size());
 
-        if(zipInputStreamFiles.size() > 0){
-            zipInputStreamFiles.forEach( (key, value) -> {
+        if (zipInputStreamFiles.size() > 0) {
+            zipInputStreamFiles.forEach((key, value) -> {
                 try {
                     paxDBDatasets.put(FileUtils.getNameFromInternalZipPath(key), PaxDBDatasetReader.readDataset(value));
                 } catch (IOException e) {
@@ -55,25 +55,26 @@ public class PaxDBClient {
         Map<String, String> mapIdentifiers = PaxDBDatasetReader.readMapFileIdentifiers(zipInputStreamFile);
 
         paxDBDatasets.forEach((key, value) -> {
-            if(mapIdentifiers.containsKey(key)){
+            if (mapIdentifiers.containsKey(key)) {
                 value.setFullLink(mapIdentifiers.get(key));
             }
         });
 
-        Map<String, ByteArrayOutputStream> zipInputStreamProteinFiles = FileUtils.doZipInputStream(this.proteinIdentifiersURL);
+        Map<String, ByteArrayOutputStream> zipInputStreamProteinFiles =
+                FileUtils.doZipInputStream(this.proteinIdentifiersURL);
         Map<String, String> proteins = new HashMap<>();
-        zipInputStreamProteinFiles.forEach((key, value) ->{
-            if(value != null){
+        zipInputStreamProteinFiles.forEach((key, value) -> {
+            if (value != null) {
                 Map<String, String> values = null;
                 try {
                     values = PaxDBDatasetReader.readProteinIdentifiers(value);
                     proteins.putAll(values);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.error("Exception occurred when reading protein {}, e", value, e);
                 }
             }
         });
-        paxDBDatasets.forEach( (key, dataset) -> dataset.updateIds(proteins));
+        paxDBDatasets.forEach((key, dataset) -> dataset.updateIds(proteins));
 
         return paxDBDatasets.values();
     }

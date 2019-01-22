@@ -8,34 +8,32 @@ import javax.xml.namespace.QName;
 
 
 /**
- * This object contains factory methods for each 
- * Java content interface and Java element interface 
- * generated in the uk.ac.ebi.ddi.reader.xml.px.model package. 
- * <p>An ObjectFactory allows you to programatically 
- * construct new instances of the Java representation 
- * for XML content. The Java representation of XML 
- * content can consist of schema derived interfaces 
- * and classes representing the binding of schema 
- * type definitions, element declarations and model 
- * groups.  Factory methods for each of these are 
+ * This object contains factory methods for each
+ * Java content interface and Java element interface
+ * generated in the uk.ac.ebi.ddi.reader.xml.px.model package.
+ * <p>An ObjectFactory allows you to programatically
+ * construct new instances of the Java representation
+ * for XML content. The Java representation of XML
+ * content can consist of schema derived interfaces
+ * and classes representing the binding of schema
+ * type definitions, element declarations and model
+ * groups.  Factory methods for each of these are
  * provided in this class.
- * 
  */
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _ProteomeXchangeDataset_QNAME = new QName("", "ProteomeXchangeDataset");
+    private static final QName PROTEOME_XCHANGE_DATASET_QNAME = new QName("", "ProteomeXchangeDataset");
 
     /**
-     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: uk.ac.ebi.ddi.reader.xml.px.model
-     * 
+     * Create a new ObjectFactory that can be used to create new instances of schema derived classes
+     * for package: uk.ac.ebi.ddi.reader.xml.px.model
      */
     public ObjectFactory() {
     }
 
     /**
      * Create an instance of {@link InstrumentListType }
-     * 
      */
     public InstrumentListType createInstrumentListType() {
         return new InstrumentListType();
@@ -43,7 +41,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link UserParamType }
-     * 
      */
     public UserParamType createUserParamType() {
         return new UserParamType();
@@ -51,7 +48,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ContactType }
-     * 
      */
     public ContactType createContactType() {
         return new ContactType();
@@ -59,7 +55,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link DatasetIdentifierType }
-     * 
      */
     public DatasetIdentifierType createDatasetIdentifierType() {
         return new DatasetIdentifierType();
@@ -67,7 +62,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link DatasetOriginType }
-     * 
      */
     public DatasetOriginType createDatasetOriginType() {
         return new DatasetOriginType();
@@ -75,7 +69,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link PublicationType }
-     * 
      */
     public PublicationType createPublicationType() {
         return new PublicationType();
@@ -83,7 +76,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link SampleListType }
-     * 
      */
     public SampleListType createSampleListType() {
         return new SampleListType();
@@ -91,7 +83,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link SampleType }
-     * 
      */
     public SampleType createSampleType() {
         return new SampleType();
@@ -99,7 +90,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link KeywordListType }
-     * 
      */
     public KeywordListType createKeywordListType() {
         return new KeywordListType();
@@ -107,7 +97,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link DatasetIdentifierListType }
-     * 
      */
     public DatasetIdentifierListType createDatasetIdentifierListType() {
         return new DatasetIdentifierListType();
@@ -115,7 +104,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link FullDatasetLinkType }
-     * 
      */
     public FullDatasetLinkType createFullDatasetLinkType() {
         return new FullDatasetLinkType();
@@ -123,7 +111,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link RepositoryRecordListType }
-     * 
      */
     public RepositoryRecordListType createRepositoryRecordListType() {
         return new RepositoryRecordListType();
@@ -131,7 +118,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link RepositorySupportType }
-     * 
      */
     public RepositorySupportType createRepositorySupportType() {
         return new RepositorySupportType();
@@ -139,7 +125,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link CvParamType }
-     * 
      */
     public CvParamType createCvParamType() {
         return new CvParamType();
@@ -147,7 +132,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ChangeLogType }
-     * 
      */
     public ChangeLogType createChangeLogType() {
         return new ChangeLogType();
@@ -155,7 +139,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link DatasetFileType }
-     * 
      */
     public DatasetFileType createDatasetFileType() {
         return new DatasetFileType();
@@ -163,7 +146,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link PublicationListType }
-     * 
      */
     public PublicationListType createPublicationListType() {
         return new PublicationListType();
@@ -171,7 +153,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link SpeciesType }
-     * 
      */
     public SpeciesType createSpeciesType() {
         return new SpeciesType();
@@ -179,7 +160,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ContactListType }
-     * 
      */
     public ContactListType createContactListType() {
         return new ContactListType();
@@ -187,7 +167,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ChangeLogEntryType }
-     * 
      */
     public ChangeLogEntryType createChangeLogEntryType() {
         return new ChangeLogEntryType();
@@ -195,7 +174,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link RepositoryRecordType }
-     * 
      */
     public RepositoryRecordType createRepositoryRecordType() {
         return new RepositoryRecordType();
@@ -203,7 +181,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ReviewLevelType }
-     * 
      */
     public ReviewLevelType createReviewLevelType() {
         return new ReviewLevelType();
@@ -211,7 +188,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ProteomeXchangeDatasetType }
-     * 
      */
     public ProteomeXchangeDatasetType createProteomeXchangeDatasetType() {
         return new ProteomeXchangeDatasetType();
@@ -219,7 +195,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link DatasetOriginListType }
-     * 
      */
     public DatasetOriginListType createDatasetOriginListType() {
         return new DatasetOriginListType();
@@ -227,7 +202,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link AdditionalInformationType }
-     * 
      */
     public AdditionalInformationType createAdditionalInformationType() {
         return new AdditionalInformationType();
@@ -235,7 +209,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link CvListType }
-     * 
      */
     public CvListType createCvListType() {
         return new CvListType();
@@ -243,7 +216,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link CvType }
-     * 
      */
     public CvType createCvType() {
         return new CvType();
@@ -251,7 +223,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link DatasetSummaryType }
-     * 
      */
     public DatasetSummaryType createDatasetSummaryType() {
         return new DatasetSummaryType();
@@ -259,7 +230,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link SpeciesListType }
-     * 
      */
     public SpeciesListType createSpeciesListType() {
         return new SpeciesListType();
@@ -267,7 +237,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link InstrumentType }
-     * 
      */
     public InstrumentType createInstrumentType() {
         return new InstrumentType();
@@ -275,7 +244,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ModificationListType }
-     * 
      */
     public ModificationListType createModificationListType() {
         return new ModificationListType();
@@ -283,7 +251,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link DatasetFileListType }
-     * 
      */
     public DatasetFileListType createDatasetFileListType() {
         return new DatasetFileListType();
@@ -291,7 +258,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link RefType }
-     * 
      */
     public RefType createRefType() {
         return new RefType();
@@ -299,7 +265,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link FullDatasetLinkListType }
-     * 
      */
     public FullDatasetLinkListType createFullDatasetLinkListType() {
         return new FullDatasetLinkListType();
@@ -307,11 +272,10 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ProteomeXchangeDatasetType }{@code >}}
-     * 
      */
     @XmlElementDecl(namespace = "", name = "ProteomeXchangeDataset")
     public JAXBElement<ProteomeXchangeDatasetType> createProteomeXchangeDataset(ProteomeXchangeDatasetType value) {
-        return new JAXBElement<>(_ProteomeXchangeDataset_QNAME, ProteomeXchangeDatasetType.class, null, value);
+        return new JAXBElement<>(PROTEOME_XCHANGE_DATASET_QNAME, ProteomeXchangeDatasetType.class, null, value);
     }
 
 }

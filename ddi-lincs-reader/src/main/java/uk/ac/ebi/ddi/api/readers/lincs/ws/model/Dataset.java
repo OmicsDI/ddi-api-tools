@@ -26,7 +26,8 @@ public class Dataset implements IAPIDataset {
     @JsonProperty("ldplink")
     private String datasetLink;
 
-    @JsonProperty("projectname") String projectName;
+    @JsonProperty("projectname")
+    String projectName;
 
     @JsonProperty("principalinvestigator")
     private String principalInvestigator;
@@ -111,8 +112,9 @@ public class Dataset implements IAPIDataset {
     @Override
     public Map<String, String> getOtherDates() {
         Map<String, String> dates = new HashMap<>();
-        if(modifiedDate != null)
+        if (modifiedDate != null) {
             dates.put(Field.PUBLICATION_UPDATED.getName(), modifiedDate);
+        }
         return dates;
     }
 
@@ -140,54 +142,57 @@ public class Dataset implements IAPIDataset {
 
     @Override
     public Set<String> getInstruments() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     @Override
     public Set<String> getSpecies() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     @Override
     public Set<String> getCellTypes() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     @Override
     public Set<String> getDiseases() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     @Override
     public Set<String> getTissues() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     @Override
     public Set<String> getSoftwares() {
-        if(software != null)
+        if (software != null) {
             return new HashSet<>(Arrays.asList(software));
-        return Collections.EMPTY_SET;
+        }
+        return Collections.emptySet();
     }
 
     @Override
     public Set<String> getSubmitter() {
         Set<String> submitters = new HashSet<>();
-        if(screeninglabinvestigator != null)
+        if (screeninglabinvestigator != null) {
             submitters.add(screeninglabinvestigator);
+        }
         return submitters;
     }
 
     @Override
     public Set<String> getSubmitterEmails() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     @Override
     public Set<String> getSubmitterAffiliations() {
         Set<String> affiliations = new HashSet<>();
-        if(this.affiliation != null)
+        if (this.affiliation != null) {
             affiliations.add(this.affiliation);
+        }
         return affiliations;
     }
 
@@ -198,31 +203,32 @@ public class Dataset implements IAPIDataset {
 
     @Override
     public Set<String> getLabHead() {
-        Set<String> labHead  = new HashSet<>();
-        if(principalInvestigator != null)
+        Set<String> labHead = new HashSet<>();
+        if (principalInvestigator != null) {
             labHead.add(principalInvestigator);
+        }
         return labHead;
     }
 
     @Override
     public Set<String> getLabHeadMail() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     @Override
     public Set<String> getLabHeadAffiliation() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     @Override
     public Set<String> getDatasetFiles() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     @Override
     public Map<String, Set<String>> getCrossReferences() {
         Map<String, Set<String>> crossReferences = new HashMap<>();
-        if(pubmedID != null){
+        if (pubmedID != null) {
             Set<String> publications = new HashSet<>();
             publications.add(pubmedID);
             crossReferences.put(Field.PUBMED.getName(), publications);
@@ -233,38 +239,39 @@ public class Dataset implements IAPIDataset {
     @Override
     public Map<String, Set<String>> getOtherAdditionals() {
         Map<String, Set<String>> otherAdditionals = new HashMap<>();
-        if(smallMolecules != null && smallMolecules.length > 0){
+        if (smallMolecules != null && smallMolecules.length > 0) {
             Set<String> smallMoleculesSet = new HashSet<>();
             smallMoleculesSet.addAll(Arrays.asList(smallMolecules));
             otherAdditionals.put(Field.METABOLITE_NAME.getName(), smallMoleculesSet);
         }
-        if(proteins != null && proteins.length > 0){
+        if (proteins != null && proteins.length > 0) {
             Set<String> proteinSet = new HashSet<>();
             proteinSet.addAll(Arrays.asList(proteins));
             otherAdditionals.put(Field.PROTEIN_NAME.getName(), proteinSet);
         }
 
-        if(genes != null && genes.length > 0){
+        if (genes != null && genes.length > 0) {
             Set<String> geneSet = new HashSet<>();
             geneSet.addAll(Arrays.asList(genes));
             otherAdditionals.put(Field.GENE_NAME.getName(), geneSet);
         }
         Set<String> tecnologyTypes = new HashSet<>();
-        if(physicalDetection != null && physicalDetection.length() >0){
+        if (physicalDetection != null && physicalDetection.length() > 0) {
             tecnologyTypes.add(physicalDetection);
         }
-        if(assayMethod != null)
+        if (assayMethod != null) {
             tecnologyTypes.addAll(Arrays.asList(assayMethod));
+        }
 
-        if(tecnologyTypes.size() >0)
+        if (tecnologyTypes.size() > 0) {
             otherAdditionals.put(Field.TECHNOLOGY_TYPE.getName(), tecnologyTypes);
+        }
 
-        if(funding != null){
+        if (funding != null) {
             Set<String> fundings = new HashSet<>();
             fundings.add(funding);
             otherAdditionals.put(Field.FUNDING.getName(), fundings);
         }
-
 
 
         return otherAdditionals;

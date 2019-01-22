@@ -57,31 +57,41 @@ public class PaxDBDatasetReader {
         StringBuilder sb = new StringBuilder();
         String line;
         while ((line = br.readLine()) != null) {
-            if(line.startsWith("#")){
+            if (line.startsWith("#")) {
                 Map.Entry property = readProperty(line);
-                if(property != null){
-                    if(property.getKey().toString().equalsIgnoreCase(PaxDBProperty.NAME.getName()))
+                if (property != null) {
+                    if (property.getKey().toString().equalsIgnoreCase(PaxDBProperty.NAME.getName())) {
                         dataset.setName((String) property.getValue());
-                    if(property.getKey().toString().equalsIgnoreCase(PaxDBProperty.SCORE.getName()))
+                    }
+                    if (property.getKey().toString().equalsIgnoreCase(PaxDBProperty.SCORE.getName())) {
                         dataset.setScore((String) property.getValue());
-                    if(property.getKey().toString().equalsIgnoreCase(PaxDBProperty.WEIGHT.getName()))
+                    }
+                    if (property.getKey().toString().equalsIgnoreCase(PaxDBProperty.WEIGHT.getName())) {
                         dataset.setWeigth((String) property.getValue());
-                    if(property.getKey().toString().equalsIgnoreCase(PaxDBProperty.DESCRIPTION.getName()))
+                    }
+                    if (property.getKey().toString().equalsIgnoreCase(PaxDBProperty.DESCRIPTION.getName())) {
                         dataset.setDescription((String) property.getValue());
-                    if(property.getKey().toString().equalsIgnoreCase(PaxDBProperty.ORGAN.getName()))
+                    }
+                    if (property.getKey().toString().equalsIgnoreCase(PaxDBProperty.ORGAN.getName())) {
                         dataset.setTissue((String) property.getValue());
-                    if(property.getKey().toString().equalsIgnoreCase(PaxDBProperty.PUBLICATION_YEAR.getName()))
+                    }
+                    if (property.getKey().toString().equalsIgnoreCase(PaxDBProperty.PUBLICATION_YEAR.getName())) {
                         dataset.setPublicationDate((String) property.getValue());
-                    if(property.getKey().toString().equalsIgnoreCase(PaxDBProperty.INTEGRATED.getName()))
+                    }
+                    if (property.getKey().toString().equalsIgnoreCase(PaxDBProperty.INTEGRATED.getName())) {
                         dataset.setIntegrated((String) property.getValue());
-                    if(property.getKey().toString().equalsIgnoreCase(PaxDBProperty.COVERAGE.getName()))
+                    }
+                    if (property.getKey().toString().equalsIgnoreCase(PaxDBProperty.COVERAGE.getName())) {
                         dataset.setCoverage((String) property.getValue());
-                    if(property.getKey().toString().equalsIgnoreCase(PaxDBProperty.FILENAME.getName()))
+                    }
+                    if (property.getKey().toString().equalsIgnoreCase(PaxDBProperty.FILENAME.getName())) {
                         dataset.setFileName((String) property.getValue());
-                }else if(line.contains(PaxDBProperty.INTERNAL_ID.getName())){
-                        Map<String, Map.Entry<String,String>> absoluteAbundances = readAbsoluteAbundances(br);
-                        if(absoluteAbundances != null && absoluteAbundances.size() > 0)
-                            dataset.setAbundanceProteins(absoluteAbundances);
+                    }
+                } else if (line.contains(PaxDBProperty.INTERNAL_ID.getName())) {
+                    Map<String, Map.Entry<String, String>> absoluteAbundances = readAbsoluteAbundances(br);
+                    if (absoluteAbundances != null && absoluteAbundances.size() > 0) {
+                        dataset.setAbundanceProteins(absoluteAbundances);
+                    }
                 }
             }
             sb.append(line);
@@ -90,16 +100,16 @@ public class PaxDBDatasetReader {
         return dataset;
     }
 
-    private static Map<String, Map.Entry<String,String>> readAbsoluteAbundances(BufferedReader br) throws IOException {
+    private static Map<String, Map.Entry<String, String>> readAbsoluteAbundances(BufferedReader br) throws IOException {
         String line;
-        Map<String,Map.Entry<String, String>> mapAbundances = new HashMap<>();
-        while((line = br.readLine()) != null){
+        Map<String, Map.Entry<String, String>> mapAbundances = new HashMap<>();
+        while ((line = br.readLine()) != null) {
             String[] lineArr = line.split("\\s+");
-            if (lineArr.length == 3){
+            if (lineArr.length == 3) {
                 String idProtein = lineArr[1];
                 String abundance = lineArr[2];
                 mapAbundances.put(idProtein, new AbstractMap.SimpleEntry<>(abundance, null));
-            }else if (lineArr.length == 4){
+            } else if (lineArr.length == 4) {
                 String idProtein = lineArr[1];
                 String abundance = lineArr[2];
                 String rawSpectralCount = lineArr[3];
@@ -109,18 +119,18 @@ public class PaxDBDatasetReader {
         return mapAbundances;
     }
 
-    private static Map.Entry<String, String> readProperty(String line){
+    private static Map.Entry<String, String> readProperty(String line) {
 
         String[] lineArr = line.replaceFirst("#", "").split(":", 2);
-        if(lineArr.length == 2){
+        if (lineArr.length == 2) {
             return new AbstractMap.SimpleEntry<>(lineArr[0].trim(), lineArr[1].trim());
         }
         return null;
     }
 
-    private static Map.Entry<String, String> readFileIdentifierMap(String line){
+    private static Map.Entry<String, String> readFileIdentifierMap(String line) {
         String[] lineArr = line.split("\\s+");
-        if(lineArr.length == 2){
+        if (lineArr.length == 2) {
             return new AbstractMap.SimpleEntry<>(lineArr[0].trim(), lineArr[1].trim());
         }
         return null;
@@ -133,23 +143,25 @@ public class PaxDBDatasetReader {
         StringBuilder sb = new StringBuilder();
         String line;
         while ((line = br.readLine()) != null) {
-            if(!line.startsWith("#")){
+            if (!line.startsWith("#")) {
                 Map.Entry<String, String> property = readFileIdentifierMap(line);
-                if(property != null)
+                if (property != null) {
                     identifierMap.put(property.getKey(), property.getValue());
+                }
             }
         }
         return identifierMap;
     }
 
-    public static Map<String, String> readProteinIdentifiers(ByteArrayOutputStream zipInputStreamProteinFiles) throws IOException {
+    public static Map<String, String> readProteinIdentifiers(ByteArrayOutputStream zipInputStreamProteinFiles)
+            throws IOException {
         Map<String, String> proteinIds = new HashMap<>();
         InputStream is = new ByteArrayInputStream(zipInputStreamProteinFiles.toByteArray());
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
         String line;
         while ((line = br.readLine()) != null) {
-            if(line.split("\\s+").length == 2){
+            if (line.split("\\s+").length == 2) {
                 String[] idArr = line.split("\\s+");
                 proteinIds.put(idArr[0], idArr[1]);
             }

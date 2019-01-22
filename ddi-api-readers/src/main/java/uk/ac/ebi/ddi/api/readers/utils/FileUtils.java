@@ -28,6 +28,7 @@ public class FileUtils {
 
     /**
      * Retrieve InputStream from URL
+     *
      * @param url http url to retrieve the file
      * @return InputStream to be read
      * @throws IOException
@@ -40,6 +41,7 @@ public class FileUtils {
 
     /**
      * Retrieve a Map of File Name and OutputStream from
+     *
      * @param url URL to retrieve a Map of String and {@link ByteArrayOutputStream}
      * @return Map with file name and {@link ByteArrayOutputStream}
      * @throws IOException
@@ -52,7 +54,7 @@ public class FileUtils {
         final byte[] tempBuffer = new byte[8192 * 2];
         Map<String, ByteArrayOutputStream> entryBufMap = new HashMap<>();
 
-        while((zipEntry = zipInputStream.getNextEntry()) != null){
+        while ((zipEntry = zipInputStream.getNextEntry()) != null) {
             if (!zipEntry.isDirectory()) {
                 int bytesRead = -1;
                 final ByteArrayOutputStream streamBuilder = new ByteArrayOutputStream();
@@ -69,6 +71,7 @@ public class FileUtils {
 
     /**
      * Retrieve a Map of File Name and OutputStream from
+     *
      * @param url URL to retrieve a Map of String and {@link ByteArrayOutputStream}
      * @return Map with file name and {@link ByteArrayOutputStream}
      * @throws IOException
@@ -90,6 +93,7 @@ public class FileUtils {
 
     /**
      * Retrieve a {@link ByteArrayOutputStream} from a URL
+     *
      * @param url String URL with the file
      * @return ByteArrayOutputStream
      * @throws IOException
@@ -109,7 +113,7 @@ public class FileUtils {
     }
 
 
-    public static String getNameFromInternalZipPath(String path){
+    public static String getNameFromInternalZipPath(String path) {
         int index = path.lastIndexOf("/");
         return path.substring(index + 1);
     }

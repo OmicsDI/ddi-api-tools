@@ -16,7 +16,7 @@ import uk.ac.ebi.ddi.api.readers.model.IFilter;
  * <p>
  * Created by ypriverol (ypriverol@gmail.com) on 25/01/2017.
  */
-public class SpeciesCellTypeFilter<T> implements IFilter<T>{
+public class SpeciesCellTypeFilter<T> implements IFilter<T> {
 
     public SpeciesCellTypeFilter() {
     }

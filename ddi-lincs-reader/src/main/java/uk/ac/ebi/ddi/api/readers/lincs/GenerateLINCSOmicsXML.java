@@ -24,13 +24,12 @@ import java.util.*;
  * This project takes class Retrieve information from GPMDB, it allows to retrieve
  * the proteins ids for an specific model, etc.
  *
- *
  * @author Yasset Perez-Riverol
  */
 
 public class GenerateLINCSOmicsXML implements IGenerator {
 
-    private static final Logger logger = LoggerFactory.getLogger(GenerateLINCSOmicsXML.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenerateLINCSOmicsXML.class);
 
     public AbstractWsConfig config;
 
@@ -39,23 +38,23 @@ public class GenerateLINCSOmicsXML implements IGenerator {
     String releaseDate;
 
 
-    public GenerateLINCSOmicsXML(AbstractWsConfig config, String folder, String releaseDate){
+    public GenerateLINCSOmicsXML(AbstractWsConfig config, String folder, String releaseDate) {
         this.config = config;
         this.outputFolder = folder;
         this.releaseDate = releaseDate;
     }
 
-    public void generate() throws Exception{
+    public void generate() throws Exception {
 
         LINCSClient datasetWsClient = new LINCSClient(config);
-        DatasetList datasetList     = datasetWsClient.getAllDatasets();
+        DatasetList datasetList = datasetWsClient.getAllDatasets();
 
         if (datasetList != null && datasetList.getDatasets() != null && datasetList.getDatasets().length > 0) {
             Entries lincsEntries = new Entries();
-            Arrays.asList(datasetList.getDatasets()).parallelStream().forEach( dataset -> {
+            Arrays.asList(datasetList.getDatasets()).parallelStream().forEach(dataset -> {
                 Entry entry = Transformers.transformAPIDatasetToEntry(dataset);
                 lincsEntries.addEntry(entry);
-                logger.info(dataset.getIdentifier());
+                LOGGER.info(dataset.getIdentifier());
             });
 
             FileWriter lincsFile = new FileWriter(outputFolder + "/lincs_data.xml");
@@ -81,26 +80,26 @@ public class GenerateLINCSOmicsXML implements IGenerator {
     public static void main(String[] args) {
 
         String outputFolder = null;
-        String releaseDate  = null;
+        String releaseDate = null;
 
-        if (args != null && args.length > 1 && args[0] != null){
+        if (args != null && args.length > 1 && args[0] != null) {
             outputFolder = args[0];
-            releaseDate  = args[1];
-        } else
+            releaseDate = args[1];
+        } else {
             System.exit(-1);
-
+        }
 
         ApplicationContext ctx = new ClassPathXmlApplicationContext("spring/app-context.xml");
         LINCSConfigProd lincsConfigProd = (LINCSConfigProd) ctx.getBean("lincsProd");
 
         try {
-            GenerateLINCSOmicsXML lincsGenerator = new GenerateLINCSOmicsXML(lincsConfigProd, outputFolder, releaseDate);
+            GenerateLINCSOmicsXML lincsGenerator =
+                    new GenerateLINCSOmicsXML(lincsConfigProd, outputFolder, releaseDate);
             lincsGenerator.generate();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
 
 }

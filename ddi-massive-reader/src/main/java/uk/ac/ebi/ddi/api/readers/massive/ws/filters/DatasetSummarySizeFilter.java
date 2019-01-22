@@ -12,12 +12,12 @@ public class DatasetSummarySizeFilter<T> implements IFilter<T> {
     private double dataSizeMb = 0;
 //    Pattern regPattern = Pattern.compile("(-)?(([^\\d])(0)|[1-9][0-9]*)(.)([0-9]+)");
 
-    public DatasetSummarySizeFilter(double dataSizeMb){
+    public DatasetSummarySizeFilter(double dataSizeMb) {
         this.dataSizeMb = dataSizeMb;
     }
 
     @Override
     public boolean valid(Object object) {
-        return ((MassiveDatasetSummaryMassive) object).getFileSize()/1000 > dataSizeMb;
+        return ((MassiveDatasetSummaryMassive) object).getFileSize() / 1000 > dataSizeMb;
     }
 }

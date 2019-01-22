@@ -1,23 +1,18 @@
 
 package uk.ac.ebi.ddi.api.readers.px.xml.model;
 
-import java.io.Serializable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.io.Serializable;
 
 
 /**
  * Broad description of the dataset being announced, inlcuding a title, abstract, review level, etc.
- * 
+ *
  * <p>Java class for DatasetSummaryType complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="DatasetSummaryType">
  *   &lt;complexContent>
@@ -34,20 +29,17 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "DatasetSummaryType", propOrder = {
-    "description",
-    "reviewLevel",
-    "repositorySupport"
+        "description",
+        "reviewLevel",
+        "repositorySupport"
 })
 public class DatasetSummaryType
-    implements Serializable, PXObject
-{
+        implements Serializable, PXObject {
 
-    private final static long serialVersionUID = 100L;
+    private static final long serialVersionUID = 100L;
     @XmlElement(name = "Description", required = true)
     protected String description;
     @XmlElement(name = "ReviewLevel", required = true)
@@ -64,11 +56,9 @@ public class DatasetSummaryType
 
     /**
      * Gets the value of the description property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getDescription() {
         return description;
@@ -76,11 +66,9 @@ public class DatasetSummaryType
 
     /**
      * Sets the value of the description property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setDescription(String value) {
         this.description = value;
@@ -88,11 +76,9 @@ public class DatasetSummaryType
 
     /**
      * Gets the value of the reviewLevel property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ReviewLevelType }
-     *     
+     *
+     * @return possible object is
+     * {@link ReviewLevelType }
      */
     public ReviewLevelType getReviewLevel() {
         return reviewLevel;
@@ -100,11 +86,9 @@ public class DatasetSummaryType
 
     /**
      * Sets the value of the reviewLevel property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ReviewLevelType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link ReviewLevelType }
      */
     public void setReviewLevel(ReviewLevelType value) {
         this.reviewLevel = value;
@@ -112,11 +96,9 @@ public class DatasetSummaryType
 
     /**
      * Gets the value of the repositorySupport property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link RepositorySupportType }
-     *     
+     *
+     * @return possible object is
+     * {@link RepositorySupportType }
      */
     public RepositorySupportType getRepositorySupport() {
         return repositorySupport;
@@ -124,11 +106,9 @@ public class DatasetSummaryType
 
     /**
      * Sets the value of the repositorySupport property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link RepositorySupportType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link RepositorySupportType }
      */
     public void setRepositorySupport(RepositorySupportType value) {
         this.repositorySupport = value;
@@ -136,11 +116,9 @@ public class DatasetSummaryType
 
     /**
      * Gets the value of the announceDate property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @return possible object is
+     * {@link XMLGregorianCalendar }
      */
     public XMLGregorianCalendar getAnnounceDate() {
         return announceDate;
@@ -148,11 +126,9 @@ public class DatasetSummaryType
 
     /**
      * Sets the value of the announceDate property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link XMLGregorianCalendar }
      */
     public void setAnnounceDate(XMLGregorianCalendar value) {
         this.announceDate = value;
@@ -160,11 +136,9 @@ public class DatasetSummaryType
 
     /**
      * Gets the value of the hostingRepository property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link HostingRepositoryType }
-     *     
+     *
+     * @return possible object is
+     * {@link HostingRepositoryType }
      */
     public HostingRepositoryType getHostingRepository() {
         return hostingRepository;
@@ -172,11 +146,9 @@ public class DatasetSummaryType
 
     /**
      * Sets the value of the hostingRepository property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link HostingRepositoryType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link HostingRepositoryType }
      */
     public void setHostingRepository(HostingRepositoryType value) {
         this.hostingRepository = value;
@@ -184,11 +156,9 @@ public class DatasetSummaryType
 
     /**
      * Gets the value of the title property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getTitle() {
         return title;
@@ -196,11 +166,9 @@ public class DatasetSummaryType
 
     /**
      * Sets the value of the title property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setTitle(String value) {
         this.title = value;

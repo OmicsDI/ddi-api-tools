@@ -32,6 +32,7 @@ public class GPMDBFTPClient {
 
     /**
      * Return Complete Model from GPMDB FTP Path
+     *
      * @return List of GPMDB Model Path
      * @throws IOException
      */
@@ -40,15 +41,18 @@ public class GPMDBFTPClient {
         List<String> listFiles = new ArrayList<>();
         gpmdbProd.onConnect();
         IFilter[] filters = new IFilter[2];
-        filters[0] =  new PrefixFilter(Constants.GPMDB_PREFIX_MODEL);
+        filters[0] = new PrefixFilter(Constants.GPMDB_PREFIX_MODEL);
         filters[1] = new PostFixFilter(FileExtensions.FTP_GPMDB_MODEL_EXTENSION.getExtension());
-        final Iterable<String> findings = new FTPFileSearch( Constants.GPMDB_FTP_ROOT_DIRECOTRY, filters, true, new MockCallback<>()).ftpCall(gpmdbProd.getClient());
-        findings.forEach(s -> listFiles.add(new StringJoiner(Constants.PATH_DELIMITED).add(gpmdbProd.getHost()).add(s).toString()));
+        final Iterable<String> findings = new FTPFileSearch(Constants.GPMDB_FTP_ROOT_DIRECOTRY,
+                filters, true, new MockCallback<>()).ftpCall(gpmdbProd.getClient());
+        findings.forEach(s -> listFiles.add(
+                new StringJoiner(Constants.PATH_DELIMITED).add(gpmdbProd.getHost()).add(s).toString()));
         return listFiles;
     }
 
     /**
      * List of models in GPMDB
+     *
      * @return List of Models
      * @throws IOException
      */
@@ -59,7 +63,9 @@ public class GPMDBFTPClient {
         return models;
     }
 
-    public String getModel(String ftpPath){
-        return ftpPath.substring(ftpPath.lastIndexOf(Constants.PATH_DELIMITED) +1, ftpPath.lastIndexOf(FileExtensions.FTP_GPMDB_MODEL_EXTENSION.getExtension())-1);
+    public String getModel(String ftpPath) {
+        return ftpPath.substring(
+                ftpPath.lastIndexOf(Constants.PATH_DELIMITED) + 1,
+                ftpPath.lastIndexOf(FileExtensions.FTP_GPMDB_MODEL_EXTENSION.getExtension()) - 1);
     }
 }

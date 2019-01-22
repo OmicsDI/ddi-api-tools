@@ -1,7 +1,5 @@
 package uk.ac.ebi.ddi.api.readers.model;
 
-import uk.ac.ebi.ddi.api.readers.utils.XMLUtils;
-
 /**
  * Created by azorin on 13/12/2017.
  *

@@ -8,27 +8,27 @@ import java.io.File;
 public class SampleFile extends SoftFile {
     static final String SAMPLE_TYPE = "SAMPLE";
 
-    public SampleFile(File file) throws Exception{
+    public SampleFile(File file) throws Exception {
         super(file);
 
-        if(!this.Type.equals(SAMPLE_TYPE)){
+        if (!this.Type.equals(SAMPLE_TYPE)) {
             throw new Exception("expected SAMPLE, received " + this.Type);
         }
     }
 
-    public String get_Title(){
+    public String get_Title() {
         return this.getFirstAttribute(SampleAttribute.Sample_title.getName());
     }
 
-    public String getCellType(){
-        return this.findAttributeValue(SampleAttribute.Sample_characteristics_ch1.getName(),"cell type");
+    public String getCellType() {
+        return this.findAttributeValue(SampleAttribute.Sample_characteristics_ch1.getName(), "cell type");
     }
 
-    public String getSampleProtocol(){
+    public String getSampleProtocol() {
         return this.getFirstAttribute(SampleAttribute.Sample_growth_protocol_ch1.getName());
     }
 
-    public String getDataProtocol(){
+    public String getDataProtocol() {
         return this.getFirstAttribute(SampleAttribute.Sample_data_processing.getName());
     }
 }

@@ -15,7 +15,7 @@ import org.apache.commons.net.ftp.FTPFile;
  * <p>
  * Created by ypriverol (ypriverol@gmail.com) on 24/01/2017.
  */
-public class PostFixFilter extends AbstractFilter{
+public class PostFixFilter extends AbstractFilter {
 
     private final transient String postfix;
 

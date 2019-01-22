@@ -151,8 +151,8 @@ public class BioprojectsFileReader {
                 String formattedDate = formatter.format(date);
 
                 dataset.addDate("submission", formattedDate);
-            } catch(ParseException exception) {
-                LOGGER.error("cannot parse date:"+exception.getMessage());
+            } catch (ParseException exception) {
+                LOGGER.error("cannot parse date:" + exception.getMessage());
             }
         }
         String platformId = series.getPlatformId();
@@ -215,9 +215,11 @@ public class BioprojectsFileReader {
             dataset.setPublicationDate(pubDate);
         }
 
-        if (database.equals("GEO")) {
+        if (database == null) {
+            return dataset;
+        } else if (database.equals("GEO")) {
             addGeoAdditionInformations(dataset, database);
-        } else if (database.equals("dbGaP")){
+        } else if (database.equals("dbGaP")) {
             dataset.setFullLink("https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=" + id);
         }
 
@@ -257,7 +259,7 @@ public class BioprojectsFileReader {
         }
     }
 
-    public List<BioprojectDataset> readIds(String filePath, List<String> files){
+    public List<BioprojectDataset> readIds(String filePath, List<String> files) {
         List<BioprojectDataset> results = new ArrayList<>();
         try {
             String allDatasetsContent = readAllDatasets(files);

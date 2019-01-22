@@ -47,8 +47,10 @@ public class GEODatasetBFTPClient {
         geoftpProd.getClient().enterLocalPassiveMode();
         IFilter[] filters = new IFilter[1];
         filters[0] =  new PostFixFilter(Constants.GEO_POSFIX_DATABASE);
-        final Iterable<String> findings = new FTPFileSearch( Constants.GEO_DATASETS_FTP_ROOT_DIRECOTRY, filters, true, new MockCallback<>()).ftpCall(geoftpProd.getClient());
-        findings.forEach(s -> listFiles.add(new StringJoiner(Constants.PATH_DELIMITED).add(geoftpProd.getHost()).add(s).toString()));
+        final Iterable<String> findings = new FTPFileSearch(Constants.GEO_DATASETS_FTP_ROOT_DIRECOTRY,
+                filters, true, new MockCallback<>()).ftpCall(geoftpProd.getClient());
+        findings.forEach(s -> listFiles.add(
+                new StringJoiner(Constants.PATH_DELIMITED).add(geoftpProd.getHost()).add(s).toString()));
         return listFiles;
     }
 
@@ -69,7 +71,9 @@ public class GEODatasetBFTPClient {
     }
 
 
-    public String getModel(String ftpPath){
-        return ftpPath.substring(ftpPath.lastIndexOf(Constants.PATH_DELIMITED) +1, ftpPath.lastIndexOf(FileExtensions.FTP_GPMDB_MODEL_EXTENSION.getExtension())-1);
+    public String getModel(String ftpPath) {
+        return ftpPath.substring(
+                ftpPath.lastIndexOf(Constants.PATH_DELIMITED) + 1,
+                ftpPath.lastIndexOf(FileExtensions.FTP_GPMDB_MODEL_EXTENSION.getExtension()) - 1);
     }
 }

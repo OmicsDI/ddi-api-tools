@@ -41,7 +41,7 @@ import java.util.List;
 
 public class GenerateMassiveOmicsXML implements IGenerator {
 
-    private static final Logger logger = LoggerFactory.getLogger(GenerateMassiveOmicsXML.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenerateMassiveOmicsXML.class);
 
     public AbstractWsConfig config;
 
@@ -52,10 +52,10 @@ public class GenerateMassiveOmicsXML implements IGenerator {
     public GenerateMassiveOmicsXML(AbstractWsConfig config, String outputFolder, String releaseDate) {
         this.config = config;
         this.outputFolder = outputFolder;
-        this.releaseDate  = releaseDate;
+        this.releaseDate = releaseDate;
     }
 
-    public void generate() throws Exception{
+    public void generate() throws Exception {
 
         DatasetWsClient datasetWsClient = new DatasetWsClient(this.config);
         ISODetasetsWsClient isoDetasetsWsClient = new ISODetasetsWsClient(this.config);
@@ -65,8 +65,8 @@ public class GenerateMassiveOmicsXML implements IGenerator {
 
             List<MassiveDatasetSummaryMassive> dataSetSummaries = new ArrayList<>(Arrays.asList(datasetList.datasets));
             Entries massiveEntries = new Entries();
-            Entries gnpsEntries    = new Entries();
-            dataSetSummaries.parallelStream().forEach( dataset -> {
+            Entries gnpsEntries = new Entries();
+            dataSetSummaries.parallelStream().forEach(dataset -> {
 
                 if (dataset.getTask() != null && dataset.getFileCount() > 0) {
                     MassiveDatasetDetail datasetDetail = datasetWsClient.getDataset(dataset.getTask());
@@ -81,24 +81,27 @@ public class GenerateMassiveOmicsXML implements IGenerator {
                         try {
                             datasetFiles = datasetWsClient.getFilePaths(datasetDetail.getIdentifier());
                         } catch (IOException e) {
-                            logger.debug(e.getMessage());
+                            LOGGER.debug(e.getMessage());
                         }
 
-                        if(datasetFiles.size() > 0 )
+                        if (datasetFiles.size() > 0) {
                             datasetDetail.setDataFilePaths(datasetFiles);
+                        }
 
-                        if (dataset.getCreated() != null)
+                        if (dataset.getCreated() != null) {
                             datasetDetail.setCreated(dataset.getCreated());
-                        if (datasetDetail.getSpecies() != null){
+                        }
+                        if (datasetDetail.getSpecies() != null) {
                             Entry entry = Transformers.transformAPIDatasetToEntry(datasetDetail);
-                            if(entry.getRepository().equalsIgnoreCase(Constants.GNPS))
+                            if (entry.getRepository().equalsIgnoreCase(Constants.GNPS)) {
                                 gnpsEntries.addEntry(entry);
-                            else if(entry.getRepository().equalsIgnoreCase(Constants.MASSIVE))
+                            } else if (entry.getRepository().equalsIgnoreCase(Constants.MASSIVE)) {
                                 massiveEntries.addEntry(entry);
+                            }
                         }
                     }
                 }
-                logger.info(dataset.getHash());
+                LOGGER.info(dataset.getHash());
             });
 
             FileWriter gnpsFile = new FileWriter(outputFolder + "/gnps_data.xml");
@@ -134,13 +137,14 @@ public class GenerateMassiveOmicsXML implements IGenerator {
     public static void main(String[] args) {
 
         String outputFolder = null;
-        String releaseDate  = null;
+        String releaseDate = null;
 
-        if (args != null && args.length > 1 && args[0] != null){
+        if (args != null && args.length > 1 && args[0] != null) {
             outputFolder = args[0];
-            releaseDate  = args[1];
-        } else
+            releaseDate = args[1];
+        } else {
             System.exit(-1);
+        }
 
 
         ApplicationContext ctx = new ClassPathXmlApplicationContext("spring/app-context.xml");

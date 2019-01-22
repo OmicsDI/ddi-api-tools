@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for HostingRepositoryType.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
@@ -23,7 +23,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/restriction>
  * &lt;/simpleType>
  * </pre>
- * 
  */
 @XmlType(name = "HostingRepositoryType")
 @XmlEnum
@@ -52,7 +51,7 @@ public enum HostingRepositoryType {
     }
 
     public static HostingRepositoryType fromValue(String v) {
-        for (HostingRepositoryType c: HostingRepositoryType.values()) {
+        for (HostingRepositoryType c : HostingRepositoryType.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

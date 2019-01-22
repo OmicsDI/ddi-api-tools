@@ -15,5 +15,5 @@ package uk.ac.ebi.ddi.api.readers.model;
  */
 public interface ICallback<T> {
 
-    void onReturn(final T type);
+    void onReturn(T type);
 }

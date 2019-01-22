@@ -3,6 +3,7 @@ package uk.ac.ebi.ddi.api.readers.massive.ws.client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.web.util.UriComponentsBuilder;
 import uk.ac.ebi.ddi.api.readers.ftp.AbstractFTPConfig;
 import uk.ac.ebi.ddi.api.readers.ftp.FTPFileSearch;
 import uk.ac.ebi.ddi.api.readers.ftp.MockCallback;
@@ -14,6 +15,7 @@ import uk.ac.ebi.ddi.api.readers.utils.CustomHttpMessageConverter;
 import uk.ac.ebi.ddi.api.readers.ws.AbstractClient;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
@@ -24,7 +26,7 @@ import java.util.StringJoiner;
  */
 public class DatasetWsClient extends AbstractClient {
 
-    private static final Logger logger = LoggerFactory.getLogger(DatasetWsClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatasetWsClient.class);
 
     /**
      * Default constructor for Ws clients
@@ -40,17 +42,23 @@ public class DatasetWsClient extends AbstractClient {
     /**
      * This function provides a way to retrieve the information of a dataset from Massive
      * Specially the metadata.
+     *
      * @param task the id of the dataset
      * @return the MassiveDatasetDetail
      */
-    public MassiveDatasetDetail getDataset(String task){
+    public MassiveDatasetDetail getDataset(String task) {
 
-        String url = String.format("%s://%s/MassiveServlet?task=%s&function=massiveinformation",
-                config.getProtocol(), config.getHostName(), task);
-        //Todo: Needs to be removed in the future, this is for debugging
-        logger.debug(url);
+        UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
+                .scheme(config.getProtocol())
+                .host(config.getHostName())
+                .path("/ProteoSAFe")
+                .path("/MassiveServlet")
+                .queryParam("task", task)
+                .queryParam("function", "massiveinformation");
 
-        return this.restTemplate.getForObject(url, MassiveDatasetDetail.class);
+        URI uri = builder.build().encode().toUri();
+
+        return restTemplate.getForObject(uri, MassiveDatasetDetail.class);
     }
 
     public List<String> getFilePaths(String massiveID) throws IOException {
@@ -59,8 +67,12 @@ public class DatasetWsClient extends AbstractClient {
         List<String> listFiles = new ArrayList<>();
         ftpConfig.onConnect();
         IFilter[] filters = new IFilter[0];
-        final Iterable<String> findings = new FTPFileSearch( massiveID, filters, true, new MockCallback<>()).ftpCall(ftpConfig.getClient());
-        findings.forEach(s -> listFiles.add(new StringJoiner(Constants.PATH_DELIMITED).add(Constants.FTP_PROTOCOL + ftpConfig.getHost()).add(s).toString()));
+        final Iterable<String> findings = new FTPFileSearch(
+                massiveID, filters, true, new MockCallback<>()).ftpCall(ftpConfig.getClient());
+        findings.forEach(s -> listFiles.add(
+                new StringJoiner(Constants.PATH_DELIMITED)
+                        .add(Constants.FTP_PROTOCOL + ftpConfig.getHost())
+                        .add(s).toString()));
         return listFiles;
     }
 }

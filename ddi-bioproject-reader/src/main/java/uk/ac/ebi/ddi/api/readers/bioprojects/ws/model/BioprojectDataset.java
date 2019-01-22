@@ -1,10 +1,6 @@
 package uk.ac.ebi.ddi.api.readers.bioprojects.ws.model;
 
 import uk.ac.ebi.ddi.api.readers.model.IAPIDataset;
-import uk.ac.ebi.ddi.api.readers.utils.Constants;
-import uk.ac.ebi.ddi.xml.validator.utils.BiologicalDatabases;
-import uk.ac.ebi.ddi.xml.validator.utils.Field;
-import uk.ac.ebi.ddi.xml.validator.utils.OmicsType;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -66,12 +62,12 @@ public class BioprojectDataset implements IAPIDataset {
 
     String dataProtocol;
 
-    public void setDataProtocol(String value){
+    public void setDataProtocol(String value) {
         this.dataProtocol = value;
     }
 
     @Override
-    public String getDataProtocol(){
+    public String getDataProtocol() {
         return null;
     }
 
@@ -84,10 +80,10 @@ public class BioprojectDataset implements IAPIDataset {
         this.publicationDate = publicationDate;
     }
 
-    Map<String,String> otherDates = new HashMap<String,String>();
+    Map<String, String> otherDates = new HashMap<String, String>();
 
-    public void addDate(String name, String value){
-        this.otherDates.put(name,value);
+    public void addDate(String name, String value) {
+        this.otherDates.put(name, value);
     }
 
     @Override
@@ -97,7 +93,7 @@ public class BioprojectDataset implements IAPIDataset {
 
     String sampleProtocol;
 
-    public void setSampleProtocol(String value){
+    public void setSampleProtocol(String value) {
         this.sampleProtocol = value;
     }
 
@@ -264,10 +260,10 @@ public class BioprojectDataset implements IAPIDataset {
 
     Map<String, Set<String>> crossReferences = new HashMap<String, Set<String>>();
 
-    public void addCrossReference(String name, String value){
+    public void addCrossReference(String name, String value) {
         Set<String> values = new HashSet<String>();
         values.add(value);
-        this.crossReferences.put(name,values);
+        this.crossReferences.put(name, values);
     }
 
     @Override

@@ -1,12 +1,10 @@
 package uk.ac.ebi.ddi.api.readers.geo.datasets;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import uk.ac.ebi.ddi.api.readers.geo.datasets.ws.client.GEODatasetBFTPClient;
 import uk.ac.ebi.ddi.api.readers.geo.datasets.ws.client.GEOFTPProd;
 import uk.ac.ebi.ddi.api.readers.geo.datasets.ws.model.Dataset;
-import uk.ac.ebi.ddi.api.readers.geo.datasets.ws.client.GEODatasetBFTPClient;
 import uk.ac.ebi.ddi.api.readers.utils.Constants;
 import uk.ac.ebi.ddi.api.readers.utils.Transformers;
 import uk.ac.ebi.ddi.xml.validator.parser.marshaller.OmicsDataMarshaller;
@@ -15,20 +13,17 @@ import uk.ac.ebi.ddi.xml.validator.parser.model.Entries;
 import uk.ac.ebi.ddi.xml.validator.parser.model.Entry;
 
 import java.io.FileWriter;
-import java.util.*;
+import java.util.List;
 
 
 /**
  * This project takes class Retrieve information from GPMDB, it allows to retrieve
  * the proteins ids for an specific model, etc.
  *
- *
  * @author Yasset Perez-Riverol
  */
 
 public class GenerateGEODatasetOmicsXML {
-
-    private static final Logger logger = LoggerFactory.getLogger(GenerateGEODatasetOmicsXML.class);
 
     /**
      * This program generate the massive files in two different type of files MASSIVE and GNPS Files. The MASSIVE
@@ -39,13 +34,14 @@ public class GenerateGEODatasetOmicsXML {
     public static void main(String[] args) {
 
         String outputFolder = null;
-        String releaseDate  = null;
+        String releaseDate = null;
 
-        if (args != null && args.length > 1 && args[0] != null){
+        if (args != null && args.length > 1 && args[0] != null) {
             outputFolder = args[0];
-            releaseDate  = args[1];
-        } else
+            releaseDate = args[1];
+        } else {
             System.exit(-1);
+        }
 
 
         ApplicationContext ctx = new ClassPathXmlApplicationContext("spring/app-context.xml");
@@ -58,15 +54,16 @@ public class GenerateGEODatasetOmicsXML {
         }
     }
 
-    public static void generateMWXMLFiles(GEOFTPProd configProd, String outputFolder, String releaseDate) throws Exception{
+    public static void generateMWXMLFiles(GEOFTPProd configProd, String outputFolder, String releaseDate)
+            throws Exception {
 
         GEODatasetBFTPClient ftpClient = new GEODatasetBFTPClient(configProd);
         List<Dataset> datasetList = ftpClient.listAllGEODatasets();
 
         if (datasetList != null && datasetList.size() > 0) {
             Entries geoEntries = new Entries();
-            datasetList.parallelStream().forEach( datasetFTP -> {
-                if(datasetFTP != null && datasetFTP.getIdentifier() != null){
+            datasetList.parallelStream().forEach(datasetFTP -> {
+                if (datasetFTP != null && datasetFTP.getIdentifier() != null) {
                     Entry entry = Transformers.transformAPIDatasetToEntry(datasetFTP);
                     geoEntries.addEntry(entry);
                 }
@@ -84,7 +81,6 @@ public class GenerateGEODatasetOmicsXML {
             mm.marshall(database, geoFile);
         }
     }
-
 
 
 }

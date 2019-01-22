@@ -4,6 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>uk.ac.ebi.ddi.maven</groupId>
+        <artifactId>ddi-base-master</artifactId>
+        <version>1.0</version>
+    </parent>
+
     <groupId>uk.ac.ebi.ddi.api.readers</groupId>
     <artifactId>ddi-api-tools</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -11,6 +17,11 @@
 
     <name>ddi-api-tools</name>
     <description>Read and create the from different APIs</description>
+
+    <properties>
+        <maven.checkstyle.version>2.17</maven.checkstyle.version>
+        <checkstyle.config.location>checkstyle.xml</checkstyle.config.location>
+    </properties>
 
     <licenses>
         <license>
@@ -28,6 +39,20 @@
             <organization>European Bioinformatics Institute</organization>
         </developer>
     </developers>
+
+    <dependencies>
+        <dependency>
+            <groupId>uk.ac.ebi.ddi</groupId>
+            <artifactId>ddi-validator</artifactId>
+            <version>1.1.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.retry</groupId>
+            <artifactId>spring-retry</artifactId>
+            <version>1.1.0.RELEASE</version>
+        </dependency>
+    </dependencies>
+
     <organization>
         <name>European Bioinformatics Institute</name>
         <url>http://www.ebi.ac.uk</url>
@@ -45,6 +70,59 @@
         <module>ddi-bioproject-reader</module>
         <module>ddi-ena-reader</module>
     </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven.checkstyle.version}</version>
+                <executions>
+                    <execution>
+                        <id>checkstyle</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <failOnViolation>true</failOnViolation>
+                            <consoleOutput>true</consoleOutput>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>ebi-repo</id>
+            <name>The EBI internal repository</name>
+            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-release</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>ebi-snapshot-repo</id>
+            <name>The EBI internal snapshot repository</name>
+            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>http://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>
 
     <distributionManagement>
         <!-- EBI repo -->

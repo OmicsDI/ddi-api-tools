@@ -8,6 +8,6 @@ import uk.ac.ebi.ddi.api.readers.ws.AbstractWsConfig;
 public class LINCSConfigProd extends AbstractWsConfig {
 
     public LINCSConfigProd() {
-        super("http", "lincsportal.ccs.miami.edu/dcic/api");
+        super("http", "lincsportal.ccs.miami.edu");
     }
 }

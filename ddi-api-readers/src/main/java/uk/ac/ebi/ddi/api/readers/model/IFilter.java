@@ -15,5 +15,5 @@ package uk.ac.ebi.ddi.api.readers.model;
  */
 public interface IFilter<T> {
 
-    boolean valid(final T type);
+    boolean valid(T type);
 }

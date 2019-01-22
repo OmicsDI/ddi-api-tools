@@ -21,7 +21,7 @@ import java.util.*;
  */
 public class PxReader implements IAPIDataset {
 
-    private static final Logger logger = LoggerFactory.getLogger(PxReader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PxReader.class);
 
     private Unmarshaller unmarshaller = null;
 
@@ -66,14 +66,16 @@ public class PxReader implements IAPIDataset {
 
     @Override
     public String getPublicationDate() {
-        if (dataset.getValue().getDatasetSummary() != null && dataset.getValue().getDatasetSummary().getAnnounceDate() != null)
+        if (dataset.getValue().getDatasetSummary() != null
+                && dataset.getValue().getDatasetSummary().getAnnounceDate() != null) {
             return dataset.getValue().getDatasetSummary().getAnnounceDate().toGregorianCalendar().getTime().toString();
+        }
         return uk.ac.ebi.ddi.api.readers.utils.Constants.EMPTY_STRING;
     }
 
     @Override
     public Map<String, String> getOtherDates() {
-        return Collections.EMPTY_MAP;
+        return Collections.emptyMap();
     }
 
     @Override
@@ -90,11 +92,12 @@ public class PxReader implements IAPIDataset {
 
     @Override
     public String getRepository() {
-        if (dataset.getValue() != null &&
-                dataset.getValue().getDatasetSummary() != null &&
-                dataset.getValue().getDatasetSummary().getHostingRepository() != null &&
-                dataset.getValue().getDatasetSummary().getHostingRepository().value() != null)
+        if (dataset.getValue() != null
+                && dataset.getValue().getDatasetSummary() != null
+                && dataset.getValue().getDatasetSummary().getHostingRepository() != null
+                && dataset.getValue().getDatasetSummary().getHostingRepository().value() != null) {
             return dataset.getValue().getDatasetSummary().getHostingRepository().value();
+        }
         return uk.ac.ebi.ddi.api.readers.utils.Constants.EMPTY_STRING;
     }
 
@@ -103,12 +106,14 @@ public class PxReader implements IAPIDataset {
         if (dataset != null && dataset.getValue() != null &&
                 dataset.getValue().getFullDatasetLinkList() != null &&
                 dataset.getValue().getFullDatasetLinkList().getFullDatasetLink() != null) {
-            for (FullDatasetLinkType datasetLink : dataset.getValue().getFullDatasetLinkList().getFullDatasetLink())
+            for (FullDatasetLinkType datasetLink : dataset.getValue().getFullDatasetLinkList().getFullDatasetLink()) {
                 if (datasetLink.getCvParam().getAccession().equalsIgnoreCase(Constants.MASSIVEURL_ACCESSION) ||
                         datasetLink.getCvParam().getAccession().equalsIgnoreCase(Constants.PRIDE_LINK) ||
                         datasetLink.getCvParam().getAccession().equalsIgnoreCase(Constants.PASSELURL_ACCESSION) ||
-                        datasetLink.getCvParam().getAccession().equalsIgnoreCase(Constants.JPOSTURL_ACCESSION))
+                        datasetLink.getCvParam().getAccession().equalsIgnoreCase(Constants.JPOSTURL_ACCESSION)) {
                     return datasetLink.getCvParam().getValue();
+                }
+            }
         }
         return uk.ac.ebi.ddi.api.readers.utils.Constants.EMPTY_STRING;
     }
@@ -123,10 +128,13 @@ public class PxReader implements IAPIDataset {
         Set<String> instruments = new HashSet<>();
         if (dataset != null && dataset.getValue() != null && dataset.getValue().getInstrumentList() != null
                 && dataset.getValue().getInstrumentList().getInstrument() != null) {
-            for (InstrumentType instrument : dataset.getValue().getInstrumentList().getInstrument())
-                if (instrument != null && instrument.getCvParam() != null)
-                    for (CvParamType cv : instrument.getCvParam())
+            for (InstrumentType instrument : dataset.getValue().getInstrumentList().getInstrument()) {
+                if (instrument != null && instrument.getCvParam() != null) {
+                    for (CvParamType cv : instrument.getCvParam()) {
                         instruments.add(cv.getValue());
+                    }
+                }
+            }
 
         }
         return instruments;
@@ -142,10 +150,11 @@ public class PxReader implements IAPIDataset {
         Set<String> speciesResult = new HashSet<>();
         if (dataset != null && dataset.getValue() != null && dataset.getValue().getSpeciesList() != null) {
             for (SpeciesType s : dataset.getValue().getSpeciesList().getSpecies()) {
-                for (CvParamType cv : s.getCvParam())
+                for (CvParamType cv : s.getCvParam()) {
                     if (!cv.getAccession().equalsIgnoreCase(Constants.TAXONOMY_ACCESSION)) {
                         speciesResult.add(cv.getValue());
                     }
+                }
             }
         }
         return speciesResult;
@@ -153,22 +162,22 @@ public class PxReader implements IAPIDataset {
 
     @Override
     public Set<String> getCellTypes() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     @Override
     public Set<String> getDiseases() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     @Override
     public Set<String> getTissues() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     @Override
     public Set<String> getSoftwares() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     @Override
@@ -195,10 +204,15 @@ public class PxReader implements IAPIDataset {
     @Override
     public Set<String> getSubmitterKeywords() {
         Set<String> keywords = new HashSet<>();
-        if (dataset.getValue().getKeywordList() != null && dataset.getValue().getKeywordList().getCvParam() != null && dataset.getValue().getKeywordList().getCvParam().size() > 0) {
-            for (CvParamType cv : dataset.getValue().getKeywordList().getCvParam())
-                if (cv.getAccession().equalsIgnoreCase(Constants.SUBMITTERKEY_ACCESSION) || cv.getAccession().equalsIgnoreCase(Constants.CURATORKEY_ACCESSION))
+        if (dataset.getValue().getKeywordList() != null
+                && dataset.getValue().getKeywordList().getCvParam() != null
+                && dataset.getValue().getKeywordList().getCvParam().size() > 0) {
+            for (CvParamType cv : dataset.getValue().getKeywordList().getCvParam()) {
+                if (cv.getAccession().equalsIgnoreCase(Constants.SUBMITTERKEY_ACCESSION)
+                        || cv.getAccession().equalsIgnoreCase(Constants.CURATORKEY_ACCESSION)) {
                     Collections.addAll(keywords, cv.getValue().split(","));
+                }
+            }
         }
         return keywords;
     }
@@ -215,19 +229,23 @@ public class PxReader implements IAPIDataset {
 
     private Set<String> getCVProperty(String typeContact, String property) {
         Set<String> properties = new HashSet<>();
-        if (dataset != null && dataset.getValue().getContactList() != null && dataset.getValue().getContactList().getContact() != null) {
+        if (dataset != null && dataset.getValue().getContactList() != null
+                && dataset.getValue().getContactList().getContact() != null) {
             String name = null;
             boolean isContact = false;
             for (ContactType contactType : dataset.getValue().getContactList().getContact()) {
                 for (CvParamType cv : contactType.getCvParam()) {
-                    if (cv.getAccession().equalsIgnoreCase(property))
+                    if (cv.getAccession().equalsIgnoreCase(property)) {
                         name = cv.getValue();
-                    if (cv.getAccession().equalsIgnoreCase(typeContact))
+                    }
+                    if (cv.getAccession().equalsIgnoreCase(typeContact)) {
                         isContact = true;
+                    }
                 }
             }
-            if (isContact && name != null)
+            if (isContact && name != null) {
                 properties.add(name);
+            }
         }
         return properties;
     }
@@ -245,8 +263,9 @@ public class PxReader implements IAPIDataset {
                 if (cvList != null && cvList.getCvParam() != null) {
                     for (CvParamType cv : cvList.getCvParam()) {
                         if (cv != null && cv.getAccession() != null && cv.getValue() != null) {
-                            if (cv.getAccession().equalsIgnoreCase(Constants.FILE_TYPE_ACCESSION))
+                            if (cv.getAccession().equalsIgnoreCase(Constants.FILE_TYPE_ACCESSION)) {
                                 files.add(cv.getValue());
+                            }
                         }
                     }
                 }
@@ -262,9 +281,11 @@ public class PxReader implements IAPIDataset {
         if (dataset != null && dataset.getValue() != null && dataset.getValue().getSpeciesList() != null) {
             Set<String> speciesResult = new HashSet<>();
             for (SpeciesType s : dataset.getValue().getSpeciesList().getSpecies()) {
-                for (CvParamType cv : s.getCvParam())
-                    if (!cv.getAccession().equalsIgnoreCase(Constants.SPECIES_ACCESSION))
+                for (CvParamType cv : s.getCvParam()) {
+                    if (!cv.getAccession().equalsIgnoreCase(Constants.SPECIES_ACCESSION)) {
                         speciesResult.add(cv.getValue());
+                    }
+                }
             }
             crossReferences.put(Field.TAXONOMY.getName(), speciesResult);
         }
@@ -272,9 +293,11 @@ public class PxReader implements IAPIDataset {
         if (dataset != null && dataset.getValue() != null && dataset.getValue().getPublicationList() != null) {
             Set<String> publicationIds = new HashSet<>();
             for (PublicationType s : dataset.getValue().getPublicationList().getPublication()) {
-                for (CvParamType cv : s.getCvParam())
-                    if (cv.getAccession().equalsIgnoreCase(Constants.PUBMED_ACCESSION))
+                for (CvParamType cv : s.getCvParam()) {
+                    if (cv.getAccession().equalsIgnoreCase(Constants.PUBMED_ACCESSION)) {
                         publicationIds.add(cv.getValue());
+                    }
+                }
             }
             crossReferences.put(Field.PUBMED.getName(), publicationIds);
         }
@@ -289,8 +312,9 @@ public class PxReader implements IAPIDataset {
         if (dataset != null && dataset.getValue() != null && dataset.getValue().getModificationList() != null) {
             Set<String> publication = new HashSet<>();
             for (CvParamType mod : dataset.getValue().getModificationList().getCvParam()) {
-                if (!mod.getAccession().equalsIgnoreCase(Constants.NO_MODIFICATIONS))
+                if (!mod.getAccession().equalsIgnoreCase(Constants.NO_MODIFICATIONS)) {
                     publication.add(mod.getValue());
+                }
             }
             additionals.put(Field.PTM_MODIFICATIONS.getName(), publication);
         }

@@ -22,13 +22,12 @@ import java.util.stream.Collectors;
  * This project takes class Retrieve information from GPMDB, it allows to retrieve
  * the proteins ids for an specific model, etc.
  *
- *
  * @author Yasset Perez-Riverol
  */
 
-public class GeneratePaxDBOmicsXML implements IGenerator{
+public class GeneratePaxDBOmicsXML implements IGenerator {
 
-    private static final Logger logger = LoggerFactory.getLogger(GeneratePaxDBOmicsXML.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GeneratePaxDBOmicsXML.class);
 
     PaxDBClient paxDBClient;
 
@@ -52,13 +51,12 @@ public class GeneratePaxDBOmicsXML implements IGenerator{
     public static void main(String[] args) {
 
         String outputFolder = null;
-        String releaseDate  = null;
+        String releaseDate = null;
 
-        if (args != null && args.length > 1 && args[0] != null){
+        if (args != null && args.length > 1 && args[0] != null) {
             outputFolder = args[0];
-            releaseDate  = args[1];
-        }
-        else {
+            releaseDate = args[1];
+        } else {
             System.exit(-1);
         }
 
@@ -66,23 +64,24 @@ public class GeneratePaxDBOmicsXML implements IGenerator{
         PaxDBClient paxDBClient = (PaxDBClient) ctx.getBean("paxdbClient");
 
         try {
-            new GeneratePaxDBOmicsXML(paxDBClient, outputFolder,releaseDate).generate();
+            new GeneratePaxDBOmicsXML(paxDBClient, outputFolder, releaseDate).generate();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Exception occurred, ", e);
         }
     }
 
     @Override
     public void generate() throws Exception {
 
-        List<Entry> entries     = new ArrayList<>();
-        if(paxDBClient != null){
-            Collection<PaxDBDataset> datasets = paxDBClient.getAllDatasets().stream().filter(x -> x != null).collect(Collectors.toList());
-            if (datasets != null && datasets.size() > 0) {
-                datasets.forEach( dataset -> {
-                    if(dataset != null && dataset.getIdentifier() != null){
+        List<Entry> entries = new ArrayList<>();
+        if (paxDBClient != null) {
+            Collection<PaxDBDataset> datasets = paxDBClient.getAllDatasets()
+                    .stream().filter(Objects::nonNull).collect(Collectors.toList());
+            if (datasets.size() > 0) {
+                datasets.forEach(dataset -> {
+                    if (dataset != null && dataset.getIdentifier() != null) {
                         entries.add(Transformers.transformAPIDatasetToEntry(dataset));
-                        logger.info(dataset.getIdentifier());
+                        LOGGER.info(dataset.getIdentifier());
                     }
                 });
             }

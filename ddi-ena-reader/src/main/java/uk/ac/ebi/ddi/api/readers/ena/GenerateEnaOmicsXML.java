@@ -7,7 +7,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import uk.ac.ebi.ddi.api.readers.ena.ws.client.EnaClient;
 import uk.ac.ebi.ddi.api.readers.ena.ws.model.EnaDataset;
 import uk.ac.ebi.ddi.api.readers.model.IGenerator;
-import uk.ac.ebi.ddi.api.readers.utils.Constants;
 import uk.ac.ebi.ddi.api.readers.utils.Transformers;
 import uk.ac.ebi.ddi.xml.validator.parser.marshaller.OmicsDataMarshaller;
 import uk.ac.ebi.ddi.xml.validator.parser.model.Database;
@@ -25,9 +24,9 @@ import java.util.stream.Collectors;
  * @date 14/12/2017
  */
 
-public class GenerateEnaOmicsXML implements IGenerator{
+public class GenerateEnaOmicsXML implements IGenerator {
 
-    private static final Logger logger = LoggerFactory.getLogger(GenerateEnaOmicsXML.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenerateEnaOmicsXML.class);
 
     String outputFolder;
 
@@ -45,19 +44,17 @@ public class GenerateEnaOmicsXML implements IGenerator{
     }
 
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {
 
         String outputFolder = null;
-        String releaseDate  = null;
+        String releaseDate = null;
 
-        if (args != null && args.length > 1 && args[0] != null){
+        if (args != null && args.length > 1 && args[0] != null) {
             outputFolder = args[0];
-            releaseDate  = args[1];
-        }
-        else {
+            releaseDate = args[1];
+        } else {
             System.exit(-1);
         }
 
@@ -65,7 +62,7 @@ public class GenerateEnaOmicsXML implements IGenerator{
         EnaClient enaClient = (EnaClient) ctx.getBean("enaClient");
 
         try {
-            new GenerateEnaOmicsXML(enaClient,outputFolder,releaseDate, "ENA").generate();
+            new GenerateEnaOmicsXML(enaClient, outputFolder, releaseDate, "ENA").generate();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -74,47 +71,49 @@ public class GenerateEnaOmicsXML implements IGenerator{
     @Override
     public void generate() throws Exception {
 
-        System.out.print("calling GenerateEnaOmicsXML generate\n");
+        LOGGER.info("calling GenerateEnaOmicsXML generate");
 
-        if(enaClient == null)
+        if (enaClient == null) {
             throw new Exception("enaClient is null");
+        }
 
-        Collection<EnaDataset> datasets = enaClient.getAllDatasets().stream().filter(x -> x != null).collect(Collectors.toList());
+        Collection<EnaDataset> datasets = enaClient.getAllDatasets().stream()
+                .filter(x -> x != null).collect(Collectors.toList());
 
-        if (datasets == null || datasets.size() == 0) {
-            System.out.print(String.format("enaClient.getAllDatasets() returned zero datasets\n"));
+        if (datasets.size() == 0) {
+            LOGGER.info("enaClient.getAllDatasets() returned zero datasets");
             return;
         }
 
-        System.out.print(String.format("returned %d datasets\n",datasets.size()));
+        LOGGER.info("returned {} datasets", datasets.size());
 
         List<Entry> entries = new ArrayList<>();
 
-        String database_name = "ENA";
+        String databaseName = "ENA";
 
-        System.out.print(String.format("processing database: %s \n",database_name));
+        System.out.print(String.format("processing database: %s \n", databaseName));
 
-        datasets.forEach( dataset -> {
-            if(dataset != null && dataset.getIdentifier() != null && dataset.getRepository().equals(database_name)){
-                    entries.add(Transformers.transformAPIDatasetToEntry(dataset)); //
+        datasets.forEach(dataset -> {
+            if (dataset != null && dataset.getIdentifier() != null && dataset.getRepository().equals(databaseName)) {
+                entries.add(Transformers.transformAPIDatasetToEntry(dataset)); //
             }
         });
 
-        System.out.print(String.format("found datasets: %d \n",entries.size()));
+        System.out.print(String.format("found datasets: %d \n", entries.size()));
 
-        String filepath = outputFolder + "/" + database_name + "_data.xml";
+        String filepath = outputFolder + "/" + databaseName + "_data.xml";
         FileWriter outputFile = new FileWriter(filepath);
 
         OmicsDataMarshaller mm = new OmicsDataMarshaller();
 
         Database database = new Database();
-            //database.setDescription(Constants.GEO_DESCRIPTION);
-        database.setName(database_name); //Constants.GEO
+        //database.setDescription(Constants.GEO_DESCRIPTION);
+        database.setName(databaseName); //Constants.GEO
         database.setRelease(releaseDate);
         database.setEntries(entries);
         database.setEntryCount(entries.size());
         mm.marshall(database, outputFile);
 
-        System.out.print(String.format("exported %s %d to %s\n",database_name,entries.size(),filepath));
+        System.out.print(String.format("exported %s %d to %s\n", databaseName, entries.size(), filepath));
     }
 }

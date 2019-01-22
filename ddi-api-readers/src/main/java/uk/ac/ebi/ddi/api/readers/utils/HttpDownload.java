@@ -2,6 +2,7 @@ package uk.ac.ebi.ddi.api.readers.utils;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 
 
@@ -15,6 +16,19 @@ public class HttpDownload {
         URL url = new URL(urlString);
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        connection.setConnectTimeout(10000); //set timeout to 10 seconds
+
+        connection.setReadTimeout(300000); // set timeout to 10 seconds
+
+        connection.connect();
+
+        return connection.getInputStream();
+    }
+
+    public static InputStream getPage(URI uri) throws Exception {
+
+        HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
 
         connection.setConnectTimeout(10000); //set timeout to 10 seconds
 

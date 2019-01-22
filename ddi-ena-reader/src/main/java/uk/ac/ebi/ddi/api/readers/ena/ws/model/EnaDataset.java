@@ -1,10 +1,6 @@
 package uk.ac.ebi.ddi.api.readers.ena.ws.model;
 
 import uk.ac.ebi.ddi.api.readers.model.IAPIDataset;
-import uk.ac.ebi.ddi.api.readers.utils.Constants;
-import uk.ac.ebi.ddi.xml.validator.utils.BiologicalDatabases;
-import uk.ac.ebi.ddi.xml.validator.utils.Field;
-import uk.ac.ebi.ddi.xml.validator.utils.OmicsType;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -66,12 +62,12 @@ public class EnaDataset implements IAPIDataset {
 
     String dataProtocol;
 
-    public void setDataProtocol(String value){
+    public void setDataProtocol(String value) {
         this.dataProtocol = value;
     }
 
     @Override
-    public String getDataProtocol(){
+    public String getDataProtocol() {
         return null;
     }
 
@@ -91,7 +87,7 @@ public class EnaDataset implements IAPIDataset {
 
     String sampleProtocol;
 
-    public void setSampleProtocol(String value){
+    public void setSampleProtocol(String value) {
         this.sampleProtocol = value;
     }
 

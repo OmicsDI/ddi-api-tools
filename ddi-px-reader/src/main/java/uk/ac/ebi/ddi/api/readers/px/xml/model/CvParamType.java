@@ -1,22 +1,17 @@
 
 package uk.ac.ebi.ddi.api.readers.px.xml.model;
 
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlIDREF;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
 
 
 /**
  * A single entry from an ontology or a controlled vocabulary.
- * 
+ *
  * <p>Java class for CvParamType complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="CvParamType">
  *   &lt;complexContent>
@@ -27,17 +22,14 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "CvParamType")
 public class CvParamType
-    extends AbstractParamType
-    implements Serializable
-{
+        extends AbstractParamType
+        implements Serializable {
 
-    private final static long serialVersionUID = 100L;
+    private static final long serialVersionUID = 100L;
     @XmlAttribute(required = true)
     @XmlIDREF
     @XmlSchemaType(name = "IDREF")
@@ -47,11 +39,9 @@ public class CvParamType
 
     /**
      * Gets the value of the cvRef property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Object }
-     *     
+     *
+     * @return possible object is
+     * {@link Object }
      */
     public Object getCvRef() {
         return cvRef;
@@ -59,11 +49,9 @@ public class CvParamType
 
     /**
      * Sets the value of the cvRef property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Object }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link Object }
      */
     public void setCvRef(Object value) {
         this.cvRef = value;
@@ -71,11 +59,9 @@ public class CvParamType
 
     /**
      * Gets the value of the accession property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getAccession() {
         return accession;
@@ -83,11 +69,9 @@ public class CvParamType
 
     /**
      * Sets the value of the accession property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setAccession(String value) {
         this.accession = value;

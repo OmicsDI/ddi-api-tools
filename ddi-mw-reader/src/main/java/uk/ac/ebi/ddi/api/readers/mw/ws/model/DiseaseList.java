@@ -32,10 +32,13 @@ public class DiseaseList {
 
     public Set<String> getDiseasesByDataset(String id) {
         Set<String> tissuesResult = new HashSet<>();
-        if(diseases != null && !diseases.isEmpty())
-            for(Disease disease: diseases.values())
-                if(disease.getStudyId().equalsIgnoreCase(id))
+        if (diseases != null && !diseases.isEmpty()) {
+            for (Disease disease : diseases.values()) {
+                if (disease.getStudyId().equalsIgnoreCase(id)) {
                     tissuesResult.add(disease.getDisease());
+                }
+            }
+        }
         return tissuesResult;
     }
 }

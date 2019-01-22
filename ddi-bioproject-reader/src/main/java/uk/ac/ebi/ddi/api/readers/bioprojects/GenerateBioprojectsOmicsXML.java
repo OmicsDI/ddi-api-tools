@@ -26,9 +26,9 @@ import java.util.stream.Collectors;
  * @date 14/11/2017
  */
 
-public class GenerateBioprojectsOmicsXML implements IGenerator{
+public class GenerateBioprojectsOmicsXML implements IGenerator {
 
-    private static final Logger logger = LoggerFactory.getLogger(GenerateBioprojectsOmicsXML.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenerateBioprojectsOmicsXML.class);
 
     private String outputFolder;
 
@@ -42,11 +42,11 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
 
     private OmicsDataMarshaller mm = new OmicsDataMarshaller();
 
-    public GenerateBioprojectsOmicsXML(BioprojectsClient bioprojectsClient
-            , DatasetService datasetService
-            , String outputFolder
-            , String releaseDate
-            , String databases) {
+    public GenerateBioprojectsOmicsXML(BioprojectsClient bioprojectsClient,
+                                       DatasetService datasetService,
+                                       String outputFolder,
+                                       String releaseDate,
+                                       String databases) {
         this.bioprojectsClient = bioprojectsClient;
         this.datasetService = datasetService;
         this.outputFolder = outputFolder;
@@ -55,36 +55,35 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
     }
 
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {
 
-        if (args == null || args.length < 2 || args[0] == null){
+        if (args == null || args.length < 2 || args[0] == null) {
             System.exit(-1);
         }
 
         String outputFolder = args[0];
-        String releaseDate  = args[1];
+        String releaseDate = args[1];
 
         ApplicationContext ctx = new ClassPathXmlApplicationContext("spring/app-context.xml");
         BioprojectsClient bioprojectsClient = (BioprojectsClient) ctx.getBean("bioprojectsClient");
         DatasetService datasetService = (DatasetService) ctx.getBean("DatasetService");
 
         try {
-            logger.info("Output folder is {}", outputFolder);
+            LOGGER.info("Output folder is {}", outputFolder);
             GenerateBioprojectsOmicsXML omicsXML = new GenerateBioprojectsOmicsXML(
                     bioprojectsClient, datasetService, outputFolder, releaseDate, "GEO,dbGaP");
             omicsXML.generate();
         } catch (Exception e) {
-            logger.error("Exception occurred during initializing the application", e);
+            LOGGER.error("Exception occurred during initializing the application, ", e);
         }
     }
 
     @Override
     public void generate() throws Exception {
 
-        logger.info("Calling GenerateBioprojectsOmicsXML generate");
+        LOGGER.info("Calling GenerateBioprojectsOmicsXML generate");
 
         if (bioprojectsClient == null) {
             throw new Exception("bioprojectsClient is null");
@@ -93,23 +92,23 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
         List<BioprojectDataset> datasets = bioprojectsClient.getAllDatasets()
                 .stream().filter(Objects::nonNull).collect(Collectors.toList());
 
-        logger.info("All datasets count is " + datasets.size());
+        LOGGER.info("All datasets count is " + datasets.size());
 
         if (datasets.size() == 0) {
-            logger.info("bioprojectsClient.getAllDatasets() returned zero datasets");
+            LOGGER.info("bioprojectsClient.getAllDatasets() returned zero datasets");
             return;
         }
 
-        logger.info("Returned {} datasets", datasets.size());
+        LOGGER.info("Returned {} datasets", datasets.size());
 
-        logger.info("Starting to insert datasets...");
+        LOGGER.info("Starting to insert datasets...");
 
         for (String databaseName : databases.split(",")) {
             List<Entry> entries = new ArrayList<>();
 
-            logger.info("Processing database: {} ", databaseName);
+            LOGGER.info("Processing database: {} ", databaseName);
 
-            datasets.forEach( dataset -> {
+            datasets.forEach(dataset -> {
                 if (dataset.getIdentifier() != null && dataset.getRepository().equals(databaseName)) {
                     dataset.addOmicsType(Constants.GENOMICS_TYPE);
                     String accession = dataset.getIdentifier();
@@ -117,18 +116,18 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
                     if (datasetService.existsBySecondaryAccession(accession)) {
                         //dataset already exists in OmicsDI, TODO: add some data
                         //this.datasetService.setDatasetNote();
-                        logger.info("Accession " + accession + " exists as secondary accession");
+                        LOGGER.info("Accession " + accession + " exists as secondary accession");
                     } else {
                         entries.add(Transformers.transformAPIDatasetToEntry(dataset)); //
                     }
                 }
             });
 
-            logger.info("Found datasets entries : {}", entries.size());
+            LOGGER.info("Found datasets entries : {}", entries.size());
 
             String filepath = outputFolder + "/" + databaseName + "_data.xml";
 
-            logger.info("Filepath is " + filepath);
+            LOGGER.info("Filepath is " + filepath);
             FileWriter paxdbFile = new FileWriter(filepath);
 
             Database database = new Database();
@@ -137,9 +136,9 @@ public class GenerateBioprojectsOmicsXML implements IGenerator{
             database.setRelease(releaseDate);
             database.setEntries(entries);
             database.setEntryCount(entries.size());
-            logger.info("Writing bioproject file at location " + filepath);
+            LOGGER.info("Writing bioproject file at location " + filepath);
             mm.marshall(database, paxdbFile);
-            logger.info(String.format("Exported %s %d to %s",databaseName,entries.size(),filepath));
+            LOGGER.info(String.format("Exported %s %d to %s", databaseName, entries.size(), filepath));
         }
     }
 }

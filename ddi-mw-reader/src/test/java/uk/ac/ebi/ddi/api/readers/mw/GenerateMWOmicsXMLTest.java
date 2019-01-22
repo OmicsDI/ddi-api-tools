@@ -2,7 +2,6 @@ package uk.ac.ebi.ddi.api.readers.mw;
 
 import org.junit.After;
 import org.junit.Before;
-import org.springframework.beans.factory.annotation.Autowired;
 import uk.ac.ebi.ddi.api.readers.mw.ws.client.DatasetWsClient;
 import uk.ac.ebi.ddi.api.readers.mw.ws.client.MWWsConfigProd;
 
@@ -17,8 +16,7 @@ import uk.ac.ebi.ddi.api.readers.mw.ws.client.MWWsConfigProd;
 
 public class GenerateMWOmicsXMLTest {
 
-    @Autowired
-    MWWsConfigProd mwWsConfig;
+    MWWsConfigProd mwWsConfig = new MWWsConfigProd();
 
     DatasetWsClient datasetWsClient;
 

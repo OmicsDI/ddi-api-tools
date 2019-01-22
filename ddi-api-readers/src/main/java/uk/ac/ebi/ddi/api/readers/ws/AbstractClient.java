@@ -23,7 +23,7 @@ public abstract class AbstractClient extends RetryClient {
      * Default constructor for All clients
      * @param config
      */
-    public AbstractClient(AbstractWsConfig config){
+    public AbstractClient(AbstractWsConfig config) {
         this.config = config;
         restTemplate = new RestTemplate(clientHttpRequestFactory());
         objectMapper = new ObjectMapper();

@@ -32,10 +32,13 @@ public class SpecieList {
 
     public Set<Specie> getSpeciesByDataset(String id) {
         Set<Specie> tissuesResult = new HashSet<>();
-        if(species != null && !species.isEmpty())
-            for(Specie specie: species.values())
-                if(specie.getStudyId().equalsIgnoreCase(id))
+        if (species != null && !species.isEmpty()) {
+            for (Specie specie : species.values()) {
+                if (specie.getStudyId().equalsIgnoreCase(id)) {
                     tissuesResult.add(specie);
+                }
+            }
+        }
         return tissuesResult;
     }
 }

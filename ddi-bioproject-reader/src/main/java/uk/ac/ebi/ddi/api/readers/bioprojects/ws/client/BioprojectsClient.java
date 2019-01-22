@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 /**
@@ -30,26 +29,27 @@ public class BioprojectsClient {
     private String filePath;
     private GeoClient geoClient;
 
-    private static final Logger logger = LoggerFactory.getLogger(BioprojectsClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BioprojectsClient.class);
     private static final Integer BATCH_SIZE = 250;
     private static final String ONLY_NEWS = System.getenv("ONLY_NEWS");
+    private static final String BIOPROJECT_ENDPOINT = "ftp://ftp.ncbi.nlm.nih.gov/bioproject/summary.txt";
 
     // Due to rate limit from eutils.ncbi.nlm.nih.gov
     private static final int PARALLEL = 3;
 
-    public BioprojectsClient(String filePath, GeoClient geoClient){
+    public BioprojectsClient(String filePath, GeoClient geoClient) {
         this.filePath = filePath;
         this.geoClient = geoClient;
     }
 
     // Return list of IDs which was not downloaded
-    private List<String> getNewIDs(){
+    private List<String> getNewIDs() {
 
         List<String> result = new ArrayList<>();
 
         try {
             File f = new File(filePath + "/summary.txt");
-            URL website = new URL("ftp://ftp.ncbi.nlm.nih.gov/bioproject/summary.txt");
+            URL website = new URL(BIOPROJECT_ENDPOINT);
             try (InputStream in = website.openStream()) {
                 Files.copy(in, f.toPath(), StandardCopyOption.REPLACE_EXISTING);
             }
@@ -60,14 +60,14 @@ public class BioprojectsClient {
 
                     if (accession.startsWith("PRJNA")) {
                         File f1 = new File(filePath + "/" + accession + ".xml");
-                        if (!f1.exists() || (ONLY_NEWS != null && ONLY_NEWS.equals("true"))) {
+                        if (!f1.exists() || (ONLY_NEWS != null && ONLY_NEWS.equals("false"))) {
                             result.add(accession);
                         }
                     }
                 });
             }
         } catch (Exception ex) {
-            logger.error("ERROR in getIDs {} ", ex);
+            LOGGER.error("ERROR in getIDs, ", ex);
         }
 
         return result;
@@ -76,26 +76,24 @@ public class BioprojectsClient {
     public Collection<BioprojectDataset> getAllDatasets() throws Exception {
 
         Map<String, BioprojectDataset> paxDBDatasets = new ConcurrentHashMap<>();
-        logger.info("Getting new IDs from NCBI...");
+        LOGGER.info("Getting new IDs from NCBI...");
 
         List<String> allFiles = getNewIDs();
 
-        logger.info("Getting new IDs from NCBI: {} received", allFiles.size());
+        LOGGER.info("Getting new IDs from NCBI: {} received", allFiles.size());
         List<List<String>> allFilesForThreads = Lists.newArrayList(Iterables.partition(allFiles, BATCH_SIZE));
 
         ForkJoinPool customThreadPool = new ForkJoinPool(PARALLEL);
 
         BioprojectsFileReader reader = new BioprojectsFileReader(geoClient);
-        AtomicInteger count = new AtomicInteger(0);
         customThreadPool.submit(() -> allFilesForThreads.parallelStream().forEach(datasetBundle -> {
-            logger.info("Processing {}/{}", datasetBundle.size() * count.getAndIncrement(), allFiles.size());
             for (BioprojectDataset dataset : reader.readIds(filePath, datasetBundle)) {
                 paxDBDatasets.put(dataset.getIdentifier(), dataset);
             }
-            logger.info("Founded {} new datasets", paxDBDatasets.size());
+            LOGGER.info("Founded {} new datasets", paxDBDatasets.size());
         })).get();
 
-        logger.info("All readers finished with {} results", paxDBDatasets.size());
+        LOGGER.info("All readers finished with {} results", paxDBDatasets.size());
 
         return paxDBDatasets.values();
     }

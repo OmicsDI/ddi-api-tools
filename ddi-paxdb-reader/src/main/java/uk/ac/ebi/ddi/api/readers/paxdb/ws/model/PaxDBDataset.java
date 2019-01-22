@@ -13,7 +13,7 @@ import java.util.*;
  * @date 03/12/2015
  */
 
-public class PaxDBDataset implements IAPIDataset{
+public class PaxDBDataset implements IAPIDataset {
 
     private String identifier = null;
 
@@ -39,15 +39,16 @@ public class PaxDBDataset implements IAPIDataset{
 
     private String listProteins;
 
-    private Map<String, Map.Entry<String,String>> abundanceProteins;
+    private Map<String, Map.Entry<String, String>> abundanceProteins;
 
     public String getIdentifier() {
-        if(fullLink != null){
+        if (fullLink != null) {
             String id = fullLink.replace(Constants.PAXDB_URL, "");
             StringBuilder finalId = new StringBuilder();
-            Arrays.asList(id.split("/")).forEach( key -> {
-                if(key != null && key.length() > 0)
+            Arrays.asList(id.split("/")).forEach(key -> {
+                if (key != null && key.length() > 0) {
                     finalId.append(key);
+                }
             });
             identifier = finalId.toString();
         }
@@ -158,8 +159,8 @@ public class PaxDBDataset implements IAPIDataset{
     @Override
     public Set<String> getSpecies() {
         Set<String> species = new HashSet<>();
-        if(name != null && name.length() > 0){
-            if(name.split("-").length > 1){
+        if (name != null && name.length() > 0) {
+            if (name.split("-").length > 1) {
                 species.add(name.split("-")[0].trim());
             }
         }
@@ -242,29 +243,32 @@ public class PaxDBDataset implements IAPIDataset{
         Set<String> ids = new HashSet<>();
         ids.add(Constants.PAXDB_PUBMED);
         //Add publication of the dataset
-        if(description != null && description.length() > 0 && description.contains("pubmed")){
-            Arrays.asList(description.split("&")).forEach( key -> {
-                if(key.contains("id="))
+        if (description != null && description.length() > 0 && description.contains("pubmed")) {
+            Arrays.asList(description.split("&")).forEach(key -> {
+                if (key.contains("id=")) {
                     pubmedID[0] = key.split("=")[1];
+                }
             });
         }
-        if(pubmedID[0] != null)
+        if (pubmedID[0] != null) {
             ids.add(pubmedID[0]);
+        }
         crossReferences.put(Field.PUBMED.getName(), ids);
 
         Set<String> proteins = new HashSet<>();
-        if(abundanceProteins != null && abundanceProteins.size() > 0){
+        if (abundanceProteins != null && abundanceProteins.size() > 0) {
             abundanceProteins.forEach((key, value) -> proteins.add(key));
         }
-        if(proteins.size() > 0)
+        if (proteins.size() > 0) {
             crossReferences.put(BiologicalDatabases.UNIPROT.getName(), proteins);
+        }
 
         return crossReferences;
     }
 
     @Override
     public Map<String, Set<String>> getOtherAdditionals() {
-        return Collections.EMPTY_MAP;
+        return Collections.emptyMap();
     }
 
     public void setFullLink(String fullLink) {
@@ -279,18 +283,19 @@ public class PaxDBDataset implements IAPIDataset{
         this.listProteins = listProteins;
     }
 
-    public void setAbundanceProteins(Map<String, Map.Entry<String,String>> abundanceProteins) {
+    public void setAbundanceProteins(Map<String, Map.Entry<String, String>> abundanceProteins) {
         this.abundanceProteins = abundanceProteins;
     }
 
-    public void updateIds(Map<String, String> correctIds){
+    public void updateIds(Map<String, String> correctIds) {
         Map<String, Map.Entry<String, String>> abundances = new HashMap<>();
-        if(abundanceProteins != null && abundanceProteins.size() > 0){
+        if (abundanceProteins != null && abundanceProteins.size() > 0) {
             abundanceProteins.forEach((key, value) -> {
-                if(correctIds.containsKey(key))
+                if (correctIds.containsKey(key)) {
                     abundances.put(correctIds.get(key), value);
-                else
+                } else {
                     abundances.put(key, value);
+                }
             });
         }
         abundanceProteins = abundances;

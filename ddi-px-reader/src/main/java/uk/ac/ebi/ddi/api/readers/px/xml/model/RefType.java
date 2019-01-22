@@ -1,20 +1,15 @@
 
 package uk.ac.ebi.ddi.api.readers.px.xml.model;
 
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlIDREF;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
 
 
 /**
  * <p>Java class for RefType complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="RefType">
  *   &lt;complexContent>
@@ -24,16 +19,13 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "RefType")
 public class RefType
-    implements Serializable, PXObject
-{
+        implements Serializable, PXObject {
 
-    private final static long serialVersionUID = 100L;
+    private static final long serialVersionUID = 100L;
     @XmlAttribute(required = true)
     @XmlIDREF
     @XmlSchemaType(name = "IDREF")
@@ -41,11 +33,9 @@ public class RefType
 
     /**
      * Gets the value of the ref property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Object }
-     *     
+     *
+     * @return possible object is
+     * {@link Object }
      */
     public Object getRef() {
         return ref;
@@ -53,11 +43,9 @@ public class RefType
 
     /**
      * Sets the value of the ref property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Object }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link Object }
      */
     public void setRef(Object value) {
         this.ref = value;

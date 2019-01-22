@@ -31,7 +31,7 @@ public abstract class AbstractFTPCommand<T> implements IFTPCommand {
      * @param callback How handle result of type T of FTP call execution.
      */
     public AbstractFTPCommand(final ICallback<T> callback) {
-            this.call = callback;
+        this.call = callback;
     }
 
     /**

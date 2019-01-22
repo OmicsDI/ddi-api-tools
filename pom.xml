@@ -18,6 +18,11 @@
     <name>ddi-api-tools</name>
     <description>Read and create the from different APIs</description>
 
+    <properties>
+        <maven.checkstyle.version>2.17</maven.checkstyle.version>
+        <checkstyle.config.location>checkstyle.xml</checkstyle.config.location>
+    </properties>
+
     <licenses>
         <license>
             <name>Apache 2</name>
@@ -65,6 +70,29 @@
         <module>ddi-bioproject-reader</module>
         <module>ddi-ena-reader</module>
     </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven.checkstyle.version}</version>
+                <executions>
+                    <execution>
+                        <id>checkstyle</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <failOnViolation>true</failOnViolation>
+                            <consoleOutput>true</consoleOutput>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
     <repositories>
         <repository>

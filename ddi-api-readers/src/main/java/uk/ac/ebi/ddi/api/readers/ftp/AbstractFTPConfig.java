@@ -45,19 +45,20 @@ public class AbstractFTPConfig {
     /**
      * Default Constructor
      */
-    public AbstractFTPConfig(){
+    public AbstractFTPConfig() {
 
     }
 
     /**
      * Create Anonymous FTP client.
+     *
      * @param host
      */
 
-    public AbstractFTPConfig(String host){
+    public AbstractFTPConfig(String host) {
         this.host = host;
         this.pass = "";
-        this.usr  = "anonymous";
+        this.usr = "anonymous";
         this.port = 21;
         this.client = new FTPClient();
     }
@@ -65,17 +66,17 @@ public class AbstractFTPConfig {
     /**
      * Class constructor.
      *
-     * @param host Hostname for FTP connection.
-     * @param port Port for FTP connection.
-     * @param user User logging to FTP.
+     * @param host     Hostname for FTP connection.
+     * @param port     Port for FTP connection.
+     * @param user     User logging to FTP.
      * @param password User password for FTP connection.
      * @checkstyle ParameterNumberCheck (2 lines)
      */
     public AbstractFTPConfig(final String host, final int port, final String user,
-               final String password) {
+                             final String password) {
         this.host = host;
         this.port = port;
-        this.usr  = user;
+        this.usr = user;
         this.pass = password;
         this.client = new FTPClient();
     }
@@ -92,7 +93,7 @@ public class AbstractFTPConfig {
             for (final IFTPCommand command : commands) {
                 command.execute(this.client);
             }
-        }catch(IOException ignored){
+        } catch (IOException ignored) {
 
         }
     }

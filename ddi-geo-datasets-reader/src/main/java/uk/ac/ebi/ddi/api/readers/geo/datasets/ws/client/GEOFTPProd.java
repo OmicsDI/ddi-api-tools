@@ -30,7 +30,7 @@ public class GEOFTPProd extends AbstractFTPConfig {
         super(host, port, user, password);
     }
 
-    public GEOFTPProd(){
+    public GEOFTPProd() {
        super("ftp.ncbi.nlm.nih.gov");
     }
 

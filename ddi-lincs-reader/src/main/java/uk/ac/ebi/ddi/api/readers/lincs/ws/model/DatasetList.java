@@ -32,14 +32,16 @@ public class DatasetList {
     }
 
     public int getTotal() {
-        if(results != null && results.getDatasets() != null)
+        if (results != null && results.getDatasets() != null) {
             return results.getTotal();
+        }
         return -1;
     }
 
     public Dataset[] getDatasets() {
-        if(results != null && results.getDatasets() != null )
+        if (results != null && results.getDatasets() != null) {
             return results.getDatasets();
+        }
         return null;
     }
 }

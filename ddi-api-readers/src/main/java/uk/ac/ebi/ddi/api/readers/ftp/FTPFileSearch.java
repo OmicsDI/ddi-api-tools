@@ -24,10 +24,7 @@ import java.util.*;
  * <p>
  * Created by ypriverol (ypriverol@gmail.com) on 24/01/2017.
  */
-public class FTPFileSearch extends AbstractFTPCommand<Iterable<String>>{
-
-    private static final Logger logger = LoggerFactory.getLogger(FTPFileSearch.class);
-
+public class FTPFileSearch extends AbstractFTPCommand<Iterable<String>> {
 
     /**
      * Directory to start search from.
@@ -44,13 +41,15 @@ public class FTPFileSearch extends AbstractFTPCommand<Iterable<String>>{
      */
     private final transient boolean recurs;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(FTPFileSearch.class);
+
     /**
      * Class constructor.
      *
      * @param directory Directory to start search from.
-     * @param filter Limiting files found to those filtered.
+     * @param filter    Limiting files found to those filtered.
      * @param recursive Is search recursive.
-     * @param callback ICallback on files found.
+     * @param callback  ICallback on files found.
      * @checkstyle ParameterNumberCheck (6 lines)
      */
     public FTPFileSearch(final String directory, final IFilter<FTPFile>[] filter,
@@ -63,15 +62,15 @@ public class FTPFileSearch extends AbstractFTPCommand<Iterable<String>>{
 
     @Override
     public Iterable<String> ftpCall(final FTPClient client) throws IOException {
-            return this.search(Collections.synchronizedList(new ArrayList<>()), this.dir, client);
+        return this.search(Collections.synchronizedList(new ArrayList<>()), this.dir, client);
     }
 
     /**
      * Recursive search in directory calling FTP client search.
      *
-     * @param result Partial results for recursion.
+     * @param result    Partial results for recursion.
      * @param directory Directory to be searched in.
-     * @param client Apache FTP client.
+     * @param client    Apache FTP client.
      * @return File names found.
      */
     private Collection<String> search(final Collection<String> result,
@@ -79,22 +78,25 @@ public class FTPFileSearch extends AbstractFTPCommand<Iterable<String>>{
                                       final FTPClient client) throws IOException {
         String delimiter = Constants.PATH_DELIMITED;
         final FTPFile[] ftpFiles = client.listFiles(directory);
-        Arrays.asList(ftpFiles).stream().forEach(ftpFile -> {
-                if (ftpFile.isFile()) {
-                    boolean valid = true;
-                    for(IFilter filter: this.fltr){
-                        if(!filter.valid(ftpFile))
-                            valid = false;
-                    }
-                    if(valid)
-                        result.add(new StringJoiner(delimiter).add(directory).add(ftpFile.getName()).toString());
-                }else if (ftpFile.isDirectory() && this.recurs) {
-                    try {
-                        search(result, new StringJoiner(delimiter).add(directory).add(ftpFile.getName()).toString(), client);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+        Arrays.stream(ftpFiles).forEach(ftpFile -> {
+            if (ftpFile.isFile()) {
+                boolean valid = true;
+                for (IFilter filter : this.fltr) {
+                    if (!filter.valid(ftpFile)) {
+                        valid = false;
                     }
                 }
+                if (valid) {
+                    result.add(new StringJoiner(delimiter).add(directory).add(ftpFile.getName()).toString());
+                }
+            } else if (ftpFile.isDirectory() && this.recurs) {
+                try {
+                    search(result,
+                            new StringJoiner(delimiter).add(directory).add(ftpFile.getName()).toString(), client);
+                } catch (IOException e) {
+                    LOGGER.error("Exception occurred, ", e);
+                }
+            }
         });
         return result;
     }

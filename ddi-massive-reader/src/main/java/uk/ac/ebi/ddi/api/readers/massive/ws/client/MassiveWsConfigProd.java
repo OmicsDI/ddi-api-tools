@@ -11,6 +11,6 @@ import uk.ac.ebi.ddi.api.readers.ws.AbstractWsConfig;
 
 public class MassiveWsConfigProd extends AbstractWsConfig {
     public MassiveWsConfigProd() {
-        super("http", "massive.ucsd.edu/ProteoSAFe");
+        super("http", "massive.ucsd.edu");
     }
 }

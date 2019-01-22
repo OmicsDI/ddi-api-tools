@@ -11,7 +11,7 @@ import java.util.Set;
  * @date 03/12/2015
  */
 
-public class Dataset implements IAPIDataset{
+public class Dataset implements IAPIDataset {
 
     String identifier;
 

@@ -30,7 +30,7 @@ public class GeneratePxOmicsXML implements IGenerator {
 
     private static HashMap<String, String> pageBuffer = new HashMap<>();
 
-    private static final Logger logger = LoggerFactory.getLogger(GeneratePxOmicsXML.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GeneratePxOmicsXML.class);
 
     private static final String PXSUBMISSION_PATTERN = "<ProteomeXchangeDataset";
 
@@ -49,7 +49,8 @@ public class GeneratePxOmicsXML implements IGenerator {
     public String releaseDate;
 
 
-    public GeneratePxOmicsXML(int loopGap, int endPoint, String pxPrefix, String pxURL, String outputFolder, String releaseDate) {
+    public GeneratePxOmicsXML(int loopGap, int endPoint, String pxPrefix, String pxURL, String outputFolder,
+                              String releaseDate) {
         this.loopGap = loopGap;
         this.endPoint = endPoint;
         this.pxPrefix = pxPrefix;
@@ -58,7 +59,8 @@ public class GeneratePxOmicsXML implements IGenerator {
         this.releaseDate = releaseDate;
     }
 
-    public GeneratePxOmicsXML(int loopGap, int endPoint, String pxPrefix, String pxURL, String outputFolder, List<String> databases, String releaseDate) {
+    public GeneratePxOmicsXML(int loopGap, int endPoint, String pxPrefix, String pxURL, String outputFolder,
+                              List<String> databases, String releaseDate) {
         this.loopGap = loopGap;
         this.endPoint = endPoint;
         this.pxPrefix = pxPrefix;
@@ -71,25 +73,25 @@ public class GeneratePxOmicsXML implements IGenerator {
     public void generate() throws Exception {
 
         int initialGap = loopGap;
-        List<Entry> entries     = new ArrayList<>();
-        for(int i = 0; i < endPoint && loopGap > 0; i ++){
+        List<Entry> entries = new ArrayList<>();
+        for (int i = 0; i < endPoint && loopGap > 0; i++) {
 
             String pxID = (pxPrefix + String.valueOf(i));
-            pxID = pxID.substring( pxID.length() - 6, pxID.length());
+            pxID = pxID.substring(pxID.length() - 6, pxID.length());
             String pxURLProject = String.format(pxURL, pxID);
             String page = getPage(pxURLProject);
-            if (page != null && isDataset(page)){
+            if (page != null && isDataset(page)) {
                 PxReader dataset = ReaderPxXML.parseDocument(page);
-                if(dataset != null && dataset.getRepository() != null && databases.contains(dataset.getRepository())){
+                if (dataset != null && dataset.getRepository() != null && databases.contains(dataset.getRepository())) {
                     dataset.setAccession("PXD" + pxID);
                     entries.add(Transformers.transformAPIDatasetToEntry(dataset));
-                    logger.debug(dataset.getIdentifier());
+                    LOGGER.debug(dataset.getIdentifier());
                 }
                 loopGap = initialGap;
 
-            }else{
+            } else {
                 loopGap--;
-                logger.debug(loopGap + "| LOGGER GAP CHANGE|");
+                LOGGER.debug(loopGap + "| LOGGER GAP CHANGE|");
             }
         }
 
@@ -104,7 +106,7 @@ public class GeneratePxOmicsXML implements IGenerator {
         database.setEntries(entries);
         database.setEntryCount(entries.size());
         mm.marshall(database, pxdbFile);
-        logger.info("Search for Files has been FINISHED!!");
+        LOGGER.info("Search for Files has been FINISHED!!");
     }
 
     /**
@@ -118,9 +120,10 @@ public class GeneratePxOmicsXML implements IGenerator {
     public static String getPage(String urlString) {
         // check if the page is cached
 
-        try{
-            if (pageBuffer.containsKey(urlString))
+        try {
+            if (pageBuffer.containsKey(urlString)) {
                 return pageBuffer.get(urlString);
+            }
 
             // create the url
             URL url = new URL(urlString);
@@ -148,20 +151,20 @@ public class GeneratePxOmicsXML implements IGenerator {
             }
 
             return page.toString();
-        }catch (Exception ioe) {
-            logger.warn("Failed to read web page");
+        } catch (Exception ioe) {
+            LOGGER.warn("Failed to read web page");
         }
-        logger.debug(urlString);
+        LOGGER.debug(urlString);
         return null;
     }
 
-    private static boolean isPRIDEDataset(String pxSubmission){
-        String PRIDE_PATTERN = "hostingRepository=\"PRIDE\"";
-        return pxSubmission.contains(PRIDE_PATTERN);
+    private static boolean isPRIDEDataset(String pxSubmission) {
+        String pridePattern = "hostingRepository=\"PRIDE\"";
+        return pxSubmission.contains(pridePattern);
     }
 
-    private static boolean isDataset(String pxSubmission){
-            return pxSubmission.contains(PXSUBMISSION_PATTERN);
+    private static boolean isDataset(String pxSubmission) {
+        return pxSubmission.contains(PXSUBMISSION_PATTERN);
     }
 
     /**
@@ -170,30 +173,30 @@ public class GeneratePxOmicsXML implements IGenerator {
      *
      * @param args
      */
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
         String outputFolder = null;
-        String releaseDate  = null;
+        String releaseDate = null;
 
-        if (args != null && args.length > 1 && args[0] != null){
+        if (args != null && args.length > 1 && args[0] != null) {
             outputFolder = args[0];
-            releaseDate  = args[1];
-        }
-        else {
+            releaseDate = args[1];
+        } else {
             System.exit(-1);
         }
         try {
 
             String pxURL = ReadProperties.getInstance().getProperty("pxURL");
             String pxPrefix = ReadProperties.getInstance().getProperty("pxPrefix");
-            Integer endPoint   = Integer.valueOf(ReadProperties.getInstance().getProperty("pxEnd"));
+            Integer endPoint = Integer.valueOf(ReadProperties.getInstance().getProperty("pxEnd"));
             Integer loopGap = Integer.valueOf(ReadProperties.getInstance().getProperty("loopGap"));
 
-            GeneratePxOmicsXML generator = new GeneratePxOmicsXML(loopGap, endPoint, pxPrefix, pxURL, outputFolder, releaseDate);
+            GeneratePxOmicsXML generator = new GeneratePxOmicsXML(loopGap, endPoint, pxPrefix, pxURL,
+                    outputFolder, releaseDate);
             generator.generate();
 
-        } catch (Exception e){
-            logger.error(e.getMessage());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
             e.printStackTrace();
         }
 

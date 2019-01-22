@@ -36,7 +36,7 @@ public class GenerateMWOmicsXML implements IGenerator {
 
     String releaseDate;
 
-    public  GenerateMWOmicsXML(AbstractWsConfig config, String outputFolder, String releaseDate){
+    public GenerateMWOmicsXML(AbstractWsConfig config, String outputFolder, String releaseDate) {
         this.config = config;
         this.outputFolder = outputFolder;
         this.releaseDate = releaseDate;
@@ -46,15 +46,15 @@ public class GenerateMWOmicsXML implements IGenerator {
     public void generate() throws Exception {
         DatasetWsClient datasetWsClient = new DatasetWsClient(config);
         DatasetList datasets = datasetWsClient.getAllDatasets();
-        TissueList tissueList   = datasetWsClient.getTissues();
-        SpecieList specieList   = datasetWsClient.getSpecies();
+        TissueList tissueList = datasetWsClient.getTissues();
+        SpecieList specieList = datasetWsClient.getSpecies();
         DiseaseList diseaseList = datasetWsClient.getDiseases();
-        List<Entry> entries     = new ArrayList<>();
+        List<Entry> entries = new ArrayList<>();
 
         if (datasets != null && datasets.datasets != null) {
             for (MWDataSetDetails dataset : datasets.datasets.values()) {
                 try {
-                    if(dataset != null && dataset.getIdentifier() != null) {
+                    if (dataset != null && dataset.getIdentifier() != null) {
                         dataset.setMetabolites(datasetWsClient.getMataboliteList(dataset.getIdentifier()));
                         dataset.setFactors(datasetWsClient.getFactorList(dataset.getIdentifier()));
                         dataset.setTissues(tissueList.getTissuesByDataset(dataset.getIdentifier()));
@@ -93,14 +93,12 @@ public class GenerateMWOmicsXML implements IGenerator {
     public static void main(String[] args) {
 
         String outputFolder = null;
-        String releaseDate  = null;
+        String releaseDate = null;
 
-        if (args != null && args.length > 1 && args[0] != null){
+        if (args != null && args.length > 1 && args[0] != null) {
             outputFolder = args[0];
-            releaseDate  = args[1];
-        }
-
-        else {
+            releaseDate = args[1];
+        } else {
             System.exit(-1);
         }
 
@@ -108,7 +106,7 @@ public class GenerateMWOmicsXML implements IGenerator {
         MWWsConfigProd mwWsConfigProd = (MWWsConfigProd) ctx.getBean("mwWsConfig");
 
         try {
-            GenerateMWOmicsXML generator = new GenerateMWOmicsXML(mwWsConfigProd, outputFolder,releaseDate);
+            GenerateMWOmicsXML generator = new GenerateMWOmicsXML(mwWsConfigProd, outputFolder, releaseDate);
             generator.generate();
         } catch (Exception e) {
             e.printStackTrace();

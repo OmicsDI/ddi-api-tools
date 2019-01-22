@@ -92,17 +92,19 @@ public class DatasetWsClient extends AbstractClient {
     }
 
     private ChebiID getChebiId(String pubchemId) {
-
-        String url = String.format("%s://%s/rest/compound/pubchem_cid/%s/chebi_id/",
-                config.getProtocol(), config.getHostName(), pubchemId);
-        ChebiID id = null;
+        UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
+                .scheme(config.getProtocol())
+                .host(config.getHostName())
+                .path("/rest/compound/pubchem_cid")
+                .path("/" + pubchemId)
+                .path("/chebi_id");
+        URI uri = builder.build().encode().toUri();
         try {
-            id =this.restTemplate.getForObject(url, ChebiID.class);
+            return restTemplate.getForObject(uri, ChebiID.class);
         } catch (Exception e) {
             LOGGER.error("Exception occurred, id: {}, ", pubchemId, e);
+            return null;
         }
-
-        return id;
     }
 
     /**
@@ -111,17 +113,17 @@ public class DatasetWsClient extends AbstractClient {
      * @return
      */
     public MetaboliteList updateChebiId(MetaboliteList metabolites) {
-        if(metabolites != null && metabolites.metabolites != null && metabolites.metabolites.size() > 0){
-            System.out.println(metabolites.metabolites.size());
-            for(Map.Entry entry: metabolites.metabolites.entrySet()){
+        if (metabolites != null && metabolites.metabolites != null && metabolites.metabolites.size() > 0) {
+            for (Map.Entry entry: metabolites.metabolites.entrySet()) {
                 String key = (String) entry.getKey();
                 Metabolite met = (Metabolite) entry.getValue();
-                if(met != null && met.getPubchem() != null){
+                if (met != null && met.getPubchem() != null) {
                     ChebiID id = getChebiId(met.getPubchem());
-                    if(id != null)
+                    if (id != null) {
                         met.setChebi(id.getChebi_id());
+                    }
                 }
-                metabolites.metabolites.put(key,met);
+                metabolites.metabolites.put(key, met);
             }
         }
         return metabolites;
@@ -156,26 +158,32 @@ public class DatasetWsClient extends AbstractClient {
      * This function retrieve all the specie information for each dataset.
      * @return Specie List
      */
-    public SpecieList getSpecies(){
-
-        String url = String.format("%s://%s/rest/study/study_id/ST/species",
-                config.getProtocol(), config.getHostName());
-        return getRetryTemplate().execute(ctx -> restTemplate.getForObject(url, SpecieList.class));
+    public SpecieList getSpecies() {
+        UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
+                .scheme(config.getProtocol())
+                .host(config.getHostName())
+                .path("/rest/study/study_id/ST/species");
+        URI uri = builder.build().encode().toUri();
+        return getRetryTemplate().execute(ctx -> restTemplate.getForObject(uri, SpecieList.class));
     }
 
-    public TissueList getTissues(){
-
-        String url = String.format("%s://%s/rest/study/study_id/ST/source",
-                config.getProtocol(), config.getHostName());
-        return getRetryTemplate().execute(ctx -> restTemplate.getForObject(url, TissueList.class));
+    public TissueList getTissues() {
+        UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
+                .scheme(config.getProtocol())
+                .host(config.getHostName())
+                .path("/rest/study/study_id/ST/source");
+        URI uri = builder.build().encode().toUri();
+        return getRetryTemplate().execute(ctx -> restTemplate.getForObject(uri, TissueList.class));
 
     }
 
-    public DiseaseList getDiseases(){
-
-        String url = String.format("%s://%s/rest/study/study_id/ST/disease",
-                config.getProtocol(), config.getHostName());
-        return getRetryTemplate().execute(ctx -> this.restTemplate.getForObject(url, DiseaseList.class));
+    public DiseaseList getDiseases() {
+        UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
+                .scheme(config.getProtocol())
+                .host(config.getHostName())
+                .path("/rest/study/study_id/ST/disease");
+        URI uri = builder.build().encode().toUri();
+        return getRetryTemplate().execute(ctx -> restTemplate.getForObject(uri, DiseaseList.class));
     }
 
 }

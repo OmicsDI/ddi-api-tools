@@ -25,7 +25,7 @@ public class GeoClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(GeoClient.class);
     private static final String NCBI_ENDPOINT = "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi";
 
-    public GeoClient(String filePath){
+    public GeoClient(String filePath) {
         this.filePath = filePath;
         SimpleRetryPolicy policy =
                 new SimpleRetryPolicy(RETRIES, Collections.singletonMap(Exception.class, true));
@@ -36,52 +36,53 @@ public class GeoClient {
         template.setBackOffPolicy(backOffPolicy);
     }
 
-    /** public GeoDataset getOne(){
-        return new GeoDataset
-    } **/
+    /**
+     * public GeoDataset getOne(){
+     * return new GeoDataset
+     * }
+     **/
 
     private File getSoftFile(String id) throws Exception {
         File f = new File(filePath + "/" + id + ".soft");
-        if(!f.exists()){
-            template.execute(context -> {
-                UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(NCBI_ENDPOINT)
-                        .queryParam("acc", id)
-                        .queryParam("targ", "self")
-                        .queryParam("form", "text")
-                        .queryParam("view", "full");
-                try {
+        if (!f.exists()) {
+            try {
+                template.execute(context -> {
+                    UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(NCBI_ENDPOINT)
+                            .queryParam("acc", id)
+                            .queryParam("targ", "self")
+                            .queryParam("form", "text")
+                            .queryParam("view", "full");
                     URL url = builder.build().toUri().toURL();
                     FileUtils.copyURLToFile(url, f);
-                } catch (Exception e) {
-                    String retryTimes = context.getRetryCount() + 1 + "/" + RETRIES;
-                    LOGGER.info("Exception occurred when reading softfile {}, retrying {}", id, retryTimes);
-                    throw new Exception(e);
-                }
-                return f;
-            });
+                    return f;
+                });
+            } catch (Exception e) {
+                LOGGER.error("Exception occurred when trying to fetch file {}, ", id, e);
+                throw e;
+            }
         }
         return f;
     }
 
-    public SeriesFile getSeries(String id) throws Exception{
+    public SeriesFile getSeries(String id) throws Exception {
         File f = getSoftFile(id);
-        if(f.exists()) {
+        if (f.exists()) {
             return new SeriesFile(f);
         }
         return null;
     }
 
-    public PlatformFile getPlatform(String id) throws Exception{
+    public PlatformFile getPlatform(String id) throws Exception {
         File f = getSoftFile(id);
-        if(f.exists()) {
+        if (f.exists()) {
             return new PlatformFile(f);
         }
         return null;
     }
 
-    public SampleFile getSample(String id) throws Exception{
+    public SampleFile getSample(String id) throws Exception {
         File f = getSoftFile(id);
-        if(f.exists()) {
+        if (f.exists()) {
             return new SampleFile(f);
         }
         return null;

@@ -28,19 +28,19 @@ public class EnaClient {
 
     private String filePath;
 
-    private static final Logger logger = LoggerFactory.getLogger(EnaClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EnaClient.class);
 
-    private static  NcbiClient ncbiClient;
+    private NcbiClient ncbiClient;
 
-    public EnaClient(String ncbiFilePath, String filePath){
+    public EnaClient(String ncbiFilePath, String filePath) {
         this.filePath = filePath;
         this.ncbiClient = new NcbiClient(ncbiFilePath);
     }
 
-    private File getEnaFile(String id) throws Exception{
+    private File getEnaFile(String id) throws Exception {
         File f = new File(filePath + "/" + id + ".xml");
-        if(!f.exists()){
-            URL website = new URL("https://www.ebi.ac.uk/ena/data/view/"+id+"&display=xml");
+        if (!f.exists()) {
+            URL website = new URL("https://www.ebi.ac.uk/ena/data/view/" + id + "&display=xml");
             try (InputStream in = website.openStream()) {
                 Path targetPath = f.toPath();
                 Files.copy(in, targetPath, StandardCopyOption.REPLACE_EXISTING);
@@ -49,14 +49,15 @@ public class EnaClient {
         return f;
     }
 
-    public EnaDataset readFile(File file) throws Exception{
-        System.out.print(String.format("reading file %s\n",file.getName()));
+    public EnaDataset readFile(File file) throws Exception {
+        System.out.print(String.format("reading file %s\n", file.getName()));
 
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(file);
 
-        String organismName = XMLUtils.readFirstElement(doc,"ProjectType/ProjectTypeSubmission/Target/Organism/OrganismName");
+        String organismName = XMLUtils.readFirstElement(doc,
+                "ProjectType/ProjectTypeSubmission/Target/Organism/OrganismName");
 
         EnaDataset dataset = new EnaDataset();
 
@@ -72,25 +73,25 @@ public class EnaClient {
         File dir = new File(filePath);
         FileFilter fileFilter = new WildcardFileFilter("*.xml");
 
-        System.out.print(String.format("reading %s file mask %s \n",filePath , fileFilter));
+        System.out.print(String.format("reading %s file mask %s \n", filePath, fileFilter));
 
         //TODO: foreach
-        String PRNJID = "PRJNA17297"; //enaIndexInfo.id;
+        String prnjid = "PRJNA17297"; //enaIndexInfo.id;
         try {
-                // read dataset info
-                EnaDatasetIndexInfo enaIndexInfo = new EnaDatasetIndexInfo();
+            // read dataset info
+            EnaDatasetIndexInfo enaIndexInfo = new EnaDatasetIndexInfo();
 
-                NcbiDataset ncbiDataset = this.ncbiClient.getNcbiDataset(PRNJID);
+            NcbiDataset ncbiDataset = this.ncbiClient.getNcbiDataset(prnjid);
 
-                // EnaDataset dataset = readFile(f);
+            // EnaDataset dataset = readFile(f);
 
-                // outDatasets.put(PRNJID, dataset);
+            // outDatasets.put(PRNJID, dataset);
 
-        } catch(Exception ex){
-            logger.error("Error processing " + PRNJID + " : " + ex);
+        } catch (Exception ex) {
+            LOGGER.error("Error processing " + prnjid + " : " + ex);
         }
 
-        System.out.print(String.format("found %d datasets\n",outDatasets.size()));
+        System.out.print(String.format("found %d datasets\n", outDatasets.size()));
 
         return outDatasets.values();
     }

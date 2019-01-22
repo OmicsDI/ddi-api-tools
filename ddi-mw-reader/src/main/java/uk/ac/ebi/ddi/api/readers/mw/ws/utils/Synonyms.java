@@ -18,9 +18,11 @@ public enum Synonyms {
     Synonyms(String term, String... synonym) {
 
         this.term = term;
-        for(String value: synonym)
-            if(value != null)
+        for (String value : synonym) {
+            if (value != null) {
                 synonyms.add(value);
+            }
+        }
     }
 
     public String getTerm() {
@@ -31,12 +33,14 @@ public enum Synonyms {
         return synonyms;
     }
 
-    public static String getTermBySynonym(String synonym){
-        if(synonym != null){
-            for(Synonyms value: Synonyms.values()){
-                for(String valueSyn: value.getSynomyms())
-                    if(synonym.compareToIgnoreCase(valueSyn) == 0)
+    public static String getTermBySynonym(String synonym) {
+        if (synonym != null) {
+            for (Synonyms value : Synonyms.values()) {
+                for (String valueSyn : value.getSynomyms()) {
+                    if (synonym.compareToIgnoreCase(valueSyn) == 0) {
                         return value.getTerm();
+                    }
+                }
             }
         }
         return null;

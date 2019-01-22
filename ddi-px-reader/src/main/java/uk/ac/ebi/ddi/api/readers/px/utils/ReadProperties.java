@@ -19,11 +19,12 @@ public class ReadProperties {
     /**
      * Private constructor to retrieve the properties for px like rss url and the url
      * to retrieve the information for experiments
+     *
      * @throws IOException
      */
     private ReadProperties() throws IOException {
         InputStream inputStream = ReadProperties.class.getClassLoader().getResourceAsStream("px.properties");
-        if (inputStream != null){
+        if (inputStream != null) {
             prop = new Properties();
             prop.load(inputStream);
         }
@@ -32,24 +33,25 @@ public class ReadProperties {
 
     /**
      * Return a reader of all properties
+     *
      * @return
      */
     public static ReadProperties getInstance() throws IOException {
-        if(instance == null)
+        if (instance == null) {
             instance = new ReadProperties();
+        }
         return instance;
     }
 
     /**
      * Retrieve the information for an specific key in the properties
+     *
      * @param key Key of the feature
      * @return return the value of the property
      */
-    public String getProperty(String key){
+    public String getProperty(String key) {
         return prop.getProperty(key);
     }
-
-
 
 
 }

@@ -18,15 +18,16 @@ import java.util.*;
 /**
  * This class modeled a Dataset Summary in Metabolomics Workbench. The dataset sumary contains only a
  * few information like the study id, title, type of study
+ *
  * @author Yasset Perez-Riverol (ypriverol@gmail.com)
  * @date 18/05/2015
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 
-public class MWDataSetDetails implements IAPIDataset{
+public class MWDataSetDetails implements IAPIDataset {
 
-    private static final Logger logger = LoggerFactory.getLogger(MWDataSetDetails.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MWDataSetDetails.class);
 
     @JsonProperty("study_id")
     private String id;
@@ -95,23 +96,25 @@ public class MWDataSetDetails implements IAPIDataset{
             date = formatter.parse(submit_date);
             return date.toString();
         } catch (ParseException e) {
-            logger.debug(e.getLocalizedMessage());
+            LOGGER.debug(e.getLocalizedMessage());
         }
-       return Constants.EMPTY_STRING;
+        return Constants.EMPTY_STRING;
     }
 
     @Override
     public Map<String, String> getOtherDates() {
-       return Collections.EMPTY_MAP;
+        return Collections.emptyMap();
     }
 
     @Override
     public String getSampleProcotol() {
         String experimentTypes = "";
-        if(analysis != null && analysis.analysisMap != null && analysis.analysisMap.size() > 0){
-            for(Analysis analysis: analysis.analysisMap.values())
-                if(analysis != null && analysis.getSummary() != null)
+        if (analysis != null && analysis.analysisMap != null && analysis.analysisMap.size() > 0) {
+            for (Analysis analysis : analysis.analysisMap.values()) {
+                if (analysis != null && analysis.getSummary() != null) {
                     experimentTypes += analysis.getSummary().trim() + ". ";
+                }
+            }
         }
         return experimentTypes.trim();
     }
@@ -136,12 +139,13 @@ public class MWDataSetDetails implements IAPIDataset{
     @Override
     public Set<String> getInstruments() {
         Set<String> instruments = new HashSet<>();
-        if(analysis != null && analysis.analysisMap != null && analysis.analysisMap.size() > 0){
-           analysis.analysisMap.values().forEach( analysisValue ->{
-               if(analysisValue != null && (analysisValue.getInstrument_name() != null || analysisValue.getInstrument_type() != null)){
-                   instruments.add(analysisValue.getInstrument_type().trim());
-               }
-           });
+        if (analysis != null && analysis.analysisMap != null && analysis.analysisMap.size() > 0) {
+            analysis.analysisMap.values().forEach(analysisValue -> {
+                if (analysisValue != null
+                        && (analysisValue.getInstrument_name() != null || analysisValue.getInstrument_type() != null)) {
+                    instruments.add(analysisValue.getInstrument_type().trim());
+                }
+            });
         }
         return instruments;
     }
@@ -149,23 +153,26 @@ public class MWDataSetDetails implements IAPIDataset{
     @Override
     public Set<String> getSpecies() {
         Set<String> speciesResult = new HashSet<>();
-        if(species != null && !species.isEmpty()){
-            species.forEach( specie -> {
-                if(specie.getLantinName() != null)
+        if (species != null && !species.isEmpty()) {
+            species.forEach(specie -> {
+                if (specie.getLantinName() != null) {
                     speciesResult.add(specie.getLantinName());
-                if(specie.getName() != null)
+                }
+                if (specie.getName() != null) {
                     speciesResult.add(specie.getName());
+                }
             });
         }
-        if(subject_species != null && subject_species.length() >0)
+        if (subject_species != null && subject_species.length() > 0) {
             speciesResult.add(subject_species);
+        }
 
         return speciesResult;
     }
 
     @Override
     public Set<String> getCellTypes() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     @Override
@@ -180,14 +187,14 @@ public class MWDataSetDetails implements IAPIDataset{
 
     @Override
     public Set<String> getSoftwares() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     @Override
     public Set<String> getSubmitter() {
         Set<String> submitters = new HashSet<>();
         String name = firstname;
-        if(last_name != null && last_name.length() > 0){
+        if (last_name != null && last_name.length() > 0) {
             name = name + " " + last_name;
         }
         submitters.add(name);
@@ -203,15 +210,17 @@ public class MWDataSetDetails implements IAPIDataset{
 
     @Override
     public Set<String> getSubmitterAffiliations() {
-        Set<String> affiliations  = new HashSet<>();
+        Set<String> affiliations = new HashSet<>();
         String affiliation = "";
-        if(department != null && department.length() > 0)
+        if (department != null && department.length() > 0) {
             affiliation += department;
-        if(institute != null && institute.length() > 0){
-            if(affiliation.length() > 0)
+        }
+        if (institute != null && institute.length() > 0) {
+            if (affiliation.length() > 0) {
                 affiliation += ", " + institute;
-            else
+            } else {
                 affiliation += institute;
+            }
         }
         affiliations.add(affiliation);
         return affiliations;
@@ -255,32 +264,36 @@ public class MWDataSetDetails implements IAPIDataset{
     public Map<String, Set<String>> getOtherAdditionals() {
 
         Map<String, Set<String>> additionals = new HashMap<>();
-        if(factors != null && factors.factors != null){
+        if (factors != null && factors.factors != null) {
             Set<String> factorStrings = new HashSet<>();
             factors.factors.values().forEach(s -> factorStrings.add(s.getFactors().trim()));
             additionals.put(Field.STUDY_FACTORS.getName(), factorStrings);
         }
-        if(analysis != null && analysis.analysisMap != null && analysis.analysisMap.size() > 0){
+        if (analysis != null && analysis.analysisMap != null && analysis.analysisMap.size() > 0) {
             Set<String> types = new HashSet<>();
-              analysis.analysisMap.values().forEach(s -> {
-                  String mapTerm = Synonyms.getTermBySynonym(s.getType());
-                  if(mapTerm == null)
-                      mapTerm = s.getType();
-                  types.add(mapTerm);
-                  if(s.getMs_type() != null && s.getMs_type().length() >0)
-                      types.add(s.getMs_type().trim());
-              });
-              additionals.put(Field.TECHNOLOGY_TYPE.getName(), types);
+            analysis.analysisMap.values().forEach(s -> {
+                String mapTerm = Synonyms.getTermBySynonym(s.getType());
+                if (mapTerm == null) {
+                    mapTerm = s.getType();
+                }
+                types.add(mapTerm);
+                if (s.getMs_type() != null && s.getMs_type().length() > 0) {
+                    types.add(s.getMs_type().trim());
+                }
+            });
+            additionals.put(Field.TECHNOLOGY_TYPE.getName(), types);
         }
 
-        if(metabolites != null && metabolites.metabolites != null && metabolites.metabolites.size() > 0){
+        if (metabolites != null && metabolites.metabolites != null && metabolites.metabolites.size() > 0) {
             Set<String> metaboliteNames = new HashSet<>();
-            Set<String> pubchemIds      = new HashSet<>();
-            metabolites.metabolites.values().forEach( metabolite -> {
-                if(metabolite.getName() != null && metabolite.getName().length() > 0)
+            Set<String> pubchemIds = new HashSet<>();
+            metabolites.metabolites.values().forEach(metabolite -> {
+                if (metabolite.getName() != null && metabolite.getName().length() > 0) {
                     metaboliteNames.add(metabolite.getName().trim());
-                if(metabolite.getPubchem() != null && metabolite.getPubchem().length() >0)
+                }
+                if (metabolite.getPubchem() != null && metabolite.getPubchem().length() > 0) {
                     pubchemIds.add(metabolite.getPubchem());
+                }
             });
             additionals.put(Field.PUBCHEM_ID.getName(), pubchemIds);
             additionals.put(Field.METABOLITE_NAME.getName(), metaboliteNames);

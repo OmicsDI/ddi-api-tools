@@ -1,21 +1,17 @@
 
 package uk.ac.ebi.ddi.api.readers.px.xml.model;
 
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
 
 
 /**
  * Top-level element for a ProteomeXchange XML document describing a dataset.
- * 
+ *
  * <p>Java class for ProteomeXchangeDatasetType complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="ProteomeXchangeDatasetType">
  *   &lt;complexContent>
@@ -43,32 +39,29 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ProteomeXchangeDatasetType", propOrder = {
-    "cvList",
-    "changeLog",
-    "datasetSummary",
-    "datasetIdentifierList",
-    "datasetOriginList",
-    "speciesList",
-    "instrumentList",
-    "modificationList",
-    "contactList",
-    "publicationList",
-    "keywordList",
-    "fullDatasetLinkList",
-    "datasetFileList",
-    "repositoryRecordList",
-    "additionalInformation"
+        "cvList",
+        "changeLog",
+        "datasetSummary",
+        "datasetIdentifierList",
+        "datasetOriginList",
+        "speciesList",
+        "instrumentList",
+        "modificationList",
+        "contactList",
+        "publicationList",
+        "keywordList",
+        "fullDatasetLinkList",
+        "datasetFileList",
+        "repositoryRecordList",
+        "additionalInformation"
 })
 public class ProteomeXchangeDatasetType
-    implements Serializable, PXObject
-{
+        implements Serializable, PXObject {
 
-    private final static long serialVersionUID = 100L;
+    private static final long serialVersionUID = 100L;
     @XmlElement(name = "CvList", required = true)
     protected CvListType cvList;
     @XmlElement(name = "ChangeLog")
@@ -106,11 +99,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Gets the value of the cvList property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CvListType }
-     *     
+     *
+     * @return possible object is
+     * {@link CvListType }
      */
     public CvListType getCvList() {
         return cvList;
@@ -118,11 +109,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Sets the value of the cvList property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CvListType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CvListType }
      */
     public void setCvList(CvListType value) {
         this.cvList = value;
@@ -130,11 +119,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Gets the value of the changeLog property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ChangeLogType }
-     *     
+     *
+     * @return possible object is
+     * {@link ChangeLogType }
      */
     public ChangeLogType getChangeLog() {
         return changeLog;
@@ -142,11 +129,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Sets the value of the changeLog property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ChangeLogType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link ChangeLogType }
      */
     public void setChangeLog(ChangeLogType value) {
         this.changeLog = value;
@@ -154,11 +139,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Gets the value of the datasetSummary property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link DatasetSummaryType }
-     *     
+     *
+     * @return possible object is
+     * {@link DatasetSummaryType }
      */
     public DatasetSummaryType getDatasetSummary() {
         return datasetSummary;
@@ -166,11 +149,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Sets the value of the datasetSummary property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link DatasetSummaryType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link DatasetSummaryType }
      */
     public void setDatasetSummary(DatasetSummaryType value) {
         this.datasetSummary = value;
@@ -178,11 +159,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Gets the value of the datasetIdentifierList property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link DatasetIdentifierListType }
-     *     
+     *
+     * @return possible object is
+     * {@link DatasetIdentifierListType }
      */
     public DatasetIdentifierListType getDatasetIdentifierList() {
         return datasetIdentifierList;
@@ -190,11 +169,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Sets the value of the datasetIdentifierList property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link DatasetIdentifierListType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link DatasetIdentifierListType }
      */
     public void setDatasetIdentifierList(DatasetIdentifierListType value) {
         this.datasetIdentifierList = value;
@@ -202,11 +179,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Gets the value of the datasetOriginList property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link DatasetOriginListType }
-     *     
+     *
+     * @return possible object is
+     * {@link DatasetOriginListType }
      */
     public DatasetOriginListType getDatasetOriginList() {
         return datasetOriginList;
@@ -214,11 +189,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Sets the value of the datasetOriginList property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link DatasetOriginListType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link DatasetOriginListType }
      */
     public void setDatasetOriginList(DatasetOriginListType value) {
         this.datasetOriginList = value;
@@ -226,11 +199,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Gets the value of the speciesList property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link SpeciesListType }
-     *     
+     *
+     * @return possible object is
+     * {@link SpeciesListType }
      */
     public SpeciesListType getSpeciesList() {
         return speciesList;
@@ -238,11 +209,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Sets the value of the speciesList property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link SpeciesListType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link SpeciesListType }
      */
     public void setSpeciesList(SpeciesListType value) {
         this.speciesList = value;
@@ -250,11 +219,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Gets the value of the instrumentList property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link InstrumentListType }
-     *     
+     *
+     * @return possible object is
+     * {@link InstrumentListType }
      */
     public InstrumentListType getInstrumentList() {
         return instrumentList;
@@ -262,11 +229,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Sets the value of the instrumentList property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link InstrumentListType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link InstrumentListType }
      */
     public void setInstrumentList(InstrumentListType value) {
         this.instrumentList = value;
@@ -274,11 +239,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Gets the value of the modificationList property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ModificationListType }
-     *     
+     *
+     * @return possible object is
+     * {@link ModificationListType }
      */
     public ModificationListType getModificationList() {
         return modificationList;
@@ -286,11 +249,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Sets the value of the modificationList property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ModificationListType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link ModificationListType }
      */
     public void setModificationList(ModificationListType value) {
         this.modificationList = value;
@@ -298,11 +259,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Gets the value of the contactList property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ContactListType }
-     *     
+     *
+     * @return possible object is
+     * {@link ContactListType }
      */
     public ContactListType getContactList() {
         return contactList;
@@ -310,11 +269,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Sets the value of the contactList property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ContactListType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link ContactListType }
      */
     public void setContactList(ContactListType value) {
         this.contactList = value;
@@ -322,11 +279,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Gets the value of the publicationList property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link PublicationListType }
-     *     
+     *
+     * @return possible object is
+     * {@link PublicationListType }
      */
     public PublicationListType getPublicationList() {
         return publicationList;
@@ -334,11 +289,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Sets the value of the publicationList property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link PublicationListType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link PublicationListType }
      */
     public void setPublicationList(PublicationListType value) {
         this.publicationList = value;
@@ -346,11 +299,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Gets the value of the keywordList property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link KeywordListType }
-     *     
+     *
+     * @return possible object is
+     * {@link KeywordListType }
      */
     public KeywordListType getKeywordList() {
         return keywordList;
@@ -358,11 +309,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Sets the value of the keywordList property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link KeywordListType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link KeywordListType }
      */
     public void setKeywordList(KeywordListType value) {
         this.keywordList = value;
@@ -370,11 +319,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Gets the value of the fullDatasetLinkList property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link FullDatasetLinkListType }
-     *     
+     *
+     * @return possible object is
+     * {@link FullDatasetLinkListType }
      */
     public FullDatasetLinkListType getFullDatasetLinkList() {
         return fullDatasetLinkList;
@@ -382,11 +329,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Sets the value of the fullDatasetLinkList property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link FullDatasetLinkListType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link FullDatasetLinkListType }
      */
     public void setFullDatasetLinkList(FullDatasetLinkListType value) {
         this.fullDatasetLinkList = value;
@@ -394,11 +339,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Gets the value of the datasetFileList property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link DatasetFileListType }
-     *     
+     *
+     * @return possible object is
+     * {@link DatasetFileListType }
      */
     public DatasetFileListType getDatasetFileList() {
         return datasetFileList;
@@ -406,11 +349,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Sets the value of the datasetFileList property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link DatasetFileListType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link DatasetFileListType }
      */
     public void setDatasetFileList(DatasetFileListType value) {
         this.datasetFileList = value;
@@ -418,11 +359,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Gets the value of the repositoryRecordList property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link RepositoryRecordListType }
-     *     
+     *
+     * @return possible object is
+     * {@link RepositoryRecordListType }
      */
     public RepositoryRecordListType getRepositoryRecordList() {
         return repositoryRecordList;
@@ -430,11 +369,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Sets the value of the repositoryRecordList property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link RepositoryRecordListType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link RepositoryRecordListType }
      */
     public void setRepositoryRecordList(RepositoryRecordListType value) {
         this.repositoryRecordList = value;
@@ -442,11 +379,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Gets the value of the additionalInformation property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link AdditionalInformationType }
-     *     
+     *
+     * @return possible object is
+     * {@link AdditionalInformationType }
      */
     public AdditionalInformationType getAdditionalInformation() {
         return additionalInformation;
@@ -454,11 +389,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Sets the value of the additionalInformation property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link AdditionalInformationType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link AdditionalInformationType }
      */
     public void setAdditionalInformation(AdditionalInformationType value) {
         this.additionalInformation = value;
@@ -466,11 +399,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Gets the value of the id property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getId() {
         return id;
@@ -478,11 +409,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Sets the value of the id property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setId(String value) {
         this.id = value;
@@ -490,11 +419,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Gets the value of the formatVersion property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getFormatVersion() {
         return formatVersion;
@@ -502,11 +429,9 @@ public class ProteomeXchangeDatasetType
 
     /**
      * Sets the value of the formatVersion property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setFormatVersion(String value) {
         this.formatVersion = value;

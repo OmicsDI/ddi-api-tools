@@ -1,23 +1,19 @@
 
 package uk.ac.ebi.ddi.api.readers.px.xml.model;
 
-import java.io.Serializable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.io.Serializable;
 
 
 /**
- * A single change log entry giving providing the date on the change, a new version number of the dataset and a description of the change/update.
- * 
+ * A single change log entry giving providing the date on the change,
+ * a new version number of the dataset and a description of the change/update.
+ *
  * <p>Java class for ChangeLogEntryType complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="ChangeLogEntryType">
  *   &lt;simpleContent>
@@ -28,18 +24,15 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;/simpleContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ChangeLogEntryType", propOrder = {
-    "value"
+        "value"
 })
 public class ChangeLogEntryType
-    implements Serializable, PXObject
-{
+        implements Serializable, PXObject {
 
-    private final static long serialVersionUID = 100L;
+    private static final long serialVersionUID = 100L;
     @XmlValue
     protected String value;
     @XmlAttribute
@@ -50,11 +43,9 @@ public class ChangeLogEntryType
 
     /**
      * Gets the value of the value property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getValue() {
         return value;
@@ -62,11 +53,9 @@ public class ChangeLogEntryType
 
     /**
      * Sets the value of the value property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setValue(String value) {
         this.value = value;
@@ -74,11 +63,9 @@ public class ChangeLogEntryType
 
     /**
      * Gets the value of the version property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getVersion() {
         return version;
@@ -86,11 +73,9 @@ public class ChangeLogEntryType
 
     /**
      * Sets the value of the version property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setVersion(String value) {
         this.version = value;
@@ -98,11 +83,9 @@ public class ChangeLogEntryType
 
     /**
      * Gets the value of the date property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @return possible object is
+     * {@link XMLGregorianCalendar }
      */
     public XMLGregorianCalendar getDate() {
         return date;
@@ -110,11 +93,9 @@ public class ChangeLogEntryType
 
     /**
      * Sets the value of the date property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link XMLGregorianCalendar }
      */
     public void setDate(XMLGregorianCalendar value) {
         this.date = value;

@@ -30,8 +30,8 @@ public class GPMDBFTPProd extends AbstractFTPConfig {
         super(host, port, user, password);
     }
 
-    public GPMDBFTPProd(){
-       super("ftp.thegpm.org");
+    public GPMDBFTPProd() {
+        super("ftp.thegpm.org");
     }
 
 }

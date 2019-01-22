@@ -16,9 +16,10 @@ public class XMLUtils {
 
     private static XPath xPathOriginal = XPathFactory.newInstance().newXPath();
 
-    public static String readFirstAttribute(Document doc, String path, String attribute) throws Exception{
+    public static String readFirstAttribute(Document doc, String path, String attribute) throws Exception {
 
-        NodeList nodes = (NodeList)xPathOriginal.evaluate("//"+path, doc.getDocumentElement(), XPathConstants.NODESET);
+        NodeList nodes = (NodeList) xPathOriginal.evaluate(
+                "//" + path, doc.getDocumentElement(), XPathConstants.NODESET);
         if (nodes.getLength() > 0) {
             Element e = (Element) nodes.item(0);
             return e.getAttribute(attribute);
@@ -28,15 +29,16 @@ public class XMLUtils {
     }
 
 
-    public static String readFirstElement(Document doc, String path) throws Exception{
+    public static String readFirstElement(Document doc, String path) throws Exception {
 
-        NodeList nodes = (NodeList)xPathOriginal.evaluate("//" + path, doc.getDocumentElement(), XPathConstants.NODESET);
+        NodeList nodes = (NodeList) xPathOriginal.evaluate(
+                "//" + path, doc.getDocumentElement(), XPathConstants.NODESET);
         return getValue(nodes);
     }
 
-    public static String readFirstAttribute(Element node, String path, String attribute, XPath xPath) throws Exception{
+    public static String readFirstAttribute(Element node, String path, String attribute, XPath xPath) throws Exception {
 
-        NodeList nodes = (NodeList)xPath.evaluate(path, node, XPathConstants.NODESET);
+        NodeList nodes = (NodeList) xPath.evaluate(path, node, XPathConstants.NODESET);
         if (nodes.getLength() > 0) {
             Element e = (Element) nodes.item(0);
             return e.getAttribute(attribute);
@@ -45,15 +47,15 @@ public class XMLUtils {
         }
     }
 
-    public static String readFirstElement(Node node, String path, XPath xPath) throws Exception{
+    public static String readFirstElement(Node node, String path, XPath xPath) throws Exception {
 
-        NodeList nodes = (NodeList)xPath.evaluate(path, node, XPathConstants.NODESET);
+        NodeList nodes = (NodeList) xPath.evaluate(path, node, XPathConstants.NODESET);
         return getValue(nodes);
     }
 
     public static NodeList findElements(Document doc, String path, XPath xPath) throws Exception {
 
-        return  (NodeList)xPath.evaluate(path, doc.getDocumentElement(), XPathConstants.NODESET);
+        return (NodeList) xPath.evaluate(path, doc.getDocumentElement(), XPathConstants.NODESET);
     }
 
     private static String getValue(NodeList nodes) {

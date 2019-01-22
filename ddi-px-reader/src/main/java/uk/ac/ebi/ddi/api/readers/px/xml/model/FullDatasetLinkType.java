@@ -1,20 +1,20 @@
 
 package uk.ac.ebi.ddi.api.readers.px.xml.model;
 
-import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 
 
 /**
  * A single link to the full dataset.
- * 
+ *
  * <p>Java class for FullDatasetLinkType complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="FullDatasetLinkType">
  *   &lt;complexContent>
@@ -26,28 +26,23 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "FullDatasetLinkType", propOrder = {
-    "cvParam"
+        "cvParam"
 })
 public class FullDatasetLinkType
-    implements Serializable, PXObject
-{
+        implements Serializable, PXObject {
 
-    private final static long serialVersionUID = 100L;
+    private static final long serialVersionUID = 100L;
     @XmlElement(required = true)
     protected CvParamType cvParam;
 
     /**
      * Gets the value of the cvParam property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CvParamType }
-     *     
+     *
+     * @return possible object is
+     * {@link CvParamType }
      */
     public CvParamType getCvParam() {
         return cvParam;
@@ -55,11 +50,9 @@ public class FullDatasetLinkType
 
     /**
      * Sets the value of the cvParam property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CvParamType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CvParamType }
      */
     public void setCvParam(CvParamType value) {
         this.cvParam = value;

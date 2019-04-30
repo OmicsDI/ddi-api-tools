@@ -2,8 +2,8 @@ package uk.ac.ebi.ddi.api.readers.paxdb.ws.model;
 
 import uk.ac.ebi.ddi.api.readers.model.IAPIDataset;
 import uk.ac.ebi.ddi.api.readers.utils.Constants;
+import uk.ac.ebi.ddi.ddidomaindb.dataset.DSField;
 import uk.ac.ebi.ddi.xml.validator.utils.BiologicalDatabases;
-import uk.ac.ebi.ddi.xml.validator.utils.Field;
 import uk.ac.ebi.ddi.xml.validator.utils.OmicsType;
 
 import java.util.*;
@@ -253,7 +253,7 @@ public class PaxDBDataset implements IAPIDataset {
         if (pubmedID[0] != null) {
             ids.add(pubmedID[0]);
         }
-        crossReferences.put(Field.PUBMED.getName(), ids);
+        crossReferences.put(DSField.CrossRef.PUBMED.getName(), ids);
 
         Set<String> proteins = new HashSet<>();
         if (abundanceProteins != null && abundanceProteins.size() > 0) {

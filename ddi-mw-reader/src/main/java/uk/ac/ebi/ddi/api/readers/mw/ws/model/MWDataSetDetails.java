@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import uk.ac.ebi.ddi.api.readers.mw.ws.utils.Synonyms;
 import uk.ac.ebi.ddi.api.readers.model.IAPIDataset;
 import uk.ac.ebi.ddi.api.readers.utils.Constants;
-import uk.ac.ebi.ddi.xml.validator.utils.Field;
+import uk.ac.ebi.ddi.ddidomaindb.dataset.DSField;
 import uk.ac.ebi.ddi.xml.validator.utils.OmicsType;
 
 import java.text.DateFormat;
@@ -267,7 +267,7 @@ public class MWDataSetDetails implements IAPIDataset {
         if (factors != null && factors.factors != null) {
             Set<String> factorStrings = new HashSet<>();
             factors.factors.values().forEach(s -> factorStrings.add(s.getFactors().trim()));
-            additionals.put(Field.STUDY_FACTORS.getName(), factorStrings);
+            additionals.put(DSField.Additional.STUDY_FACTORS.getName(), factorStrings);
         }
         if (analysis != null && analysis.analysisMap != null && analysis.analysisMap.size() > 0) {
             Set<String> types = new HashSet<>();
@@ -281,7 +281,7 @@ public class MWDataSetDetails implements IAPIDataset {
                     types.add(s.getMs_type().trim());
                 }
             });
-            additionals.put(Field.TECHNOLOGY_TYPE.getName(), types);
+            additionals.put(DSField.Additional.TECHNOLOGY_TYPE.getName(), types);
         }
 
         if (metabolites != null && metabolites.metabolites != null && metabolites.metabolites.size() > 0) {
@@ -295,8 +295,8 @@ public class MWDataSetDetails implements IAPIDataset {
                     pubchemIds.add(metabolite.getPubchem());
                 }
             });
-            additionals.put(Field.PUBCHEM_ID.getName(), pubchemIds);
-            additionals.put(Field.METABOLITE_NAME.getName(), metaboliteNames);
+            additionals.put(DSField.Additional.PUBCHEM_ID.getName(), pubchemIds);
+            additionals.put(DSField.Additional.METABOLITE_NAME.getName(), metaboliteNames);
         }
         return additionals;
     }

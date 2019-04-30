@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import uk.ac.ebi.ddi.api.readers.model.IAPIDataset;
 import uk.ac.ebi.ddi.api.readers.px.utils.Constants;
 import uk.ac.ebi.ddi.api.readers.px.xml.model.*;
-import uk.ac.ebi.ddi.xml.validator.utils.Field;
+import uk.ac.ebi.ddi.ddidomaindb.dataset.DSField;
 import uk.ac.ebi.ddi.xml.validator.utils.OmicsType;
 
 
@@ -287,7 +287,7 @@ public class PxReader implements IAPIDataset {
                     }
                 }
             }
-            crossReferences.put(Field.TAXONOMY.getName(), speciesResult);
+            crossReferences.put(DSField.CrossRef.TAXONOMY.getName(), speciesResult);
         }
 
         if (dataset != null && dataset.getValue() != null && dataset.getValue().getPublicationList() != null) {
@@ -299,7 +299,7 @@ public class PxReader implements IAPIDataset {
                     }
                 }
             }
-            crossReferences.put(Field.PUBMED.getName(), publicationIds);
+            crossReferences.put(DSField.CrossRef.PUBMED.getName(), publicationIds);
         }
 
         return crossReferences;
@@ -316,7 +316,7 @@ public class PxReader implements IAPIDataset {
                     publication.add(mod.getValue());
                 }
             }
-            additionals.put(Field.PTM_MODIFICATIONS.getName(), publication);
+            additionals.put(DSField.Additional.PTM_MODIFICATIONS.getName(), publication);
         }
 
 
@@ -327,7 +327,7 @@ public class PxReader implements IAPIDataset {
                     experimentTypes.add("SRM/MRM");
                 }
             }
-            additionals.put(Field.TECHNOLOGY_TYPE.getName(), experimentTypes);
+            additionals.put(DSField.Additional.TECHNOLOGY_TYPE.getName(), experimentTypes);
         }
 
         return additionals;

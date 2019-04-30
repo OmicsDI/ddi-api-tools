@@ -12,12 +12,12 @@ import uk.ac.ebi.ddi.api.readers.gpmdb.ws.model.Model;
 import uk.ac.ebi.ddi.api.readers.ws.AbstractWsConfig;
 import uk.ac.ebi.ddi.api.readers.utils.Constants;
 import uk.ac.ebi.ddi.api.readers.utils.Transformers;
+import uk.ac.ebi.ddi.ddidomaindb.dataset.DSField;
 import uk.ac.ebi.ddi.xml.validator.parser.marshaller.OmicsDataMarshaller;
 import uk.ac.ebi.ddi.xml.validator.parser.model.Database;
 import uk.ac.ebi.ddi.xml.validator.parser.model.Entries;
 import uk.ac.ebi.ddi.xml.validator.parser.model.Entry;
 import uk.ac.ebi.ddi.xml.validator.utils.BiologicalDatabases;
-import uk.ac.ebi.ddi.xml.validator.utils.Field;
 import uk.ac.ebi.pride.tools.protein_details_fetcher.ProteinDetailFetcher;
 
 import java.io.FileWriter;
@@ -115,7 +115,7 @@ public class GenerateGPMDBOmicsXML {
                         if (proteins.length > 0) {
                             Set<String> proteinSet = new HashSet<>(Arrays.asList(proteins));
                             Map<String, Set<String>> proteinNames = new HashMap<>();
-                            proteinNames.put(Field.PROTEIN_NAME.getName(), proteinSet);
+                            proteinNames.put(DSField.Additional.PROTEIN_NAME.getName(), proteinSet);
                             model.addOtherAdditionals(proteinNames);
                         }
 

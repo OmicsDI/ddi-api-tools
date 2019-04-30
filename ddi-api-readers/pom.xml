@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>ddi-api-readers</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1.1-SNAPSHOT</version>
 
     <name>ddi-api-readers</name>
     <description>General API Readers Classes to Be use By each Reader </description>

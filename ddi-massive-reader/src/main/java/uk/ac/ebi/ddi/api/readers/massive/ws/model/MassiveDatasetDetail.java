@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import uk.ac.ebi.ddi.api.readers.model.IAPIDataset;
 import uk.ac.ebi.ddi.api.readers.massive.ws.utils.Utilities;
 import uk.ac.ebi.ddi.api.readers.utils.Constants;
-import uk.ac.ebi.ddi.xml.validator.utils.Field;
+import uk.ac.ebi.ddi.ddidomaindb.dataset.DSField;
 import uk.ac.ebi.ddi.xml.validator.utils.OmicsType;
 
 import java.text.DateFormat;
@@ -245,11 +245,11 @@ public class MassiveDatasetDetail extends MassiveAbstractDataset implements IAPI
         if (publications != null && publications.length > 0) {
             Arrays.stream(publications).filter(reference -> reference.getPubmedId() != null).forEach(reference -> {
                 Set<String> values = new HashSet<>();
-                if (crossReferences.containsKey(Field.PUBMED.getName())) {
-                    values = crossReferences.get(Field.PUBMED.getName());
+                if (crossReferences.containsKey(DSField.CrossRef.PUBMED.getName())) {
+                    values = crossReferences.get(DSField.CrossRef.PUBMED.getName());
                 }
                 values.add(reference.getPubmedId().toString());
-                crossReferences.put(Field.PUBMED.getName(), values);
+                crossReferences.put(DSField.CrossRef.PUBMED.getName(), values);
             });
         }
         return crossReferences;
@@ -262,26 +262,26 @@ public class MassiveDatasetDetail extends MassiveAbstractDataset implements IAPI
             Set<String> modifications = new HashSet<>();
             String[] modArray = modification.split(Constants.MASSIVE_INFO_SEPARATOR);
             Arrays.asList(modArray).forEach(s -> modifications.add(s.trim()));
-            additionals.put(Field.PTM_MODIFICATIONS.getName(), modifications);
+            additionals.put(DSField.Additional.PTM_MODIFICATIONS.getName(), modifications);
         }
 
         if (pxAccession != null && pxAccession.length() > 0
                 && !pxAccession.equalsIgnoreCase(Constants.MASSIVE_STRING_NULL)) {
             Set<String> accessions = new HashSet<>();
             accessions.add(pxAccession);
-            additionals.put(Field.SECONDARY_ACCESSION.getName(), accessions);
+            additionals.put(DSField.Additional.SECONDARY_ACCESSION.getName(), accessions);
         }
 
         if (fileSize != null && fileSize.length() > 0) {
             Set<String> fileSizes = new HashSet<>();
             fileSizes.add(fileSize);
-            additionals.put(Field.FILE_SIZE.getName(), fileSizes);
+            additionals.put(DSField.Additional.FILE_SIZE.getName(), fileSizes);
         }
 
         if (fileCount != null && fileCount.length() > 0) {
             Set<String> fileCounts = new HashSet<>();
             fileCounts.add(fileCount);
-            additionals.put(Field.FILE_SIZE.getName(), fileCounts);
+            additionals.put(DSField.Additional.FILE_SIZE.getName(), fileCounts);
         }
         //Add only the publications without pubmed ID.
         if (publications != null && publications.length > 0) {
@@ -295,7 +295,7 @@ public class MassiveDatasetDetail extends MassiveAbstractDataset implements IAPI
 
                 }
             });
-            additionals.put(Field.PUBLICATION.getName(), citations);
+            additionals.put(DSField.Date.PUBLICATION.getName(), citations);
         }
         return additionals;
     }

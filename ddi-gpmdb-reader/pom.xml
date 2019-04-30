@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>ddi-gpmdb-reader</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1.1-SNAPSHOT</version>
 
 
     <name>ddi-gpmdb-reader</name>
@@ -114,7 +114,7 @@
         <dependency>
             <groupId>uk.ac.ebi.ddi.api.readers</groupId>
             <artifactId>ddi-api-readers</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.1.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>

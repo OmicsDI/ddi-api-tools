@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import uk.ac.ebi.ddi.api.readers.model.IAPIDataset;
 import uk.ac.ebi.ddi.api.readers.utils.Constants;
-import uk.ac.ebi.ddi.xml.validator.utils.Field;
+import uk.ac.ebi.ddi.ddidomaindb.dataset.DSField;
 import uk.ac.ebi.ddi.xml.validator.utils.OmicsType;
 
 import java.util.*;
@@ -113,7 +113,7 @@ public class Dataset implements IAPIDataset {
     public Map<String, String> getOtherDates() {
         Map<String, String> dates = new HashMap<>();
         if (modifiedDate != null) {
-            dates.put(Field.PUBLICATION_UPDATED.getName(), modifiedDate);
+            dates.put(DSField.Date.PUBLICATION_UPDATED.getName(), modifiedDate);
         }
         return dates;
     }
@@ -231,7 +231,7 @@ public class Dataset implements IAPIDataset {
         if (pubmedID != null) {
             Set<String> publications = new HashSet<>();
             publications.add(pubmedID);
-            crossReferences.put(Field.PUBMED.getName(), publications);
+            crossReferences.put(DSField.CrossRef.PUBMED.getName(), publications);
         }
         return crossReferences;
     }
@@ -242,18 +242,18 @@ public class Dataset implements IAPIDataset {
         if (smallMolecules != null && smallMolecules.length > 0) {
             Set<String> smallMoleculesSet = new HashSet<>();
             smallMoleculesSet.addAll(Arrays.asList(smallMolecules));
-            otherAdditionals.put(Field.METABOLITE_NAME.getName(), smallMoleculesSet);
+            otherAdditionals.put(DSField.Additional.METABOLITE_NAME.getName(), smallMoleculesSet);
         }
         if (proteins != null && proteins.length > 0) {
             Set<String> proteinSet = new HashSet<>();
             proteinSet.addAll(Arrays.asList(proteins));
-            otherAdditionals.put(Field.PROTEIN_NAME.getName(), proteinSet);
+            otherAdditionals.put(DSField.Additional.PROTEIN_NAME.getName(), proteinSet);
         }
 
         if (genes != null && genes.length > 0) {
             Set<String> geneSet = new HashSet<>();
             geneSet.addAll(Arrays.asList(genes));
-            otherAdditionals.put(Field.GENE_NAME.getName(), geneSet);
+            otherAdditionals.put(DSField.Additional.GENE_NAME.getName(), geneSet);
         }
         Set<String> tecnologyTypes = new HashSet<>();
         if (physicalDetection != null && physicalDetection.length() > 0) {
@@ -264,13 +264,13 @@ public class Dataset implements IAPIDataset {
         }
 
         if (tecnologyTypes.size() > 0) {
-            otherAdditionals.put(Field.TECHNOLOGY_TYPE.getName(), tecnologyTypes);
+            otherAdditionals.put(DSField.Additional.TECHNOLOGY_TYPE.getName(), tecnologyTypes);
         }
 
         if (funding != null) {
             Set<String> fundings = new HashSet<>();
             fundings.add(funding);
-            otherAdditionals.put(Field.FUNDING.getName(), fundings);
+            otherAdditionals.put(DSField.Additional.FUNDING.getName(), fundings);
         }
 
 

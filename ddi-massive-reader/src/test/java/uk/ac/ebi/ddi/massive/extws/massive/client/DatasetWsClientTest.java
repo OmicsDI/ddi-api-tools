@@ -9,7 +9,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import uk.ac.ebi.ddi.api.readers.massive.ws.client.DatasetWsClient;
 import uk.ac.ebi.ddi.api.readers.massive.ws.client.MassiveWsConfigProd;
-import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetDetail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:test-context.xml"})
@@ -33,9 +32,9 @@ public class DatasetWsClientTest {
     @Test
     public void testGetDataset() throws Exception {
 
-        MassiveDatasetDetail dataset = datasetWsClient.getDataset("e6ef1e57368e4282a4b33a15ae94ebbc");
-
-        System.out.println(dataset.toString());
+//        MassiveDatasetDetail dataset = datasetWsClient.getDataset("e6ef1e57368e4282a4b33a15ae94ebbc");
+//
+//        System.out.println(dataset.toString());
 
     }
 }

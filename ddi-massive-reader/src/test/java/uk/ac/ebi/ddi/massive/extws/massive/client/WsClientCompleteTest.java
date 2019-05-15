@@ -10,12 +10,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import uk.ac.ebi.ddi.api.readers.massive.ws.client.DatasetWsClient;
 import uk.ac.ebi.ddi.api.readers.massive.ws.client.ISODetasetsWsClient;
 import uk.ac.ebi.ddi.api.readers.massive.ws.client.MassiveWsConfigProd;
-import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetSummaryMassive;
-import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetDetail;
-import uk.ac.ebi.ddi.api.readers.massive.ws.model.MassiveDatasetList;
-
-import java.util.Arrays;
-import java.util.Random;
 
 /**
  * @author Yasset Perez-Riverol (ypriverol@gmail.com)
@@ -45,17 +39,17 @@ public class WsClientCompleteTest {
 
     @Test
     public void testGetAllDatasets() throws Exception {
-
-        MassiveDatasetList list = datasetISOWsClient.getAllDatasets();
-
-        if(list != null && list.datasets != null && list.datasets.length > 0){
-            MassiveDatasetSummaryMassive[] datasets = Arrays.copyOfRange(list.datasets, 0, (new Random().nextInt(50)));
-            for(MassiveDatasetSummaryMassive dataSetSummary: datasets){
-                System.out.println("Task: " + dataSetSummary.getTask());
-                MassiveDatasetDetail dataset = datasetWsClient.getDataset(dataSetSummary.getTask());
-                System.out.println(dataset.toString());
-            }
-        }
+//
+//        MassiveDatasetList list = datasetISOWsClient.getAllDatasets();
+//
+//        if(list != null && list.datasets != null && list.datasets.length > 0){
+//            MassiveDatasetSummaryMassive[] datasets = Arrays.copyOfRange(list.datasets, 0, (new Random().nextInt(50)));
+//            for(MassiveDatasetSummaryMassive dataSetSummary: datasets){
+//                System.out.println("Task: " + dataSetSummary.getTask());
+//                MassiveDatasetDetail dataset = datasetWsClient.getDataset(dataSetSummary.getTask());
+//                System.out.println(dataset.toString());
+//            }
+//        }
     }
 
 }

@@ -2,15 +2,16 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
 
     <bean id="bioprojectsClient" class="uk.ac.ebi.ddi.api.readers.bioprojects.ws.client.BioprojectsClient">
-        <constructor-arg index="0" value="/Users/tvu/Desktop/bioProjects/summary"/>
+        <constructor-arg index="0" value="/tmp/testing/bioprojects/summary"/>
         <constructor-arg index="1" ref="geoClient"/>
     </bean>
 
     <bean id="geoClient" class="uk.ac.ebi.ddi.api.readers.bioprojects.ws.client.GeoClient">
-        <constructor-arg index="0" value="/Users/tvu/Desktop/bioProjects/geo"/>
+        <constructor-arg index="0" value="/tmp/testing/bioprojects/geo"/>
     </bean>
 
     <bean id="DatasetService" class="uk.ac.ebi.ddi.service.db.service.dataset.DatasetService"> </bean>

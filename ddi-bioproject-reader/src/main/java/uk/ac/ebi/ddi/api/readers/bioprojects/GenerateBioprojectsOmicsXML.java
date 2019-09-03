@@ -33,7 +33,7 @@ public class GenerateBioprojectsOmicsXML implements IGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GenerateBioprojectsOmicsXML.class);
 
-    private static final int LINES_PER_SPLIT = 2000;
+    private static final int LINES_PER_SPLIT = 200;
 
     private String outputFolder;
 

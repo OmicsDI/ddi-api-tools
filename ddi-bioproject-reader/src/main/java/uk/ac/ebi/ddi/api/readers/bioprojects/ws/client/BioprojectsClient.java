@@ -31,7 +31,7 @@ public class BioprojectsClient {
     private GeoClient geoClient;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BioprojectsClient.class);
-    private static final Integer BATCH_SIZE = 25;
+    private static final Integer BATCH_SIZE = 5;
     private static final String ONLY_NEWS = System.getenv("ONLY_NEWS");
     private static final String BIOPROJECT_ENDPOINT = "ftp://ftp.ncbi.nlm.nih.gov/bioproject/summary.txt";
 
@@ -88,7 +88,7 @@ public class BioprojectsClient {
         ForkJoinPool customThreadPool = new ForkJoinPool(PARALLEL);
 
         BioprojectsFileReader reader = new BioprojectsFileReader(geoClient);
-        customThreadPool.submit(() -> allFilesForThreads.parallelStream().forEach(datasetBundle -> {
+        customThreadPool.submit(() -> allFilesForThreads.stream().forEach(datasetBundle -> {
             for (BioprojectDataset dataset : reader.readIds(filePath, datasetBundle)) {
                 paxDBDatasets.put(dataset.getIdentifier(), dataset);
             }

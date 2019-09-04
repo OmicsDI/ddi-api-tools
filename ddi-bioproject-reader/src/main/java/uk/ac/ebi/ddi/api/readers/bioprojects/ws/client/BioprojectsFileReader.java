@@ -50,7 +50,7 @@ public class BioprojectsFileReader {
     private RestTemplate restTemplate = new RestTemplate();
     private static final String NCBI_ENDPOINT = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi";
     private static final int RETRIES = 20;
-    private static final int PARALLEL = Math.min(9, Runtime.getRuntime().availableProcessors());
+    private static final int PARALLEL = Math.min(1, Runtime.getRuntime().availableProcessors());
     private TransformerFactory transformerFactory = TransformerFactory.newInstance();
     private DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 

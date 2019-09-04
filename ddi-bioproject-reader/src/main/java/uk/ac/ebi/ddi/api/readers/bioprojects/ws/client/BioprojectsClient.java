@@ -31,12 +31,12 @@ public class BioprojectsClient {
     private GeoClient geoClient;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BioprojectsClient.class);
-    private static final Integer BATCH_SIZE = 5;
+    private static final Integer BATCH_SIZE = 2;
     private static final String ONLY_NEWS = System.getenv("ONLY_NEWS");
     private static final String BIOPROJECT_ENDPOINT = "ftp://ftp.ncbi.nlm.nih.gov/bioproject/summary.txt";
 
     // Due to rate limit from eutils.ncbi.nlm.nih.gov
-    private static final int PARALLEL = 3;
+    private static final int PARALLEL = 1;
 
     public BioprojectsClient(String filePath, GeoClient geoClient) {
         this.filePath = filePath;

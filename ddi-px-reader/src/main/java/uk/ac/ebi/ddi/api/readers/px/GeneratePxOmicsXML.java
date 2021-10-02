@@ -101,7 +101,11 @@ public class GeneratePxOmicsXML implements IGenerator {
 
         Database database = new Database();
         database.setDescription(Constants.PX_DESCRIPTION);
-        database.setName(Constants.PX_DATABASE);
+        if (databases.size() > 0) {
+            database.setName(databases.get(0));
+        } else {
+            database.setName(Constants.PX_DATABASE);
+        }
         database.setRelease(releaseDate);
         database.setEntries(entries);
         database.setEntryCount(entries.size());

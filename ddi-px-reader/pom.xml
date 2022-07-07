@@ -6,11 +6,11 @@
         <groupId>uk.ac.ebi.ddi.api.readers</groupId>
         <artifactId>ddi-api-tools</artifactId>
         <!--<version>1.0</version>-->
-        <version>1.1</version>
+        <version>1.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>ddi-px-reader</artifactId>
-    <version>1.1</version>
+    <version>1.2-SNAPSHOT</version>
 
     <name>ddi-px-reader</name>
     <description>Read and create the ebe files from PX submissions</description>
@@ -27,7 +27,7 @@
             <groupId>uk.ac.ebi.ddi.api.readers</groupId>
             <artifactId>ddi-api-readers</artifactId>
             <!--<version>1.0</version>-->
-            <version>1.1</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
 
         <!--<dependency>-->

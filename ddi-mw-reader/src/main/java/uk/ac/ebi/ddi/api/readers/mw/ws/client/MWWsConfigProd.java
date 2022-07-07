@@ -8,6 +8,6 @@ import uk.ac.ebi.ddi.api.readers.ws.AbstractWsConfig;
 public class MWWsConfigProd extends AbstractWsConfig {
 
     public MWWsConfigProd() {
-        super("http", "www.metabolomicsworkbench.org");
+        super("https", "www.metabolomicsworkbench.org");
     }
 }

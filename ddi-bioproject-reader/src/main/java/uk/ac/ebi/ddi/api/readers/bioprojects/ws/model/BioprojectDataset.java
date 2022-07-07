@@ -34,6 +34,7 @@ public class BioprojectDataset implements IAPIDataset {
     private String name;
     private String description;
     private String publicationDate;
+    private String releaseDate;
     private HashSet<String> datasetFiles = new HashSet<String>();
 
     public String getIdentifier() {
@@ -114,6 +115,13 @@ public class BioprojectDataset implements IAPIDataset {
         return omicsType;
     }
 
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
     @Override
     public String getRepository() {
         return repository;

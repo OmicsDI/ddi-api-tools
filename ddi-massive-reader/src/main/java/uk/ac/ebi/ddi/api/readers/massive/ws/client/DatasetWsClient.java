@@ -48,17 +48,23 @@ public class DatasetWsClient extends AbstractClient {
      */
     public MassiveDatasetDetail getDataset(String task) {
 
-        UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
-                .scheme(config.getProtocol())
-                .host(config.getHostName())
-                .path("/ProteoSAFe")
-                .path("/MassiveServlet")
-                .queryParam("task", task)
-                .queryParam("function", "massiveinformation");
+        MassiveDatasetDetail massiveDatasetDetail = null;
+        try {
+            UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
+                    .scheme(config.getProtocol())
+                    .host(config.getHostName())
+                    .path("/ProteoSAFe")
+                    .path("/MassiveServlet")
+                    .queryParam("task", task)
+                    .queryParam("function", "massiveinformation");
 
-        URI uri = builder.build().encode().toUri();
+            URI uri = builder.build().encode().toUri();
 
-        return restTemplate.getForObject(uri, MassiveDatasetDetail.class);
+            massiveDatasetDetail = restTemplate.getForObject(uri, MassiveDatasetDetail.class);
+        } catch (Exception ex) {
+            LOGGER.error("exception in MassiveDatasetDetail getdataset ", ex.getMessage());
+        }
+        return massiveDatasetDetail;
     }
 
     public List<String> getFilePaths(String massiveID) throws IOException {

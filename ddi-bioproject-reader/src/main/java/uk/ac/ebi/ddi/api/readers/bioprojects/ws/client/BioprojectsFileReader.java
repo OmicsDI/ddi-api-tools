@@ -212,7 +212,7 @@ public class BioprojectsFileReader {
             if (datePart.length > 0) {
                 pubDate = datePart[0];
             }
-            dataset.setPublicationDate(pubDate);
+            dataset.setReleaseDate(pubDate);
         }
 
         if (database == null) {

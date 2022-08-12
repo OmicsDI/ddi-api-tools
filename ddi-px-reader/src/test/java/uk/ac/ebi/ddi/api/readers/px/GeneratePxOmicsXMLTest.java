@@ -21,7 +21,9 @@ import static org.junit.Assert.*;
  */
 public class GeneratePxOmicsXMLTest {
 
-    String url = "http://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=PXD005952&outputMode=XML";
+    //String url = "http://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=PXD005952&outputMode=XML";
+    //String url = "http://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=PXD005952&outputMode=XML";
+    String url = "http://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=PXD029533&outputMode=XML";
 
     @Test
     public void getPage() throws Exception {

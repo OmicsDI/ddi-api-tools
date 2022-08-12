@@ -34,8 +34,8 @@ public class GeneratePxOmicsXML implements IGenerator {
 
     private static final String PXSUBMISSION_PATTERN = "<ProteomeXchangeDataset";
 
-    private List<String> databases = Arrays.asList("PRIDE", "MassIVE", "PeptideAtlas", "jPOST");
-
+    private List<String> databases = Arrays.asList("PRIDE", "MassIVE", "PeptideAtlas", "jPOST", "iProX");
+    //"PRIDE", "MassIVE", "PeptideAtlas", "jPOST",
     public int loopGap;
 
     public int endPoint;
@@ -181,6 +181,9 @@ public class GeneratePxOmicsXML implements IGenerator {
 
         String outputFolder = null;
         String releaseDate = null;
+
+        //String outputFolder = "/partition/tmp/omics/original/iprox";
+        //String releaseDate = "20220809";
 
         if (args != null && args.length > 1 && args[0] != null) {
             outputFolder = args[0];

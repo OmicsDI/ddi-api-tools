@@ -5,11 +5,11 @@
     <parent>
         <groupId>uk.ac.ebi.ddi.api.readers</groupId>
         <artifactId>ddi-api-tools</artifactId>
-        <version>1.2-SNAPSHOT</version>
+        <version>1.2</version>
     </parent>
 
     <artifactId>ddi-bioproject-reader</artifactId>
-    <version>1.8-SNAPSHOT</version>
+    <version>1.8</version>
 
 
     <name>ddi-bioproject-reader</name>

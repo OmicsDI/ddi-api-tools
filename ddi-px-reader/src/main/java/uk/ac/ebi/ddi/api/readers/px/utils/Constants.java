@@ -19,6 +19,7 @@ public class Constants {
     public static final String MASSIVEURL_ACCESSION = "MS:1002488";
     public static final String PASSELURL_ACCESSION = "MS:1002420";
     public static final String JPOSTURL_ACCESSION = "MS:1002633";
+    public static final String IPROX_ACCESSION = "MS:1002837";
     public static final String PUBMED_ACCESSION = "MS:1000879";
     public static final String FILE_TYPE_ACCESSION = "PRIDE:0000404";
     public static final String CONTACT_NAME = "MS:1000586";

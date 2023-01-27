@@ -34,7 +34,9 @@ public class GeneratePxOmicsXML implements IGenerator {
 
     private static final String PXSUBMISSION_PATTERN = "<ProteomeXchangeDataset";
 
-    private List<String> databases = Arrays.asList("PRIDE", "MassIVE", "PeptideAtlas", "jPOST", "iProX");
+    private List<String> databases = Arrays.asList("PRIDE", "MassIVE",
+            "PeptideAtlas", "jPOST", "iProX", "PanoramaPublic");
+
     //"PRIDE", "MassIVE", "PeptideAtlas", "jPOST",
     public int loopGap;
 

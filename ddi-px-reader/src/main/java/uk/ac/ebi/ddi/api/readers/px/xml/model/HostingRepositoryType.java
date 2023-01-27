@@ -39,7 +39,10 @@ public enum HostingRepositoryType {
     @XmlEnumValue("iProX")
     I_PRO_X("iProX"),
     @XmlEnumValue("jPOST")
-    JPOST("jPOST");
+    JPOST("jPOST"),
+    @XmlEnumValue("PanoramaPublic")
+    PANORAMA_PUBLIC("PanoramaPublic");
+
     private final String value;
 
     HostingRepositoryType(String v) {

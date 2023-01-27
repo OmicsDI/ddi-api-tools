@@ -111,7 +111,8 @@ public class PxReader implements IAPIDataset {
                         datasetLink.getCvParam().getAccession().equalsIgnoreCase(Constants.PRIDE_LINK) ||
                         datasetLink.getCvParam().getAccession().equalsIgnoreCase(Constants.PASSELURL_ACCESSION) ||
                         datasetLink.getCvParam().getAccession().equalsIgnoreCase(Constants.JPOSTURL_ACCESSION) ||
-                        datasetLink.getCvParam().getAccession().equalsIgnoreCase(Constants.IPROX_ACCESSION)
+                        datasetLink.getCvParam().getAccession().equalsIgnoreCase(Constants.IPROX_ACCESSION) ||
+                        datasetLink.getCvParam().getAccession().equalsIgnoreCase(Constants.PANORAMA_ACCESSION)
                 ) {
                     return datasetLink.getCvParam().getValue();
                 }

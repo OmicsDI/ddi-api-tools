@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>ddi-bioproject-reader</artifactId>
-    <version>1.10-SNAPSHOT</version>
+    <version>1.4-SNAPSHOT</version>
 
 
     <name>ddi-bioproject-reader</name>

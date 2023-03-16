@@ -15,7 +15,7 @@
     <description>General API Readers Classes to Be use By each Reader </description>
 
     <properties>
-        <commons-net.version>3.5</commons-net.version>
+        <commons-net.version>3.9.0</commons-net.version>
     </properties>
 
     <dependencies>
